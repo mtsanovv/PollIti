@@ -60,3 +60,5 @@ build/
 .mvn
 mvnw
 mvnw.cmd
+
+application.properties
