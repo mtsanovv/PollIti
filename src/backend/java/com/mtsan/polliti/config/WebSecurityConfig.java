@@ -40,7 +40,7 @@ public class WebSecurityConfig {
 
                     // permissions for /users
                     .antMatchers("/users").hasAuthority(Role.Administrator.toString())
-                    .antMatchers("/users/**").hasAuthority(Role.Administrator.toString())
+                    .antMatchers("/users/*").hasAuthority(Role.Administrator.toString())
 
                     // permissions for /survey/*
                     .antMatchers("/survey/*").anonymous()
