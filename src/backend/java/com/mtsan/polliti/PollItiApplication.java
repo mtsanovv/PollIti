@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class PollitiApplication {
+public class PollItiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PollitiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PollItiApplication.class, args);
+    }
 
 }
