@@ -1,15 +1,17 @@
 package com.mtsan.polliti.dto;
 
+import java.util.HashMap;
+
 public class ExceptionDto {
     private String error;
-    private String message;
+    private HashMap<String, String> content;
 
     public ExceptionDto() {
     }
 
-    public ExceptionDto(String error, String message) {
+    public ExceptionDto(String error, HashMap<String, String> content) {
         this.error = error;
-        this.message = message;
+        this.content = content;
     }
 
     public String getError() {
@@ -20,11 +22,11 @@ public class ExceptionDto {
         this.error = error;
     }
 
-    public String getMessage() {
-        return message;
+    public HashMap<String, String> getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(HashMap<String, String> content) {
+        this.content = content;
     }
 }

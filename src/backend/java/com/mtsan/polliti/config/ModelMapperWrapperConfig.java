@@ -1,13 +1,13 @@
 package com.mtsan.polliti.config;
 
-import org.modelmapper.ModelMapper;
+import com.mtsan.polliti.ModelMapperWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ModelMapperConfig {
+public class ModelMapperWrapperConfig {
     @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
+    public ModelMapperWrapper modelMapperWrapper() {
+        return new ModelMapperWrapper();
     }
 }

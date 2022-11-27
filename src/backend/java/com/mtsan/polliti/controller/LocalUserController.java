@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/user")
 @RestController
-public class UserController {
+public class LocalUserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public LocalUserController(UserService userService) {
         this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity user(Authentication authentication) {
+    public ResponseEntity getUser(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAuthenticatedUser(authentication));
     }
 
