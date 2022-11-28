@@ -1,5 +1,6 @@
 package com.mtsan.polliti.controller;
 
+import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.ExceptionResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -20,7 +21,7 @@ public class UnhandledErrorController implements ErrorController {
         this.exceptionResponseService = exceptionResponseService;
     }
 
-    @RequestMapping(value = "/error")
+    @RequestMapping(value = Routes.ERROR_ROUTE)
     public void showError(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {

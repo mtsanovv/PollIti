@@ -1,27 +1,21 @@
 package com.mtsan.polliti.dto;
 
 import com.mtsan.polliti.Role;
+import com.mtsan.polliti.global.ValidationConstants;
+import com.mtsan.polliti.global.ValidationMessages;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class NewAgentDto extends UserDto {
-    @NotEmpty(message = "The password must not be empty")
-    @Size(min = 8, max = 50, message = "The password has to be between 8 and 50 characters long")
+public class NewAgentDto extends UserDto implements UserWithUsernameDto, UserWithPasswordDto {
+    @NotBlank(message = ValidationMessages.PASSWORD_EMPTY)
+    @Size(min = ValidationConstants.PASSWORD_MIN, max = ValidationConstants.PASSWORD_MAX, message = ValidationMessages.PASSWORD_REQUIREMENTS)
+    @Pattern(regexp = ValidationConstants.PASSWORD_REGEX, message = ValidationMessages.PASSWORD_CHAR_REQUIREMENTS)
     private String password;
 
     public NewAgentDto() {
         super();
-        this.postConstruct();
-    }
-
-    public NewAgentDto(String username, String displayName, String password) {
-        super(username, displayName, null);
-        this.password = password;
-        this.postConstruct();
-    }
-
-    private void postConstruct() {
         this.setRole(Role.Agent);
     }
 

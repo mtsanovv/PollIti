@@ -2,6 +2,8 @@ package com.mtsan.polliti.config;
 
 import com.mtsan.polliti.Role;
 import com.mtsan.polliti.component.BasicAuthEntryPointComponent;
+import com.mtsan.polliti.global.Queries;
+import com.mtsan.polliti.global.Routes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +25,8 @@ public class WebSecurityConfig {
     @Bean
     UserDetailsManager userDetailsManager (DataSource dataSource) throws Exception {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ? AND enabled IS TRUE");
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT u.username, u.role FROM users u WHERE u.username = ?");
+        jdbcUserDetailsManager.setUsersByUsernameQuery(Queries.LOGIN_USER_QUERY);
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(Queries.LOGIN_USER_GET_AUTHORITIES_QUERY);
         // previously, one had to explicitly set the password encoder to BCryptPasswordEncoder
         // now, after WebSecurityConfigurerAdapter is deprecated, the PasswordEncoder is defined in a bean (in PasswordEncoderConfig)
         return jdbcUserDetailsManager;
@@ -39,11 +41,11 @@ public class WebSecurityConfig {
                     .authorizeRequests()
 
                     // permissions for /users
-                    .antMatchers("/users").hasAuthority(Role.Administrator.toString())
-                    .antMatchers("/users/*").hasAuthority(Role.Administrator.toString())
+                    .antMatchers(Routes.MAIN_USERS_ROUTE).hasAuthority(Role.Administrator.toString())
+                    .antMatchers(Routes.USERS_ROUTE_SUBROUTES).hasAuthority(Role.Administrator.toString())
 
                     // permissions for /survey/*
-                    .antMatchers("/survey/*").anonymous()
+                    .antMatchers(Routes.SURVEYS_ROUTE_SUBROUTES).anonymous()
 
                     .anyRequest().authenticated()
                     .and()
@@ -51,7 +53,7 @@ public class WebSecurityConfig {
                     .authenticationEntryPoint(basicAuthEntryPointConfig)
                     .and()
                     .logout()
-                    .logoutUrl("/user/logout");
+                    .logoutUrl(Routes.USER_LOGOUT_SUBROUTE);
         return httpSecurity.build();
     }
 
@@ -59,7 +61,7 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource(@Value("${http.allowed-origins}") String httpAllowedOrigins) {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList(httpAllowedOrigins.split(",")));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();

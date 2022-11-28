@@ -1,5 +1,6 @@
 package com.mtsan.polliti.handler;
 
+import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.service.ExceptionResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,7 +39,7 @@ public class GenericExceptionHandler {
     @ExceptionHandler(NoSuchMethodException.class)
     public ResponseEntity handleNoSuchMethodException(NoSuchMethodException e) {
         return exceptionResponseService.generateExceptionResponseEntity(
-                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,  "An error has occurred while processing your request")
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Globals.INTERNAL_SERVER_ERROR_MESSAGE)
         );
     }
 }

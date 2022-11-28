@@ -1,5 +1,6 @@
 package com.mtsan.polliti.component;
 
+import com.mtsan.polliti.global.Globals;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class BasicAuthEntryPointComponent extends BasicAuthenticationEntryPoint 
 
     @Override
     public void afterPropertiesSet() {
-        setRealmName("PollIti");
+        setRealmName(Globals.REALM_NAME);
         super.afterPropertiesSet();
     }
 }

@@ -1,5 +1,6 @@
 package com.mtsan.polliti.config;
 
+import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.ModelMapperWrapper;
 import com.mtsan.polliti.dto.ExceptionDto;
 import org.modelmapper.Converter;
@@ -26,7 +27,7 @@ public class ModelMappingsConfig {
         Converter<HttpStatus, String> responseStatusToString = c -> c.getSource() == null ? null : c.getSource().getReasonPhrase();
         Converter<String, HashMap<String, String>> reasonStringToHashMap = c -> {
             HashMap<String, String> exceptionContent = new HashMap<>();
-            exceptionContent.put("reason", c.getSource());
+            exceptionContent.put(Globals.ERROR_CONTENT_REASON, c.getSource());
             return exceptionContent;
         };
         propertyMapper.addMappings(
