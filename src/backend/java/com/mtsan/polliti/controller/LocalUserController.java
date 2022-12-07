@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(Routes.MAIN_USER_ROUTE)
+@RequestMapping(Routes.ME_ROUTE)
 @RestController
 public class LocalUserController {
     private final UserService userService;

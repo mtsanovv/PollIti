@@ -44,8 +44,8 @@ public class WebSecurityConfig {
                     .antMatchers(Routes.MAIN_USERS_ROUTE).hasAuthority(Role.Administrator.toString())
                     .antMatchers(Routes.USERS_ROUTE_SUBROUTES).hasAuthority(Role.Administrator.toString())
 
-                    // permissions for /survey/*
-                    .antMatchers(Routes.SURVEYS_ROUTE_SUBROUTES).anonymous()
+                    // permissions for /polls/tokens/*
+                    .antMatchers(Routes.POLLS_TOKENS_ROUTE_SUBROUTES).anonymous()
 
                     .anyRequest().authenticated()
                     .and()
@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                     .authenticationEntryPoint(basicAuthEntryPointConfig)
                     .and()
                     .logout()
-                    .logoutUrl(Routes.USER_LOGOUT_SUBROUTE);
+                    .logoutUrl(Routes.LOGOUT_ROUTE);
         return httpSecurity.build();
     }
 
