@@ -1,7 +1,7 @@
 package com.mtsan.polliti.controller;
 
-import com.mtsan.polliti.dto.NewAgentDto;
-import com.mtsan.polliti.dto.UpdatedAgentDto;
+import com.mtsan.polliti.dto.user.NewAgentDto;
+import com.mtsan.polliti.dto.user.UpdatedAgentDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class UsersController {
     }
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity createAgent(@Valid @RequestBody NewAgentDto newAgent) throws NoSuchMethodException, MethodArgumentNotValidException {
-        this.userService.createAgent(newAgent);
+    public ResponseEntity createAgent(@Valid @RequestBody NewAgentDto newAgentDto) throws NoSuchMethodException, MethodArgumentNotValidException {
+        this.userService.createAgent(newAgentDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

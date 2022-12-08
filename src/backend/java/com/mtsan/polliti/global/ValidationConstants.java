@@ -11,4 +11,10 @@ public class ValidationConstants {
 
     public static final short DISPLAY_NAME_MIN = 3;
     public static final short DISPLAY_NAME_MAX = 1024;
+
+    public static final short POLL_TITLE_MIN = 10;
+    public static final short POLL_TITLE_MAX = 256;
+
+    public static final short POLL_THRESHOLD_MIN_VALUE = 0;
+    public static final short POLL_THRESHOLD_MAX_VALUE = 60;
 }

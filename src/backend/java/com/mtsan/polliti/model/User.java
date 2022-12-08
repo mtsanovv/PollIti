@@ -32,15 +32,6 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String displayName, String password, Role role, boolean enabled) {
-        this.id = id;
-        this.username = username;
-        this.displayName = displayName;
-        this.password = password;
-        this.role = role;
-        this.enabled = enabled;
-    }
-
     public Long getId() {
         return id;
     }

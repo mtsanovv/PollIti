@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(Routes.ME_ROUTE)
 @RestController
 public class LocalUserController {
     private final UserService userService;
@@ -20,7 +19,7 @@ public class LocalUserController {
         this.userService = userService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = Routes.ME_ROUTE, method = RequestMethod.GET)
     public ResponseEntity getUser(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAuthenticatedUser(authentication));
     }

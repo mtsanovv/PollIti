@@ -3,7 +3,7 @@ package com.mtsan.polliti.service;
 import com.mtsan.polliti.ModelMapperWrapper;
 import com.mtsan.polliti.Role;
 import com.mtsan.polliti.dao.UserDao;
-import com.mtsan.polliti.dto.*;
+import com.mtsan.polliti.dto.user.*;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.mtsan.polliti.dto;
+package com.mtsan.polliti.dto.user;
 
 import com.mtsan.polliti.Role;
 import com.mtsan.polliti.global.ValidationConstants;

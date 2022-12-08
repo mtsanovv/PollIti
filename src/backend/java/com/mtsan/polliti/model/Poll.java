@@ -15,7 +15,7 @@ public class Poll {
     private String title;
 
     @Column(name = "threshold")
-    private short threshold;
+    private Byte threshold;
 
     @Column(name = "undecided_votes")
     private Long undecidedVotes;
@@ -24,14 +24,6 @@ public class Poll {
     private List<PollOption> pollOptions;
 
     public Poll() {
-    }
-
-    public Poll(Long id, String title, short threshold, Long undecidedVotes, List<PollOption> pollOptions) {
-        this.id = id;
-        this.title = title;
-        this.threshold = threshold;
-        this.undecidedVotes = undecidedVotes;
-        this.pollOptions = pollOptions;
     }
 
     public Long getId() {
@@ -50,11 +42,11 @@ public class Poll {
         this.title = title;
     }
 
-    public short getThreshold() {
+    public Byte getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(short threshold) {
+    public void setThreshold(Byte threshold) {
         this.threshold = threshold;
     }
 
