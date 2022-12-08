@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -33,5 +30,11 @@ public class PollsController {
     public ResponseEntity createPoll(@Valid @RequestBody NewPollDto newPollDto) {
         this.pollService.createPoll(newPollDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{pollId}", method = RequestMethod.DELETE)
+    public ResponseEntity deletePoll(@PathVariable Long pollId) {
+        this.pollService.deletePoll(pollId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

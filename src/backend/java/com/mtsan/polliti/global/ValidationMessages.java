@@ -68,4 +68,5 @@ public class ValidationMessages {
     public static final String USER_NOT_AGENT = "User '%s' is not an agent";
     public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
+    public static final String POLL_NOT_FOUND = "Poll with ID '%d' not found";
 }

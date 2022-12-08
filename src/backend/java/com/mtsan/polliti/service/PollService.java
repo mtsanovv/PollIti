@@ -36,4 +36,11 @@ public class PollService {
         poll.setUndecidedVotes(0L);
         this.pollDao.save(poll);
     }
+
+    public void deletePoll(Long pollId) {
+        if(!this.pollDao.existsById(pollId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.POLL_NOT_FOUND, pollId));
+        }
+        this.pollDao.deleteById(pollId);
+    }
 }
