@@ -70,12 +70,16 @@ public class ValidationMessages {
     public static final String POLL_OPTIONS_UNIQUE = POLL_OPTIONS_PREFIX + "should be unique";
     public static final String POLL_OPTIONS_MAX_COUNT = POLL_OPTIONS_PREFIX + "should be no more than " + ValidationConstants.POLL_OPTIONS_MAX_COUNT;
 
+    private static final String USER_PREFIX = "User ";
+    public static final String USER_NOT_FOUND = USER_PREFIX + "'%s' not found";
+    public static final String USER_NOT_AGENT = USER_PREFIX + "'%s' is not an agent";
+
+    private static final String POLL_OPTION_NAME = "poll option";
+    public static final String POLL_OPTIONS_EMPTY = "At least one " + POLL_OPTION_NAME + " is required";
+    public static final String POLL_OPTION_EMPTY = THE_PREFIX + POLL_OPTION_NAME + MUST_NOT_BE_EMPTY_SUFFIX;
+
     public static final String INVALID_FIELDS = "One or more fields contain invalid values";
-    public static final String USER_NOT_FOUND = "User '%s' not found";
     public static final String USERNAME_ALREADY_IN_USE = "The username '%s' is already in use";
-    public static final String USER_NOT_AGENT = "User '%s' is not an agent";
     public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
-    public static final String POLL_OPTIONS_EMPTY = "At least one poll option is required";
-    public static final String POLL_OPTION_EMPTY = THE_PREFIX + "poll option" + MUST_NOT_BE_EMPTY_SUFFIX;
 }
