@@ -1,4 +1,4 @@
-package com.mtsan.polliti.dto.poll.option;
+package com.mtsan.polliti.dto.poll;
 
 import com.mtsan.polliti.global.ValidationConstants;
 import com.mtsan.polliti.global.ValidationMessages;

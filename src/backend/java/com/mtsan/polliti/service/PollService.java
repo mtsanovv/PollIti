@@ -5,7 +5,7 @@ import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollOptionDao;
 import com.mtsan.polliti.dto.poll.NewPollDto;
 import com.mtsan.polliti.dto.poll.PollDto;
-import com.mtsan.polliti.dto.poll.option.NewPollOptionsDto;
+import com.mtsan.polliti.dto.poll.NewPollOptionsDto;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
 import com.mtsan.polliti.model.PollOption;

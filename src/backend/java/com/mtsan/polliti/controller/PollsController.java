@@ -1,7 +1,7 @@
 package com.mtsan.polliti.controller;
 
 import com.mtsan.polliti.dto.poll.NewPollDto;
-import com.mtsan.polliti.dto.poll.option.NewPollOptionsDto;
+import com.mtsan.polliti.dto.poll.NewPollOptionsDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
