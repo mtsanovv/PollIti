@@ -1,6 +1,7 @@
 package com.mtsan.polliti.controller;
 
 import com.mtsan.polliti.dto.poll.NewPollDto;
+import com.mtsan.polliti.dto.poll.option.NewPollOptionsDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,11 @@ public class PollsController {
     public ResponseEntity deletePoll(@PathVariable Long pollId) {
         this.pollService.deletePoll(pollId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @RequestMapping(value = "/{pollId}/options", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity addPollOptions(@PathVariable Long pollId, @Valid @RequestBody NewPollOptionsDto newPollOptionsDto) {
+        this.pollService.addOptionsToPoll(pollId, newPollOptionsDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

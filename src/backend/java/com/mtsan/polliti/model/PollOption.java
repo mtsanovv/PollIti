@@ -23,6 +23,12 @@ public class PollOption {
     public PollOption() {
     }
 
+    public PollOption(String title, Poll poll) {
+        this.title = title;
+        this.poll = poll;
+        this.setVotes(0L);
+    }
+
     public Long getId() {
         return id;
     }

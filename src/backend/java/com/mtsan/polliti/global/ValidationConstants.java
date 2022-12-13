@@ -17,4 +17,6 @@ public class ValidationConstants {
 
     public static final short POLL_THRESHOLD_MIN_VALUE = 0;
     public static final short POLL_THRESHOLD_MAX_VALUE = 60;
+
+    public static final short POLL_OPTIONS_MAX_COUNT = 20;
 }

@@ -62,11 +62,20 @@ public class ValidationMessages {
                                                               " percent";
 
 
+    private static final String POLL_WITH_ID_PREFIX = "Poll with ID '%d' ";
+    public static final String POLL_NOT_FOUND = POLL_WITH_ID_PREFIX + "not found";
+    public static final String POLL_OPTIONS_ALREADY_ADDED = POLL_WITH_ID_PREFIX + "already has options added";
+
+    private static final String POLL_OPTIONS_PREFIX = "Poll options ";
+    public static final String POLL_OPTIONS_UNIQUE = POLL_OPTIONS_PREFIX + "should be unique";
+    public static final String POLL_OPTIONS_MAX_COUNT = POLL_OPTIONS_PREFIX + "should be no more than " + ValidationConstants.POLL_OPTIONS_MAX_COUNT;
+
     public static final String INVALID_FIELDS = "One or more fields contain invalid values";
     public static final String USER_NOT_FOUND = "User '%s' not found";
     public static final String USERNAME_ALREADY_IN_USE = "The username '%s' is already in use";
     public static final String USER_NOT_AGENT = "User '%s' is not an agent";
     public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
-    public static final String POLL_NOT_FOUND = "Poll with ID '%d' not found";
+    public static final String POLL_OPTIONS_EMPTY = "At least one poll option is required";
+    public static final String POLL_OPTION_EMPTY = THE_PREFIX + "poll option" + MUST_NOT_BE_EMPTY_SUFFIX;
 }

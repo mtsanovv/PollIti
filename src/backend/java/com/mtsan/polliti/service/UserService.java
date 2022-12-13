@@ -47,7 +47,7 @@ public class UserService {
         if(this.userDao.getUserCountByUsername(username) == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.USER_NOT_FOUND, username));
         }
-        return this.modelMapper.map( this.userDao.getUsersByUsername(username).get(0), UserDto.class);
+        return this.modelMapper.map(this.userDao.getUsersByUsername(username).get(0), UserDto.class);
     }
 
     public void createAgent(NewAgentDto newAgentDto) throws NoSuchMethodException, MethodArgumentNotValidException {
