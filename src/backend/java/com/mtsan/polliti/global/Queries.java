@@ -7,4 +7,6 @@ public class Queries {
     public static final String USERDAO_FIND_USERS_BY_USERNAME_QUERY = "FROM User u WHERE u.username = ?1";
     public static final String USERDAO_COUNT_USERS_BY_USERNAME_QUERY = "SELECT COUNT(u) FROM User u WHERE u.username = ?1";
     public static final String USERDAO_DELETE_USER_BY_USERNAME_QUERY = "DELETE FROM User u WHERE u.username = ?1 ";
+
+    public static final String POLLOPTIONDAO_FIND_POLL_OPTION_BY_TITLE_AND_POLL = "FROM PollOption po WHERE po.title = ?1 AND po.poll = ?2";
 }

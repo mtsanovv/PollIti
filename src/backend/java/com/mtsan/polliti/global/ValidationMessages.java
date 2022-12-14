@@ -77,6 +77,8 @@ public class ValidationMessages {
     private static final String POLL_OPTION_NAME = "poll option";
     public static final String POLL_OPTIONS_EMPTY = "At least one " + POLL_OPTION_NAME + " is required";
     public static final String POLL_OPTION_EMPTY = THE_PREFIX + POLL_OPTION_NAME + MUST_NOT_BE_EMPTY_SUFFIX;
+    public static final String POLL_OPTION_TITLE_EMPTY = THE_PREFIX + POLL_OPTION_NAME + " title" + MUST_NOT_BE_EMPTY_SUFFIX;
+    public static final String POLL_OPTION_NOT_FOUND = THE_PREFIX + POLL_OPTION_NAME + " '%s' is not available for poll with ID '%d'";
 
     public static final String INVALID_FIELDS = "One or more fields contain invalid values";
     public static final String USERNAME_ALREADY_IN_USE = "The username '%s' is already in use";

@@ -2,6 +2,7 @@ package com.mtsan.polliti.controller;
 
 import com.mtsan.polliti.dto.poll.NewPollDto;
 import com.mtsan.polliti.dto.poll.NewPollOptionsDto;
+import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,23 @@ public class PollsController {
     @RequestMapping(value = "/{pollId}/options", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity addPollOptions(@PathVariable Long pollId, @Valid @RequestBody NewPollOptionsDto newPollOptionsDto) {
         this.pollService.addOptionsToPoll(pollId, newPollOptionsDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{pollId}/votes", method = RequestMethod.GET)
+    public ResponseEntity getPollVotes(@PathVariable Long pollId) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pollService.getPollVotes(pollId));
+    }
+
+    @RequestMapping(value = "/{pollId}/votes/undecided", method = RequestMethod.POST)
+    public ResponseEntity incrementUndecidedVotes(@PathVariable Long pollId) {
+        this.pollService.incrementUndecidedVotes(pollId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{pollId}/votes/option", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity incrementVotesForOption(@PathVariable Long pollId, @Valid @RequestBody PollVoteForOptionDto pollVoteForOptionDto) {
+        this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
