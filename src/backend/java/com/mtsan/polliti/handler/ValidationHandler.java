@@ -1,5 +1,6 @@
 package com.mtsan.polliti.handler;
 
+import com.mtsan.polliti.dto.ExceptionDto;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.service.ExceptionResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ValidationHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ExceptionDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return exceptionResponseService.generateExceptionResponseEntityWithValidationErrors(
             new ResponseStatusException(HttpStatus.BAD_REQUEST, ValidationMessages.INVALID_FIELDS),
             e.getBindingResult().getAllErrors()

@@ -23,7 +23,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Bean
-    UserDetailsManager userDetailsManager (DataSource dataSource) throws Exception {
+    UserDetailsManager userDetailsManager (DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(Queries.LOGIN_USER_QUERY);
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(Queries.LOGIN_USER_GET_AUTHORITIES_QUERY);

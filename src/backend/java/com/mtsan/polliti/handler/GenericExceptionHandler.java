@@ -1,5 +1,6 @@
 package com.mtsan.polliti.handler;
 
+import com.mtsan.polliti.dto.ExceptionDto;
 import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.service.ExceptionResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +23,22 @@ public class GenericExceptionHandler {
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity handleResponseStatusException(ResponseStatusException e) {
+    public ResponseEntity<ExceptionDto> handleResponseStatusException(ResponseStatusException e) {
         return exceptionResponseService.generateExceptionResponseEntity(e);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ResponseEntity<ExceptionDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return exceptionResponseService.generateExceptionResponseEntity(new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+    public ResponseEntity<ExceptionDto> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return exceptionResponseService.generateExceptionResponseEntity(new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(NoSuchMethodException.class)
-    public ResponseEntity handleNoSuchMethodException(NoSuchMethodException e) {
+    public ResponseEntity<ExceptionDto> handleNoSuchMethodException(NoSuchMethodException e) {
         return exceptionResponseService.generateExceptionResponseEntity(
                 new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Globals.INTERNAL_SERVER_ERROR_MESSAGE)
         );

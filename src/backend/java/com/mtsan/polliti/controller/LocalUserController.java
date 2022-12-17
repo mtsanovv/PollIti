@@ -1,5 +1,6 @@
 package com.mtsan.polliti.controller;
 
+import com.mtsan.polliti.dto.user.UserDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class LocalUserController {
     }
 
     @RequestMapping(value = Routes.ME_ROUTE, method = RequestMethod.GET)
-    public ResponseEntity getUser(Authentication authentication) {
+    public ResponseEntity<UserDto> getUser(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAuthenticatedUser(authentication));
     }
 
     @RequestMapping(value = Routes.LOGIN_ROUTE, method = RequestMethod.POST)
-    public ResponseEntity login(Authentication authentication) {
+    public ResponseEntity<UserDto> login(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.getAuthenticatedUser(authentication));
     }
 }

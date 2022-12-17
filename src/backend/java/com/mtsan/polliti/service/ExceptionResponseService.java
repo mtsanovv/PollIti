@@ -20,12 +20,12 @@ public class ExceptionResponseService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity generateExceptionResponseEntity(ResponseStatusException e) {
+    public ResponseEntity<ExceptionDto> generateExceptionResponseEntity(ResponseStatusException e) {
         ExceptionDto responseBody = this.modelMapper.map(e, ExceptionDto.class);
         return ResponseEntity.status(e.getStatus()).body(responseBody);
     }
 
-    public ResponseEntity generateExceptionResponseEntityWithValidationErrors(ResponseStatusException e, List<ObjectError> validationErrors) {
+    public ResponseEntity<ExceptionDto> generateExceptionResponseEntityWithValidationErrors(ResponseStatusException e, List<ObjectError> validationErrors) {
         ExceptionDto responseBody = this.modelMapper.map(e, ExceptionDto.class);
         validationErrors.forEach(error -> {
             String fieldName = ((FieldError) error).getField();
