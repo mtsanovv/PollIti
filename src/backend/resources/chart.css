@@ -1,0 +1,49 @@
+.root {
+    -fx-font-family-style: 'Helvetica', 'Arial', sans-serif;
+    -fx-font-color-style: #ffffff;
+}
+
+.chart {
+    -fx-background-color: linear-gradient(to bottom, rgb(0, 100, 166) 0%, rgb(0, 69, 99) 100%);
+}
+
+.chart-title {
+    -fx-font-size: 30px;
+    -fx-text-fill: -fx-font-color-style;
+    -fx-font-family: -fx-font-color-family-style;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.axis {
+    -fx-tick-label-font-size: 15px;
+    -fx-tick-label-font-weight: bold;
+    -fx-tick-label-font-family: -fx-font-color-family-style;
+    -fx-tick-label-fill: -fx-font-color-style;
+}
+
+.data0.chart-bar { -fx-bar-fill: #ffa600; }
+.data1.chart-bar { -fx-bar-fill: #ff7c43; }
+.data2.chart-bar { -fx-bar-fill: #f95d6a; }
+.data3.chart-bar { -fx-bar-fill: #d45087; }
+.data4.chart-bar { -fx-bar-fill: #a05195; }
+.data5.chart-bar { -fx-bar-fill: #665191; }
+.data6.chart-bar { -fx-bar-fill: #2f4b7c; }
+.data7.chart-bar { -fx-bar-fill: #003f5c; }
+.data8.chart-bar { -fx-bar-fill: #022638; }
+/* in ValidationConstants, max custom options are 9 and undecided votes are always gray*/
+
+/* from Globals.java */
+#undecided-votes-bar {
+    -fx-bar-fill: CHART_COLOR_8;
+}
+
+/* from Globals.java */
+#bar-label {
+    -fx-font-size: 20px;
+    -fx-font-family: -fx-font-color-family-style;
+    -fx-font-weight: 900;
+    -fx-fill: -fx-font-color-style;
+}

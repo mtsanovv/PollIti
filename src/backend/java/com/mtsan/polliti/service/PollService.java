@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -64,6 +65,20 @@ public class PollService {
         return this.modelMapper.map(poll, PollVotesDto.class);
     }
 
+    public PollDto getPollById(Long pollId) {
+        this.verifyThatPollIdExists(pollId);
+        Poll poll = this.pollDao.findById(pollId).get();
+        return this.modelMapper.map(poll, PollDto.class);
+    }
+
+    public PollVotesDto getPollVotesThatMeetThresholdPercentage(Long pollId) {
+        this.verifyThatPollIdExists(pollId);
+        Poll poll = this.pollDao.findById(pollId).get();
+        PollVotesDto pollVotesDto = this.modelMapper.map(poll, PollVotesDto.class);
+        this.filterPollOptionsByThresholdPercentage(pollVotesDto.getOptionsVotes(), pollVotesDto.getUndecidedVotes(), poll.getThreshold());
+        return pollVotesDto;
+    }
+
     public void incrementUndecidedVotes(Long pollId) {
         this.verifyThatPollIdExists(pollId);
         Poll poll = this.pollDao.findById(pollId).get();
@@ -85,6 +100,17 @@ public class PollService {
         PollOption optionWhoseVotesToIncrement = optionsWithGivenTitleAndPollId.get(0);
         optionWhoseVotesToIncrement.setVotes(optionWhoseVotesToIncrement.getVotes() + 1);
         this.pollOptionDao.save(optionWhoseVotesToIncrement);
+    }
+
+    private void filterPollOptionsByThresholdPercentage(HashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
+        Long totalVotesForAllOptions = undecidedVotes;
+        for(Long votes : pollOptionsVotes.values()) {
+            totalVotesForAllOptions += votes;
+        }
+
+        final Long totalVotes = totalVotesForAllOptions; // so that it can be used in the lambda below
+
+        pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalVotes * 100.0 < threshold);
     }
 
     private void verifyThatPollIdExists(Long pollId) {

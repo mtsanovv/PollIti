@@ -5,6 +5,7 @@ import com.mtsan.polliti.dto.poll.NewPollOptionsDto;
 import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
+import com.mtsan.polliti.service.PollResultsChartGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,15 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.concurrent.ExecutionException;
 
 @RequestMapping(Routes.MAIN_POLLS_ROUTE)
 @RestController
 public class PollsController {
     private final PollService pollService;
+    private final PollResultsChartGenerationService pollResultsChartGenerationService;
 
     @Autowired
-    public PollsController(PollService pollService) {
+    public PollsController(PollService pollService, PollResultsChartGenerationService pollResultsChartGenerationService) {
         this.pollService = pollService;
+        this.pollResultsChartGenerationService = pollResultsChartGenerationService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -61,5 +65,10 @@ public class PollsController {
     public ResponseEntity incrementVotesForOption(@PathVariable Long pollId, @Valid @RequestBody PollVoteForOptionDto pollVoteForOptionDto) {
         this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{pollId}/votes/sharing/facebook", method = RequestMethod.POST)
+    public ResponseEntity shareToFacebook(@PathVariable Long pollId) throws ExecutionException, InterruptedException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.pollResultsChartGenerationService.getPollResultsChart(pollId));
     }
 }
