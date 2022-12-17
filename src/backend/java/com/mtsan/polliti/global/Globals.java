@@ -10,4 +10,8 @@ public class Globals {
     public static final String CHART_CSS_RESOURCE = "classpath:chart.css";
     public static final String CHART_CSS_UNDECIDED_VOTES_BAR_ID = "undecided-votes-bar";
     public static final String CHART_CSS_BAR_LABEL_ID = "bar-label";
+    // Instagram is the pickiest platform, and they recommend 1080x566 for landscape pictures
+    public static final short CHART_IMAGE_WIDTH = 1080;
+    public static final short CHART_IMAGE_HEIGHT = 566;
+    public static final String CHART_IMAGE_FORMAT = "png";
 }

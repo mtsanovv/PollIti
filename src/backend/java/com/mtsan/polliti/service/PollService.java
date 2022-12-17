@@ -103,14 +103,16 @@ public class PollService {
     }
 
     private void filterPollOptionsByThresholdPercentage(HashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
+        Long totalPollVotes = this.sumPollVotes(pollOptionsVotes.values(), undecidedVotes);
+        pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalPollVotes * 100.0 < threshold);
+    }
+
+    private Long sumPollVotes(Iterable<Long> pollOptionsVotes, Long undecidedVotes) {
         Long totalVotesForAllOptions = undecidedVotes;
-        for(Long votes : pollOptionsVotes.values()) {
+        for(Long votes : pollOptionsVotes) {
             totalVotesForAllOptions += votes;
         }
-
-        final Long totalVotes = totalVotesForAllOptions; // so that it can be used in the lambda below
-
-        pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalVotes * 100.0 < threshold);
+        return totalVotesForAllOptions;
     }
 
     private void verifyThatPollIdExists(Long pollId) {
