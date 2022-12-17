@@ -20,22 +20,29 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class PollSocialSharingService {
     private final PollService pollService;
-    private final FacebookService facebookService;
+    private final MetaService metaService;
     private final PollResultsChartGenerationService pollResultsChartGenerationService;
     @Value("${agency.name}")
     private String agencyName;
 
     @Autowired
-    public PollSocialSharingService(PollService pollService, FacebookService facebookService, PollResultsChartGenerationService pollResultsChartGenerationService) {
+    public PollSocialSharingService(PollService pollService, MetaService metaService, PollResultsChartGenerationService pollResultsChartGenerationService) {
         this.pollService = pollService;
-        this.facebookService = facebookService;
+        this.metaService = metaService;
         this.pollResultsChartGenerationService = pollResultsChartGenerationService;
     }
 
     public void sharePollResultsToFacebook(Long pollId) throws ExecutionException, InterruptedException {
-        this.facebookService.postImageWithTextToFacebook(
+        this.metaService.postImageWithTextToFacebook(
             this.getPollSocialPostText(pollId),
             this.pollResultsChartGenerationService.getPollResultsChartImage(pollId)
+        );
+    }
+
+    public void sharePollResultsToFacebookAndInstagram(Long pollId) throws ExecutionException, InterruptedException {
+        this.metaService.postImageWithTextToFacebookAndInstagram(
+                this.getPollSocialPostText(pollId),
+                this.pollResultsChartGenerationService.getPollResultsChartImage(pollId)
         );
     }
 

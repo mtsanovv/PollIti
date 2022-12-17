@@ -71,4 +71,14 @@ public class PollsController {
         this.pollSocialSharingService.sharePollResultsToFacebook(pollId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @RequestMapping(value = "/{pollId}/votes/sharing/facebookAndInstagram", method = RequestMethod.POST)
+    public ResponseEntity<Void> shareToFacebookAndInstagram(@PathVariable Long pollId) throws ExecutionException, InterruptedException {
+        // since Instagram cannot have a binary attachment like facebook, we need to use a jpeg url as defined by their graph api docs
+        // in order to avoid any extra services & external image hosting shenanigans, one can just post in parallel to both platforms
+        // basically, the facebook jpg image url is used for the Instagram upload
+        // unfortunately, this leads to Instagram overcompressing the image, but it is what it is
+        this.pollSocialSharingService.sharePollResultsToFacebookAndInstagram(pollId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
