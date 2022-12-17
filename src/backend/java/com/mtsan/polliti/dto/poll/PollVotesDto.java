@@ -1,19 +1,19 @@
 package com.mtsan.polliti.dto.poll;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class PollVotesDto {
-    private HashMap<String, Long> optionsVotes;
+    private LinkedHashMap<String, Long> optionsVotes;
     private Long undecidedVotes;
 
     public PollVotesDto() {
     }
 
-    public HashMap<String, Long> getOptionsVotes() {
+    public LinkedHashMap<String, Long> getOptionsVotes() {
         return optionsVotes;
     }
 
-    public void setOptionsVotes(HashMap<String, Long> optionsVotes) {
+    public void setOptionsVotes(LinkedHashMap<String, Long> optionsVotes) {
         this.optionsVotes = optionsVotes;
     }
 

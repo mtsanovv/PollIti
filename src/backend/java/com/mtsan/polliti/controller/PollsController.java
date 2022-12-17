@@ -3,6 +3,7 @@ package com.mtsan.polliti.controller;
 import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
+import com.mtsan.polliti.service.PollSocialSharingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,15 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RequestMapping(Routes.MAIN_POLLS_ROUTE)
 @RestController
 public class PollsController {
     private final PollService pollService;
+    private final PollSocialSharingService pollSocialSharingService;
 
     @Autowired
-    public PollsController(PollService pollService) {
+    public PollsController(PollService pollService, PollSocialSharingService pollSocialSharingService) {
         this.pollService = pollService;
+        this.pollSocialSharingService = pollSocialSharingService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -63,7 +67,8 @@ public class PollsController {
     }
 
     @RequestMapping(value = "/{pollId}/votes/sharing/facebook", method = RequestMethod.POST)
-    public ResponseEntity<Void> shareToFacebook(@PathVariable Long pollId) {
+    public ResponseEntity<Void> shareToFacebook(@PathVariable Long pollId) throws ExecutionException, InterruptedException {
+        this.pollSocialSharingService.sharePollResultsToFacebook(pollId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

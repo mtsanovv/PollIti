@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Configuration
@@ -46,7 +47,7 @@ public class ModelMappingsConfig {
     private void mapPollModelToPollResultsDto() {
         TypeMap<Poll, PollVotesDto> propertyMapper = this.modelMapper.createTypeMap(Poll.class, PollVotesDto.class);
         Converter<List<PollOption>, HashMap<String, Long>> pollOptionsToHashMapWithResults = c -> {
-            HashMap<String, Long> hashMapWithResults = new HashMap<>();
+            LinkedHashMap<String, Long> hashMapWithResults = new LinkedHashMap<>();
             for(PollOption pollOption : c.getSource()) {
                 hashMapWithResults.put(pollOption.getTitle(), pollOption.getVotes());
             }

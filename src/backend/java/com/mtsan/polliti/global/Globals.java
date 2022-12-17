@@ -14,4 +14,8 @@ public class Globals {
     public static final short CHART_IMAGE_WIDTH = 1080;
     public static final short CHART_IMAGE_HEIGHT = 566;
     public static final String CHART_IMAGE_FORMAT = "png";
+
+    public static final String PUBLISH_TO_FACEBOOK_PHOTOS_TEMPLATE = "%s/photos";
+    public static final String SOCIAL_MEDIA_POST_TEMPLATE_NO_THRESHOLD = "According to %s, most of the respondents - %s, would vote '%s' for \"%s\"";
+    public static final String SOCIAL_MEDIA_POST_TEMPLATE_WITH_THRESHOLD = "According to %s, %d of the options will meet the %d%% threshold for \"%s\"";
 }

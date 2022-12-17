@@ -84,4 +84,8 @@ public class ValidationMessages {
     public static final String USERNAME_ALREADY_IN_USE = "The username '%s' is already in use";
     public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
+
+    public static final String NOT_ENOUGH_OPTIONS_TO_POST_TO_SOCIAL_MEDIA = "Cannot post to social media: there are less than " +
+                                                                            ValidationConstants.MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL +
+                                                                            " options that meet the threshold";
 }

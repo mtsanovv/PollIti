@@ -19,4 +19,6 @@ public class ValidationConstants {
     public static final short POLL_THRESHOLD_MAX_VALUE = 60;
 
     public static final short POLL_OPTIONS_MAX_COUNT = 9;
+
+    public static final short MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL = 2;
 }

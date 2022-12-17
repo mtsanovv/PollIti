@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -71,6 +71,10 @@ public class PollService {
         return this.modelMapper.map(poll, PollDto.class);
     }
 
+    public String getPollTitleById(Long pollId) {
+        return this.getPollById(pollId).getTitle();
+    }
+
     public PollVotesDto getPollVotesThatMeetThresholdPercentage(Long pollId) {
         this.verifyThatPollIdExists(pollId);
         Poll poll = this.pollDao.findById(pollId).get();
@@ -102,17 +106,24 @@ public class PollService {
         this.pollOptionDao.save(optionWhoseVotesToIncrement);
     }
 
-    private void filterPollOptionsByThresholdPercentage(HashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
+    private void filterPollOptionsByThresholdPercentage(LinkedHashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
         Long totalPollVotes = this.sumPollVotes(pollOptionsVotes.values(), undecidedVotes);
         pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalPollVotes * 100.0 < threshold);
     }
 
-    private Long sumPollVotes(Iterable<Long> pollOptionsVotes, Long undecidedVotes) {
+    public Long sumPollVotes(Iterable<Long> pollOptionsVotes, Long undecidedVotes) {
         Long totalVotesForAllOptions = undecidedVotes;
         for(Long votes : pollOptionsVotes) {
             totalVotesForAllOptions += votes;
         }
         return totalVotesForAllOptions;
+    }
+
+    public String getOptionSharePercentage(Long votesForOption, Long sumOfAllVotes) {
+        double ratio = (double) votesForOption / sumOfAllVotes;
+        double percentage = ratio * 100;
+        double roundedPercentage = Math.round(percentage * 10.0) / 10.0;
+        return roundedPercentage + "%";
     }
 
     private void verifyThatPollIdExists(Long pollId) {

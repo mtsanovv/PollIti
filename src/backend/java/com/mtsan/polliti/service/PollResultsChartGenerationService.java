@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -37,40 +36,38 @@ public class PollResultsChartGenerationService {
         new JFXPanel(); // just to prepare the JFX toolkit - we don't really need this panel as we don't need any GUI visualization
     }
 
-    public String getPollResultsChart(Long pollId) throws ExecutionException, InterruptedException {
+    public byte[] getPollResultsChartImage(Long pollId) throws ExecutionException, InterruptedException {
         BarChart<String, Long> chart = this.createBarChart();
         BarChart.Series<String, Long> series = this.createChartMainSeries(pollId, this.getTotalPollVotes(pollId));
 
         chart.getData().add(series);
 
-        chart.setTitle(this.getPollTitle(pollId));
+        chart.setTitle(this.pollService.getPollTitleById(pollId));
         chart.setLegendVisible(false);
         chart.setHorizontalGridLinesVisible(false);
         chart.setVerticalGridLinesVisible(false);
         chart.setAnimated(false);
 
-        return this.getBase64ImageFromChart(chart);
+        return this.getImageByteArrayFromChart(chart);
     }
 
-    private String getBase64ImageFromChart(BarChart<String, Long> chart) throws ExecutionException, InterruptedException {
-        FutureTask<String> drawingBarChartTask = this.generateBarChartTask(chart);
+    private byte[] getImageByteArrayFromChart(BarChart<String, Long> chart) throws ExecutionException, InterruptedException {
+        FutureTask<byte[]> drawingBarChartTask = this.generateBarChartTask(chart);
         Platform.runLater(drawingBarChartTask); // run it on the JFX thread
         return drawingBarChartTask.get();
     }
 
-    private FutureTask<String> generateBarChartTask(BarChart<String, Long> chart) {
+    private FutureTask<byte[]> generateBarChartTask(BarChart<String, Long> chart) {
         return new FutureTask<>(() -> {
             WritableImage chartImage = this.getChartAsImage(chart);
-            return this.getBase64FromWritableImage(chartImage);
+            return this.getImageByteArray(chartImage);
         });
     }
 
-    private String getBase64FromWritableImage(WritableImage image) throws IOException {
+    private byte[] getImageByteArray(WritableImage image) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(SwingFXUtils.fromFXImage(image, null), Globals.CHART_IMAGE_FORMAT, byteArrayOutputStream);
-        byte[] pngBytes = byteArrayOutputStream.toByteArray();
-        Base64.Encoder base64_enc = Base64.getEncoder();
-        return base64_enc.encodeToString(pngBytes);
+        return byteArrayOutputStream.toByteArray();
     }
 
     private Scene getSceneFromChart(BarChart<String, Long> chart) throws IOException {
@@ -145,13 +142,9 @@ public class PollResultsChartGenerationService {
         return new BarChart(xAxis, yAxis);
     }
 
-    private String getPollTitle(Long pollId) {
-        return this.pollService.getPollById(pollId).getTitle();
-    }
-
     private void displayLabelOnTopOfBar(BarChart.Data<String, Long> data, Long sumOfAllValues) {
         // in order to make the chart more informative, it is better to display percentages instead of the concrete values
-        String percentageForBarLabel = this.getPercentageForBarLabel(data.getYValue(), sumOfAllValues);
+        String percentageForBarLabel = this.pollService.getOptionSharePercentage(data.getYValue(), sumOfAllValues);
         Text labelText = new Text(percentageForBarLabel);
         labelText.setId(Globals.CHART_CSS_BAR_LABEL_ID);
 
@@ -169,12 +162,5 @@ public class PollResultsChartGenerationService {
                 Math.round(bounds.getMinY() - labelText.prefHeight(-1) * 0.5)
             );
         });
-    }
-
-    private String getPercentageForBarLabel(Long value, Long sumOfAllValues) {
-        double ratio = (double) value / sumOfAllValues;
-        double percentage = ratio * 100;
-        double roundedPercentage = Math.round(percentage * 10.0) / 10.0;
-        return roundedPercentage + "%";
     }
 }
