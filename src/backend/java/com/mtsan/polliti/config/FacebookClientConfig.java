@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SocialNetworksClientsConfig {
+public class FacebookClientConfig {
     @Bean
     FacebookClient createFacebookClient(@Value("${restfb.page.access_token}") String pageAccessToken) {
         return new DefaultFacebookClient(pageAccessToken, Version.VERSION_15_0);
