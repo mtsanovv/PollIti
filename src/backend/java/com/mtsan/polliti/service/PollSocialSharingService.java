@@ -61,6 +61,11 @@ public class PollSocialSharingService {
             return this.getPollSocialPostTextWithThreshold(pollTitle, pollOptionsThatMeetThreshold, threshold);
         }
 
+        Map.Entry<String, String> mostPopularOptionWithSharePercentage = this.getMostPopularOptionWithSharePercentage(pollId);
+        if(pollVotesDto.getOptionsVotes().get(mostPopularOptionWithSharePercentage.getKey()) == 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ValidationMessages.NO_VOTES_TO_POST_TO_SOCIAL_MEDIA);
+        }
+
         return this.getPollSocialPostTextNoThreshold(pollTitle, this.getMostPopularOptionWithSharePercentage(pollId));
     }
 

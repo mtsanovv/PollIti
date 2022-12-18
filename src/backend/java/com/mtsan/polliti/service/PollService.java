@@ -3,6 +3,7 @@ package com.mtsan.polliti.service;
 import com.mtsan.polliti.ModelMapperWrapper;
 import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollOptionDao;
+import com.mtsan.polliti.dto.IdDto;
 import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
@@ -39,10 +40,11 @@ public class PollService {
         return pollDtoList;
     }
 
-    public void createPoll(NewPollDto newPollDto) {
+    public IdDto createPoll(NewPollDto newPollDto) {
         Poll poll = this.modelMapper.map(newPollDto, Poll.class);
         poll.setUndecidedVotes(0L);
-        this.pollDao.save(poll);
+        Poll savedPollWithId = this.pollDao.save(poll);
+        return this.modelMapper.map(savedPollWithId, IdDto.class);
     }
 
     public void deletePoll(Long pollId) {
@@ -107,7 +109,7 @@ public class PollService {
     }
 
     private void filterPollOptionsByThresholdPercentage(LinkedHashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
-        Long totalPollVotes = this.sumPollVotes(pollOptionsVotes.values(), undecidedVotes);
+        Long totalPollVotes = this.sumPollVotes(pollOptionsVotes.values(), undecidedVotes, true);
         pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalPollVotes * 100.0 < threshold);
     }
 
@@ -119,7 +121,18 @@ public class PollService {
         return totalVotesForAllOptions;
     }
 
+    private Long sumPollVotes(Iterable<Long> pollOptionsVotes, Long undecidedVotes, Boolean setToOneIfZero) {
+        Long totalPollVotes = this.sumPollVotes(pollOptionsVotes, undecidedVotes);
+        if(setToOneIfZero && totalPollVotes == 0) {
+            return 1L;
+        }
+        return totalPollVotes;
+    }
+
     public String getOptionSharePercentage(Long votesForOption, Long sumOfAllVotes) {
+        if(sumOfAllVotes == 0) {
+            sumOfAllVotes = 1L;
+        }
         double ratio = (double) votesForOption / sumOfAllVotes;
         double percentage = ratio * 100;
         double roundedPercentage = Math.round(percentage * 10.0) / 10.0;

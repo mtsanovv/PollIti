@@ -68,7 +68,11 @@ public class ValidationMessages {
 
     private static final String POLL_OPTIONS_PREFIX = "Poll options ";
     public static final String POLL_OPTIONS_UNIQUE = POLL_OPTIONS_PREFIX + "should be unique";
-    public static final String POLL_OPTIONS_MAX_COUNT = POLL_OPTIONS_PREFIX + "should be no more than " + ValidationConstants.POLL_OPTIONS_MAX_COUNT;
+    public static final String POLL_OPTIONS_COUNT_REQUIREMENTS = POLL_OPTIONS_PREFIX +
+                                                                 "should be between " +
+                                                                 ValidationConstants.POLL_OPTIONS_MIN_COUNT +
+                                                                 AND_GLUE +
+                                                                 ValidationConstants.POLL_OPTIONS_MAX_COUNT;
 
     private static final String USER_PREFIX = "User ";
     public static final String USER_NOT_FOUND = USER_PREFIX + "'%s' not found";
@@ -85,7 +89,10 @@ public class ValidationMessages {
     public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
 
-    public static final String NOT_ENOUGH_OPTIONS_TO_POST_TO_SOCIAL_MEDIA = "Cannot post to social media: there are less than " +
+    private static final String CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX = "Cannot post to social media: ";
+    public static final String NOT_ENOUGH_OPTIONS_TO_POST_TO_SOCIAL_MEDIA = CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX +
+                                                                            "there are less than " +
                                                                             ValidationConstants.MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL +
                                                                             " options that meet the threshold";
+    public static final String NO_VOTES_TO_POST_TO_SOCIAL_MEDIA = CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX + "there are no poll votes recorded";
 }

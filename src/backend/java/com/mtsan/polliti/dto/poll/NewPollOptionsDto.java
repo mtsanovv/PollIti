@@ -13,7 +13,7 @@ public class NewPollOptionsDto {
 
     @NotEmpty(message = ValidationMessages.POLL_OPTIONS_EMPTY)
     @UniqueElements(message = ValidationMessages.POLL_OPTIONS_UNIQUE)
-    @Size(max = ValidationConstants.POLL_OPTIONS_MAX_COUNT, message = ValidationMessages.POLL_OPTIONS_MAX_COUNT)
+    @Size(min = ValidationConstants.POLL_OPTIONS_MIN_COUNT, max = ValidationConstants.POLL_OPTIONS_MAX_COUNT, message = ValidationMessages.POLL_OPTIONS_COUNT_REQUIREMENTS)
     private List<@NotBlank(message = ValidationMessages.POLL_OPTION_EMPTY) String> options;
 
     public NewPollOptionsDto() {

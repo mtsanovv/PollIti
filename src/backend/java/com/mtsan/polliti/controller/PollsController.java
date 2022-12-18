@@ -1,5 +1,6 @@
 package com.mtsan.polliti.controller;
 
+import com.mtsan.polliti.dto.IdDto;
 import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
@@ -32,9 +33,13 @@ public class PollsController {
     }
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Void> createPoll(@Valid @RequestBody NewPollDto newPollDto) {
-        this.pollService.createPoll(newPollDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<IdDto> createPoll(@Valid @RequestBody NewPollDto newPollDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.pollService.createPoll(newPollDto));
+    }
+
+    @RequestMapping(value = "/{pollId}", method = RequestMethod.GET)
+    public ResponseEntity<PollDto> getPollById(@PathVariable Long pollId) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pollService.getPollById(pollId));
     }
 
     @RequestMapping(value = "/{pollId}", method = RequestMethod.DELETE)
