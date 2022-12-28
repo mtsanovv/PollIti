@@ -9,6 +9,11 @@ public class ExceptionDto {
     public ExceptionDto() {
     }
 
+    public ExceptionDto(String error, HashMap<String, String> content) {
+        this.error = error;
+        this.content = content;
+    }
+
     public String getError() {
         return error;
     }

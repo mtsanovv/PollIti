@@ -29,7 +29,7 @@ public class MailService {
         message.setFrom(String.format(Globals.EMAIL_MESSAGE_FROM_HEADER, this.agencyName, this.fromEmail));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
         message.setSubject(subject);
-        message.setText(text, Globals.EMAIL_MESSAGE_ENCODING, Globals.EMAIL_MESSAGE_FORMAT);
+        message.setText(text, Globals.POLLITI_ENCODING, Globals.EMAIL_MESSAGE_FORMAT);
         this.javaMailSender.send(message);
     }
 }

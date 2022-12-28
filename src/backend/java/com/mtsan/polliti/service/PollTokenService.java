@@ -47,7 +47,7 @@ public class PollTokenService {
         this.modelMapper = modelMapper;
     }
 
-    @Scheduled(cron = Globals.POLL_TOKENS_PURGE_CRON_EXPRESSION, zone = "Etc/GMT")
+    @Scheduled(cron = Globals.POLL_TOKEN_PURGE_CRON_EXPRESSION, zone = Globals.POLL_TOKEN_PURGE_CRON_TIMEZONE)
     @Transactional
     public void purgeExpiredTokens() {
         Date now = Date.valueOf(LocalDate.now(ZoneOffset.UTC));

@@ -101,4 +101,8 @@ public class ValidationMessages {
     public static final String EMAIL_INVALID = THE_PREFIX + EMAIL_FIELD_NAME + " is not a valid email address";
 
     public static final String POLL_TOKEN_POLL_EXPIRED_OR_INVALID_MESSAGE = "This poll currently does not accept new votes or does not exist";
+
+    public static final String WRONG_USERNAME_OR_PASSWORD_ERROR = "Wrong " + USERNAME_FIELD_NAME + " or " + PASSWORD_FIELD_NAME;
+    public static final String TOO_MANY_LOGIN_ATTEMPTS_ERROR = "Too many failed login attempts, please try again later";
+    public static final String BLOCKED_IP_ATTEMPTED_LOGIN_ERROR = "Blocked IP address \"%s\" attempted login that would've been successful";
 }

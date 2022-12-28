@@ -1,12 +1,15 @@
 package com.mtsan.polliti.config;
 
-import com.mtsan.polliti.global.Role;
-import com.mtsan.polliti.component.BasicAuthEntryPointComponent;
+import com.mtsan.polliti.component.BasicAuthEntryPoint;
 import com.mtsan.polliti.global.Queries;
+import com.mtsan.polliti.global.Role;
 import com.mtsan.polliti.global.Routes;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -33,7 +36,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, BasicAuthEntryPointComponent basicAuthEntryPointConfig) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, BasicAuthEntryPoint basicAuthEntryPoint) throws Exception {
         httpSecurity.cors()
                     .and()
                     .csrf().disable()
@@ -50,7 +53,7 @@ public class WebSecurityConfig {
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic()
-                    .authenticationEntryPoint(basicAuthEntryPointConfig)
+                    .authenticationEntryPoint(basicAuthEntryPoint)
                     .and()
                     .logout()
                     .logoutUrl(Routes.LOGOUT_ROUTE);
@@ -61,11 +64,17 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource(@Value("${http.allowed-origins}") String httpAllowedOrigins) {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList(httpAllowedOrigins.split(",")));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
+    }
+
+    @Bean
+    AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        // required so that we can have authentication listeners
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 }

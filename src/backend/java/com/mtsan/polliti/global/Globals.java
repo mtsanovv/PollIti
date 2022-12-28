@@ -2,6 +2,7 @@ package com.mtsan.polliti.global;
 
 public class Globals {
     public static final String REALM_NAME = "PollIti";
+    public static final String X_FORWARDER_FOR_HEADER = "X-Forwarded-For";
     public static final String ERROR_CONTENT_REASON = "reason";
     public static final short BCRYPT_ROUNDS = 10;
     public static final String INTERNAL_SERVER_ERROR_MESSAGE = "An error has occurred while processing your request";
@@ -26,7 +27,6 @@ public class Globals {
     public static final String POLLS_OPTIONS_TABLE_NAME = "polls_options";
     public static final String POLLS_TOKENS_TABLE_NAME = "polls_tokens";
 
-    public static final String POLL_TOKENS_PURGE_CRON_EXPRESSION = "0 0 0 * * ?";
     public static final short POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES = 1;
     public static final String POLL_TOKEN_EMAIL_MESSAGE_SUBJECT = "Your opinion matters!";
     public static final String POLL_TOKEN_EMAIL_MESSAGE = "Good day,<br/><br/>" +
@@ -39,6 +39,11 @@ public class Globals {
                                                           "%s";
 
     public static final String EMAIL_MESSAGE_FROM_HEADER = "%s <%s>";
-    public static final String EMAIL_MESSAGE_ENCODING = "UTF-8";
     public static final String EMAIL_MESSAGE_FORMAT = "html";
+
+    public static final String POLL_TOKEN_PURGE_CRON_EXPRESSION = "0 0 0 * * ?";
+    public static final String POLL_TOKEN_PURGE_CRON_TIMEZONE = "Etc/GMT";
+
+    public static final String POLLITI_ENCODING = "UTF-8";
+    public static final String POLLITI_RESPONSES_TYPE = "application/json";
 }
