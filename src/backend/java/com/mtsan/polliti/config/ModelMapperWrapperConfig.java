@@ -1,6 +1,6 @@
 package com.mtsan.polliti.config;
 
-import com.mtsan.polliti.ModelMapperWrapper;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

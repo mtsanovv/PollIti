@@ -1,9 +1,11 @@
 package com.mtsan.polliti.model;
 
+import com.mtsan.polliti.global.Globals;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "polls_options")
+@Table(name = Globals.POLLS_OPTIONS_TABLE_NAME)
 public class PollOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

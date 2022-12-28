@@ -1,11 +1,12 @@
 package com.mtsan.polliti.model;
 
-import com.mtsan.polliti.Role;
+import com.mtsan.polliti.global.Role;
+import com.mtsan.polliti.global.Globals;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = Globals.USERS_TABLE_NAME)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //enum('ROLE') is to ensure type enum (Types#VARCHAR) instead of enum (Types#CHAR)
+    //enum('ROLE') is to enforce type enum (Types#VARCHAR) instead of enum (Types#CHAR)
     @Column(name = "role", columnDefinition = "enum('ROLE')")
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -1,6 +1,6 @@
 package com.mtsan.polliti.service;
 
-import com.mtsan.polliti.ModelMapperWrapper;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollOptionDao;
 import com.mtsan.polliti.dto.IdDto;
@@ -108,6 +108,12 @@ public class PollService {
         this.pollOptionDao.save(optionWhoseVotesToIncrement);
     }
 
+    public void verifyThatPollIdExists(Long pollId) {
+        if(!this.pollDao.existsById(pollId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.POLL_NOT_FOUND, pollId));
+        }
+    }
+
     private void filterPollOptionsByThresholdPercentage(LinkedHashMap<String, Long> pollOptionsVotes, Long undecidedVotes, Byte threshold) {
         Long totalPollVotes = this.sumPollVotes(pollOptionsVotes.values(), undecidedVotes, true);
         pollOptionsVotes.entrySet().removeIf(entry -> (double) entry.getValue() / totalPollVotes * 100.0 < threshold);
@@ -137,12 +143,6 @@ public class PollService {
         double percentage = ratio * 100;
         double roundedPercentage = Math.round(percentage * 10.0) / 10.0;
         return roundedPercentage + "%";
-    }
-
-    private void verifyThatPollIdExists(Long pollId) {
-        if(!this.pollDao.existsById(pollId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.POLL_NOT_FOUND, pollId));
-        }
     }
 
     private void savePollOptions(Poll poll, List<String> options) {

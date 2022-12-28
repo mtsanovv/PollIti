@@ -1,10 +1,12 @@
 package com.mtsan.polliti.model;
 
+import com.mtsan.polliti.global.Globals;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "polls")
+@Table(name = Globals.POLLS_TABLE_NAME)
 public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,9 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll")
     private List<PollOption> pollOptions;
+
+    @OneToMany(mappedBy = "poll")
+    private List<PollToken> pollTokens;
 
     public Poll() {
     }
@@ -64,5 +69,13 @@ public class Poll {
 
     public void setPollOptions(List<PollOption> pollOptions) {
         this.pollOptions = pollOptions;
+    }
+
+    public List<PollToken> getPollTokens() {
+        return pollTokens;
+    }
+
+    public void setPollTokens(List<PollToken> pollTokens) {
+        this.pollTokens = pollTokens;
     }
 }

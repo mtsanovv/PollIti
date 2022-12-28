@@ -85,8 +85,8 @@ public class ValidationMessages {
     public static final String POLL_OPTION_NOT_FOUND = THE_PREFIX + POLL_OPTION_NAME + " '%s' is not available for poll with ID '%d'";
 
     public static final String INVALID_FIELDS = "One or more fields contain invalid values";
-    public static final String USERNAME_ALREADY_IN_USE = "The username '%s' is already in use";
-    public static final String ENABLED_FIELD_REQUIRED = "The enabled property is required to be set to true or false";
+    public static final String USERNAME_ALREADY_IN_USE = THE_PREFIX + "username '%s' is already in use";
+    public static final String ENABLED_FIELD_REQUIRED = THE_PREFIX + "enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
 
     private static final String CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX = "Cannot post to social media: ";
@@ -95,4 +95,8 @@ public class ValidationMessages {
                                                                             ValidationConstants.MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL +
                                                                             " options that meet the threshold";
     public static final String NO_VOTES_TO_POST_TO_SOCIAL_MEDIA = CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX + "there are no poll votes recorded";
+
+    private static final String EMAIL_FIELD_NAME = "email";
+    public static final String EMAIL_EMPTY = THE_PREFIX + EMAIL_FIELD_NAME + MUST_NOT_BE_EMPTY_SUFFIX;
+    public static final String EMAIL_INVALID = THE_PREFIX + EMAIL_FIELD_NAME + " is not a valid email address";
 }

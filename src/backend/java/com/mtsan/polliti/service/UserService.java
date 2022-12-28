@@ -1,7 +1,7 @@
 package com.mtsan.polliti.service;
 
-import com.mtsan.polliti.ModelMapperWrapper;
-import com.mtsan.polliti.Role;
+import com.mtsan.polliti.util.ModelMapperWrapper;
+import com.mtsan.polliti.global.Role;
 import com.mtsan.polliti.dao.UserDao;
 import com.mtsan.polliti.dto.user.*;
 import com.mtsan.polliti.global.ValidationMessages;

@@ -1,4 +1,4 @@
-package com.mtsan.polliti;
+package com.mtsan.polliti.global;
 
 public enum Role {
     Agent,

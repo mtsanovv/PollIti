@@ -1,16 +1,19 @@
 package com.mtsan.polliti.controller;
 
+import com.mtsan.polliti.dto.EmailDto;
 import com.mtsan.polliti.dto.IdDto;
 import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.service.PollService;
 import com.mtsan.polliti.service.PollSocialSharingService;
+import com.mtsan.polliti.service.PollTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -20,11 +23,13 @@ import java.util.concurrent.ExecutionException;
 public class PollsController {
     private final PollService pollService;
     private final PollSocialSharingService pollSocialSharingService;
+    private final PollTokenService pollTokenService;
 
     @Autowired
-    public PollsController(PollService pollService, PollSocialSharingService pollSocialSharingService) {
+    public PollsController(PollService pollService, PollSocialSharingService pollSocialSharingService, PollTokenService pollTokenService) {
         this.pollService = pollService;
         this.pollSocialSharingService = pollSocialSharingService;
+        this.pollTokenService = pollTokenService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -84,6 +89,12 @@ public class PollsController {
         // basically, the facebook jpg image url is used for the Instagram upload
         // unfortunately, this leads to Instagram overcompressing the image, but it is what it is
         this.pollSocialSharingService.sharePollResultsToFacebookAndInstagram(pollId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{pollId}/tokens", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<Void> createPollTokenAndSendItViaEmail(@PathVariable Long pollId, @Valid @RequestBody EmailDto emailDto) throws MessagingException {
+        this.pollTokenService.createTokenAndSendItViaEmail(pollId, emailDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

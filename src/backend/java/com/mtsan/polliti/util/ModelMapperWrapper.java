@@ -1,4 +1,4 @@
-package com.mtsan.polliti;
+package com.mtsan.polliti.util;
 
 import org.modelmapper.ModelMapper;
 

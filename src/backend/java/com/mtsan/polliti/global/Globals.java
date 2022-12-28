@@ -20,4 +20,24 @@ public class Globals {
     public static final String PUBLISH_TO_INSTAGRAM_MEDIA_TEMPLATE = "%s/media_publish";
     public static final String SOCIAL_MEDIA_POST_TEMPLATE_NO_THRESHOLD = "According to %s, most of the respondents - %s, would vote '%s' for \"%s\"";
     public static final String SOCIAL_MEDIA_POST_TEMPLATE_WITH_THRESHOLD = "According to %s, %d of the options will meet the %d%% threshold for \"%s\"";
+
+    public static final String POLLS_TABLE_NAME = "polls";
+    public static final String USERS_TABLE_NAME = "users";
+    public static final String POLLS_OPTIONS_TABLE_NAME = "polls_options";
+    public static final String POLLS_TOKENS_TABLE_NAME = "polls_tokens";
+
+    public static final short POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES = 1;
+    public static final String POLL_TOKEN_EMAIL_MESSAGE_SUBJECT = "Your opinion matters!";
+    public static final String POLL_TOKEN_EMAIL_MESSAGE = "Good day,<br/><br/>" +
+                                                          "We, from %s, would like to hear your opinion regarding \"%s\". " +
+                                                          "We would be grateful if you could take a moment to respond to our poll: " +
+                                                          "<a href=\"%s\" target=\"_blank\">%s</a> " +
+                                                          "(if the link is not clickable, copy it and paste it in the address bar in your browser).<br/><br/>" +
+                                                          "You don't have to hurry - the poll will be open until %s 23:59 GMT.<br/><br/>" +
+                                                          "Best regards,<br/>" +
+                                                          "%s";
+
+    public static final String EMAIL_MESSAGE_FROM_HEADER = "%s <%s>";
+    public static final String EMAIL_MESSAGE_ENCODING = "UTF-8";
+    public static final String EMAIL_MESSAGE_FORMAT = "html";
 }

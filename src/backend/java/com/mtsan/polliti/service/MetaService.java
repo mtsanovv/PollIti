@@ -60,7 +60,7 @@ public class MetaService {
         // first, we need to create a media container by passing the image_url and caption parameters
         // then, the only field in the response should be the media container ID (or at least judging by the scarce Graph API documentation)
         // we can create a FacebookType object from the response because RestFB does not seem to have any specific object associated with media containers
-        // after that, we just get the ID of the FacebookType object and pass it a the media_publish call
+        // after that, we just get the ID of the FacebookType object and pass it to the media_publish call
         // that should 'seal' the container and get the post live on Instagram
         FacebookType mediaContainer = this.facebookClient.publish(
             String.format(Globals.POST_TO_INSTAGRAM_MEDIA_TEMPLATE, igUser.getId()),

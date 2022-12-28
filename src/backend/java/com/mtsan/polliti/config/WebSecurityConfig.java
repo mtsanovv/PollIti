@@ -1,6 +1,6 @@
 package com.mtsan.polliti.config;
 
-import com.mtsan.polliti.Role;
+import com.mtsan.polliti.global.Role;
 import com.mtsan.polliti.component.BasicAuthEntryPointComponent;
 import com.mtsan.polliti.global.Queries;
 import com.mtsan.polliti.global.Routes;

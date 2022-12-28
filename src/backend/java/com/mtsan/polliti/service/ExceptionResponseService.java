@@ -1,6 +1,6 @@
 package com.mtsan.polliti.service;
 
-import com.mtsan.polliti.ModelMapperWrapper;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import com.mtsan.polliti.dto.ExceptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
