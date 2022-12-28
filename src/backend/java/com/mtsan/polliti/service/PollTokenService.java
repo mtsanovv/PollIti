@@ -14,10 +14,12 @@ import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -43,6 +45,13 @@ public class PollTokenService {
         this.pollService = pollService;
         this.mailService = mailService;
         this.modelMapper = modelMapper;
+    }
+
+    @Scheduled(cron = Globals.POLL_TOKENS_PURGE_CRON_EXPRESSION, zone = "Etc/GMT")
+    @Transactional
+    public void purgeExpiredTokens() {
+        Date now = Date.valueOf(LocalDate.now(ZoneOffset.UTC));
+        this.pollTokenDao.deleteAllExpiredBy(now);
     }
 
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
