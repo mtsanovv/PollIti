@@ -1,5 +1,6 @@
 package com.mtsan.polliti.config;
 
+import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
 import com.mtsan.polliti.util.ModelMapperWrapper;
 import com.mtsan.polliti.dto.ExceptionDto;
 import com.mtsan.polliti.dto.poll.PollVotesDto;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ModelMappingsConfig {
         this.modelMapper = modelMapper;
         this.mapResponseStatusExceptionToExceptionDto();
         this.mapPollModelToPollResultsDto();
+        this.mapPollModelToPollTitleWithOptionsDto();
     }
 
     private void mapResponseStatusExceptionToExceptionDto() {
@@ -55,6 +58,21 @@ public class ModelMappingsConfig {
         };
         propertyMapper.addMappings(
             mapper -> mapper.using(pollOptionsToHashMapWithResults).map(Poll::getPollOptions, PollVotesDto::setOptionsVotes)
+        );
+    }
+
+    private void mapPollModelToPollTitleWithOptionsDto() {
+        TypeMap<Poll, PollTitleWithOptionsDto> propertyMapper = this.modelMapper.createTypeMap(Poll.class, PollTitleWithOptionsDto.class);
+        Converter<List<PollOption>, List<String>> pollOptionsToListOfStrings = c -> {
+            List<String> options = new ArrayList<>();
+            for(PollOption pollOption : c.getSource()) {
+                options.add(pollOption.getTitle());
+            }
+            return options;
+        };
+        propertyMapper.addMapping(Poll::getTitle, PollTitleWithOptionsDto::setPollTitle);
+        propertyMapper.addMappings(
+            mapper -> mapper.using(pollOptionsToListOfStrings).map(Poll::getPollOptions, PollTitleWithOptionsDto::setPollOptions)
         );
     }
 }

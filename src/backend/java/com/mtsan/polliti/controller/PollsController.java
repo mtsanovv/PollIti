@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RequestMapping(Routes.MAIN_POLLS_ROUTE)
@@ -40,6 +41,23 @@ public class PollsController {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity<IdDto> createPoll(@Valid @RequestBody NewPollDto newPollDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.pollService.createPoll(newPollDto));
+    }
+
+    @RequestMapping(value = "/tokens/{token}", method = RequestMethod.GET)
+    public ResponseEntity<PollTitleWithOptionsDto> getPollTitleWithOptionsByToken(@PathVariable UUID token) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pollTokenService.getPollTitleWithOptionsByToken(token));
+    }
+
+    @RequestMapping(value = "/tokens/{token}/votes/undecided", method = RequestMethod.POST)
+    public ResponseEntity<Void> incrementUndecidedVotesByToken(@PathVariable UUID token) {
+        this.pollTokenService.incrementUndecidedVotes(token);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/tokens/{token}/votes/option", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<Void> incrementVotesForOptionByToken(@PathVariable UUID token, @Valid @RequestBody PollVoteForOptionDto pollVoteForOptionDto) {
+        this.pollTokenService.incrementVotesForOption(token, pollVoteForOptionDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @RequestMapping(value = "/{pollId}", method = RequestMethod.GET)

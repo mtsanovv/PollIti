@@ -99,4 +99,6 @@ public class ValidationMessages {
     private static final String EMAIL_FIELD_NAME = "email";
     public static final String EMAIL_EMPTY = THE_PREFIX + EMAIL_FIELD_NAME + MUST_NOT_BE_EMPTY_SUFFIX;
     public static final String EMAIL_INVALID = THE_PREFIX + EMAIL_FIELD_NAME + " is not a valid email address";
+
+    public static final String POLL_TOKEN_POLL_EXPIRED_OR_INVALID_MESSAGE = "This poll currently does not accept new votes or does not exist";
 }

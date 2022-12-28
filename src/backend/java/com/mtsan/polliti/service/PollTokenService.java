@@ -3,19 +3,26 @@ package com.mtsan.polliti.service;
 import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollTokenDao;
 import com.mtsan.polliti.dto.EmailDto;
+import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
+import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
 import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.global.Routes;
+import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
 import com.mtsan.polliti.model.PollToken;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Service
 public class PollTokenService {
@@ -23,23 +30,51 @@ public class PollTokenService {
     private final PollDao pollDao;
     private final PollService pollService;
     private final MailService mailService;
+    private final ModelMapperWrapper modelMapper;
     @Value("${agency.polliti-origin}")
     private String pollItiOrigin;
     @Value("${agency.name}")
     private String agencyName;
 
     @Autowired
-    public PollTokenService(PollTokenDao pollTokenDao, PollDao pollDao, PollService pollService, MailService mailService) {
+    public PollTokenService(PollTokenDao pollTokenDao, PollDao pollDao, PollService pollService, MailService mailService, ModelMapperWrapper modelMapper) {
         this.pollTokenDao = pollTokenDao;
         this.pollDao = pollDao;
         this.pollService = pollService;
         this.mailService = mailService;
+        this.modelMapper = modelMapper;
     }
 
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
         String pollTitle = this.pollService.getPollTitleById(pollId);
         PollToken pollToken = this.createPollToken(pollId);
         this.sendTokenToEmail(pollToken, pollTitle, emailDto.getEmail());
+    }
+
+    public PollTitleWithOptionsDto getPollTitleWithOptionsByToken(UUID token) {
+        this.verifyThatPollTokenExists(token);
+        Poll poll = this.pollTokenDao.findById(token).get().getPoll();
+        return this.modelMapper.map(poll, PollTitleWithOptionsDto.class);
+    }
+
+    public void incrementUndecidedVotes(UUID token) {
+        this.verifyThatPollTokenExists(token);
+        Long pollId = this.pollTokenDao.findById(token).get().getPoll().getId();
+        this.pollService.incrementUndecidedVotes(pollId);
+        this.pollTokenDao.deleteById(token);
+    }
+
+    public void incrementVotesForOption(UUID token, PollVoteForOptionDto pollVoteForOptionDto) {
+        this.verifyThatPollTokenExists(token);
+        Long pollId = this.pollTokenDao.findById(token).get().getPoll().getId();
+        this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto);
+        this.pollTokenDao.deleteById(token);
+    }
+
+    private void verifyThatPollTokenExists(UUID token) {
+        if(!this.pollTokenDao.existsById(token)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.POLL_TOKEN_POLL_EXPIRED_OR_INVALID_MESSAGE));
+        }
     }
 
     private PollToken createPollToken(Long pollId) {
