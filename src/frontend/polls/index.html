@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Poll</title>
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="js/Global/UIComponents.js"></script>
+    <script type="text/javascript" src="js/Global/Globals.js"></script>
+    <script type="text/javascript" src="js/Global/ValidationMessages.js"></script>
+    <script type="text/javascript" src="js/ObjectModels/MainObjectModel.js"></script>
+    <script id="sap-ui-bootstrap"
+        src="https://sdk.openui5.org/1.108.2/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_fiori_3_dark"
+        data-sap-ui-libs="sap.m, sap.tnt, sap.ui.layout"
+        data-sap-ui-resourceroots='{"PollIti": "./js"}'
+        data-sap-ui-onInit="module:PollIti/Main"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true">
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
+    <script type="text/javascript">
+          window.cookieconsent_options = { "message": "This website uses cookies to ensure you get the best experience.", "dismiss": "Got it!", "learnMore": "Learn more", "link": "https://www.cookiesandyou.com/", "theme": "dark-bottom" };
+    </script>
+	<link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="sapUiBody" id="content"></body>
+</html>

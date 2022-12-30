@@ -46,5 +46,7 @@ public class Globals {
 
     public static final String POLLITI_ENCODING = "UTF-8";
     public static final String POLLITI_RESPONSES_TYPE = "application/json";
-    public static final String POLLITI_FRONTEND_SURVEYS_APP = "surveys";
+
+    public static final String POLLITI_FRONTEND_POLLS_APP_TOKEN_URL_FORMAT = "%s%s/index.html?token=%s";
+    public static final String POLLITI_FRONTEND_POLLS_APP_PATH = "polls/index.html";
 }

@@ -99,9 +99,9 @@ public class PollTokenService {
 
     private String getTokenEmailMessageText(PollToken pollToken, String pollTitle) {
         String pollTokenUrl = String.format(
-            "%s%s/%s",
+            Globals.POLLITI_FRONTEND_POLLS_APP_TOKEN_URL_FORMAT,
             this.pollItiOrigin,
-            Globals.POLLITI_FRONTEND_SURVEYS_APP,
+            Globals.POLLITI_FRONTEND_POLLS_APP_PATH,
             pollToken.getUuid()
         );
         return String.format(
