@@ -6,7 +6,6 @@ import com.mtsan.polliti.dto.EmailDto;
 import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
 import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
 import com.mtsan.polliti.global.Globals;
-import com.mtsan.polliti.global.Routes;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
 import com.mtsan.polliti.model.PollToken;
@@ -102,7 +101,7 @@ public class PollTokenService {
         String pollTokenUrl = String.format(
             "%s%s/%s",
             this.pollItiOrigin,
-            Routes.MAIN_POLLS_ROUTE,
+            Globals.POLLITI_FRONTEND_SURVEYS_APP,
             pollToken.getUuid()
         );
         return String.format(
