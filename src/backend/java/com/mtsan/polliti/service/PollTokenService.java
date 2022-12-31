@@ -46,11 +46,14 @@ public class PollTokenService {
         this.modelMapper = modelMapper;
     }
 
+    public Date getCurrentDate() {
+        return Date.valueOf(LocalDate.now(ZoneOffset.UTC));
+    }
+
     @Scheduled(cron = Globals.POLL_TOKEN_PURGE_CRON_EXPRESSION, zone = Globals.POLL_TOKEN_PURGE_CRON_TIMEZONE)
     @Transactional
     public void purgeExpiredTokens() {
-        Date now = Date.valueOf(LocalDate.now(ZoneOffset.UTC));
-        this.pollTokenDao.deleteAllExpiredBy(now);
+        this.pollTokenDao.deleteAllExpiredBy(this.getCurrentDate());
     }
 
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
@@ -80,7 +83,7 @@ public class PollTokenService {
     }
 
     private void verifyThatPollTokenExists(UUID token) {
-        if(!this.pollTokenDao.existsById(token)) {
+        if(this.pollTokenDao.getTokenCountByUuidAndExpiryDate(token, this.getCurrentDate()) == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ValidationMessages.POLL_TOKEN_POLL_EXPIRED_OR_INVALID_MESSAGE));
         }
     }

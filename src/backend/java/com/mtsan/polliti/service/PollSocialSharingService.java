@@ -50,15 +50,19 @@ public class PollSocialSharingService {
         PollDto pollDto = this.pollService.getPollById(pollId);
         String pollTitle = pollDto.getTitle();
         Byte threshold = pollDto.getThreshold();
+
         PollVotesDto pollVotesDto = this.pollService.getPollVotesThatMeetThresholdPercentage(pollId);
-        int pollOptionsThatMeetThreshold = pollVotesDto.getOptionsVotes().values().size();
+        int pollOptionsThatMeetThreshold = pollVotesDto.getOptionsVotes().size();
+
+        PollVotesDto allPollVotesDto = this.pollService.getPollVotes(pollId);
+        Long totalVotes = this.pollService.sumPollVotes(allPollVotesDto.getOptionsVotes().values(), allPollVotesDto.getUndecidedVotes());
 
         if(pollOptionsThatMeetThreshold < ValidationConstants.MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ValidationMessages.NOT_ENOUGH_OPTIONS_TO_POST_TO_SOCIAL_MEDIA);
         }
 
         if(threshold > 0) {
-            return this.getPollSocialPostTextWithThreshold(pollTitle, pollOptionsThatMeetThreshold, threshold);
+            return this.getPollSocialPostTextWithThreshold(pollTitle, pollOptionsThatMeetThreshold, threshold, totalVotes);
         }
 
         Map.Entry<String, String> mostPopularOptionWithSharePercentage = this.getMostPopularOptionWithSharePercentage(pollId);
@@ -66,24 +70,26 @@ public class PollSocialSharingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ValidationMessages.NO_VOTES_TO_POST_TO_SOCIAL_MEDIA);
         }
 
-        return this.getPollSocialPostTextNoThreshold(pollTitle, this.getMostPopularOptionWithSharePercentage(pollId));
+        return this.getPollSocialPostTextNoThreshold(pollTitle, this.getMostPopularOptionWithSharePercentage(pollId), totalVotes);
     }
 
-    private String getPollSocialPostTextWithThreshold(String pollTitle, int pollOptionsThatMeetThreshold, Byte threshold) {
+    private String getPollSocialPostTextWithThreshold(String pollTitle, int pollOptionsThatMeetThreshold, Byte threshold, Long totalVotes) {
         return String.format(
             Globals.SOCIAL_MEDIA_POST_TEMPLATE_WITH_THRESHOLD,
             this.agencyName,
             pollOptionsThatMeetThreshold,
             threshold,
-            pollTitle
+            pollTitle,
+            totalVotes
         );
     }
 
-    private String getPollSocialPostTextNoThreshold(String pollTitle, Map.Entry<String, String> mostPopularOptionWithSharePercentage) {
+    private String getPollSocialPostTextNoThreshold(String pollTitle, Map.Entry<String, String> mostPopularOptionWithSharePercentage, Long totalVotes) {
         return String.format(
             Globals.SOCIAL_MEDIA_POST_TEMPLATE_NO_THRESHOLD,
             this.agencyName,
             mostPopularOptionWithSharePercentage.getValue(),
+            totalVotes,
             mostPopularOptionWithSharePercentage.getKey(),
             pollTitle
         );
