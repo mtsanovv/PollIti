@@ -7,4 +7,5 @@ class UIComponents {
 
     static MAIN_PAGE_DIALOG_ID = 'mainPageDialog';
     static MAIN_PAGE_DIALOG_MESSAGE_STRIP_ID = 'mainPageDialogMessageStrip';
+    static MAIN_PAGE_LAYOUT = 'mainPageLayout';
 }

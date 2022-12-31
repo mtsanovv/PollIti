@@ -1,19 +1,40 @@
 class MainObjectModel {
-    constructor(json) {
-        this.message = json.message;
-        this.pollTitle = json.pollTitle;
-        this.pollOptions = json.pollOptions;
+    constructor(obj) {
+        this.sMessage = obj.message;
+        this.bSuccess = obj.success;
+        this.sPollTitle = obj.pollTitle;
+        this.aPollOptions = obj.pollOptions;
+        this.iSelectedOptionIndex;
     }
 
     getMessage() {
-        return this.message;
+        return this.sMessage;
+    }
+
+    isSuccess() {
+        if(this.bSuccess) {
+            return true;
+        }
+        return false;
+    }
+
+    setSuccess(bNewSuccessStatus = false) {
+        this.bSuccess = bNewSuccessStatus;
     }
 
     getPollTitle() {
-        return this.pollTitle;
+        return this.sPollTitle;
     }
 
     getPollOptions() {
-        return this.pollOptions;
+        return this.aPollOptions;
+    }
+
+    getSelectedOptionIndex() {
+        return this.iSelectedOptionIndex;
+    }
+
+    setSelectedOptionIndex(iIndex) {
+        this.iSelectedOptionIndex = iIndex;
     }
 }

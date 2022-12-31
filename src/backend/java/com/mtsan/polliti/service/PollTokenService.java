@@ -101,7 +101,6 @@ public class PollTokenService {
         String pollTokenUrl = String.format(
             Globals.POLLITI_FRONTEND_POLLS_APP_TOKEN_URL_FORMAT,
             this.pollItiOrigin,
-            Globals.POLLITI_FRONTEND_POLLS_APP_PATH,
             pollToken.getUuid()
         );
         return String.format(
