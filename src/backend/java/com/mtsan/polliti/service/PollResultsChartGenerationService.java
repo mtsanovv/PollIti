@@ -14,12 +14,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.image.WritableImage;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -28,6 +31,8 @@ import java.util.concurrent.FutureTask;
 public class PollResultsChartGenerationService {
     private final PollService pollService;
     private final ResourceLoader resourceLoader;
+    @Value("${agency.name}")
+    private String agencyName;
 
     @Autowired
     public PollResultsChartGenerationService(PollService pollService, ResourceLoader resourceLoader) {
@@ -133,6 +138,8 @@ public class PollResultsChartGenerationService {
 
     private BarChart<String, Long> createBarChart() {
         CategoryAxis xAxis = new CategoryAxis();
+        // since no extra labels can be added to the chart, we can put the watermark as a label of the x-axis
+        xAxis.setLabel(this.getChartWatermarkText());
         xAxis.setTickMarkVisible(false);
 
         NumberAxis yAxis = new NumberAxis();
@@ -140,6 +147,10 @@ public class PollResultsChartGenerationService {
         yAxis.setOpacity(0);
 
         return new BarChart(xAxis, yAxis);
+    }
+
+    private String getChartWatermarkText() {
+        return String.format(Globals.SOCIAL_MEDIA_POST_CHART_WATERMARK_FORMAT, this.agencyName, LocalDate.now(ZoneOffset.UTC).getYear());
     }
 
     private void displayLabelOnTopOfBar(BarChart.Data<String, Long> data, Long sumOfAllValues) {

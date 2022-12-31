@@ -9,6 +9,7 @@
 
 .chart-title {
     -fx-font-size: 30px;
+    -fx-padding: 10px;
     -fx-text-fill: -fx-font-color-style;
     -fx-font-family: -fx-font-color-family-style;
 }
@@ -22,6 +23,15 @@
     -fx-tick-label-font-weight: bold;
     -fx-tick-label-font-family: -fx-font-color-family-style;
     -fx-tick-label-fill: -fx-font-color-style;
+}
+
+.axis-label {
+  -fx-alignment: center-right;
+  -fx-padding: 15px;
+  -fx-font-size: 20px !important;
+  -fx-text-fill: -fx-font-color-style;
+  -fx-font-style: italic;
+  -fx-font-family: -fx-font-color-family-style;
 }
 
 .data0.chart-bar { -fx-bar-fill: #ffa600; }

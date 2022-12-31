@@ -23,6 +23,7 @@ public class Globals {
                                                                          "would vote '%s' for \"%s\"";
     public static final String SOCIAL_MEDIA_POST_TEMPLATE_WITH_THRESHOLD = "According to %s, %d of the options will meet the %d%% threshold for \"%s\" " +
                                                                            "(%d poll respondents)";
+    public static final String SOCIAL_MEDIA_POST_CHART_WATERMARK_FORMAT = "%s, %d";
 
     public static final String POLLS_TABLE_NAME = "polls";
     public static final String USERS_TABLE_NAME = "users";
