@@ -55,41 +55,6 @@ class Globals {
         }
     }
 
-    static THEMES = [
-        {
-            name: 'Fiori Light',
-            id: 'sap_fiori_3'
-        },
-        {
-            name: 'Fiori Dark',
-            id: 'sap_fiori_3_dark'
-        },
-        {
-            name: 'Fiori High Contrast Black',
-            id: 'sap_fiori_3_hcb'
-        },
-        {
-            name: 'Fiori High Contrast White',
-            id: 'sap_fiori_3_hcw'
-        },
-        {
-            name: 'Belize',
-            id: 'sap_belize'
-        },
-        {
-            name: 'Belize Plus',
-            id: 'sap_belize_plus'
-        },
-        {
-            name: 'Belize High Contrast Black',
-            id: 'sap_belize_hcb'
-        },
-        {
-            name: 'Belize High Contrast White',
-            id: 'sap_belize_hcw'
-        }
-    ];
-
     static POLLITI_PAGE_LOGIN_TITLE = 'Login';
     static POLLITI_PAGE_LAUNCHPAD_TITLE = 'Launchpad';
     static POLLITI_PAGE_CREATE_POLL_TITLE = 'Create Poll';
@@ -107,13 +72,13 @@ class Globals {
         {
             id: this.NAV_CREATE_POLL,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_CREATE_POLL].pattern,
-            icon: 'sap-icon://add-activity',
+            icon: 'sap-icon://create-form',
             text: this.POLLITI_PAGE_CREATE_POLL_TITLE
         },
         {
             id: this.NAV_POLLS_LISTING,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLLS_LISTING].pattern,
-            icon: 'sap-icon://activity-items',
+            icon: 'sap-icon://form',
             text: this.POLLITI_PAGE_POLLS_LISTING_TITLE
         },
         {
@@ -125,13 +90,10 @@ class Globals {
         {
             id: this.NAV_USERS_LISTING,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_USERS_LISTING].pattern,
-            icon: 'sap-icon://account',
+            icon: 'sap-icon://employee-lookup',
             text: this.POLLITI_PAGE_USERS_LISTING_TITLE
         }
     ];
-
-    static DEFAULT_THEME = this.THEMES[0].id;
-    static SAVED_THEME_STORAGE_PREFIX = 'pollItiPanelPersistentStorage';
 
     static URI_DELIMITER = '/';
     static HTML_PAGE_TITLE_DELIMITER = ' | ';
@@ -141,7 +103,8 @@ class Globals {
     static MODEL_PATH_KEY = 'obj';
     static MODEL_PATH = this.URI_DELIMITER + this.MODEL_PATH_KEY;
 
-    static CHANGE_THEME_DIALOG_TITLE = 'Pick a theme';
-    static CHANGE_THEME_DIALOG_BUTTON_TEXT = 'Close';
-    static CHANGE_THEME_BUTTON_TOOLTIP = 'Change theme';
+    static ROLES = {
+        Administrator: 'Administrator',
+        Agent: 'Agent'
+    };
 }

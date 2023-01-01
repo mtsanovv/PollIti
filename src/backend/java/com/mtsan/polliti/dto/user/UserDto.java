@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UserDto implements UserWithUsernameDto{
+public class UserDto implements UserWithUsernameDto {
     @NotBlank(message = ValidationMessages.USERNAME_EMPTY)
     @Size(min = ValidationConstants.USERNAME_MIN, max = ValidationConstants.USERNAME_MAX, message = ValidationMessages.USERNAME_REQUIREMENTS)
     @Pattern(regexp = ValidationConstants.USERNAME_REGEX, message = ValidationMessages.USERNAME_CHAR_REQUIREMENTS)

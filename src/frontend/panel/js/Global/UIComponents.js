@@ -12,9 +12,6 @@ class UIComponents {
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
 
-    static CHANGE_THEME_DIALOG = 'changeThemeDialog';
-    static CHANGE_THEME_DIALOG_LIST = 'changeThemeDialogList';
-    static CHANGE_THEME_DIALOG_CLOSE_BUTTON = 'changeThemeDialogCloseButton';
-
     static SIDE_NAV = 'sideNav';
+    static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
 }

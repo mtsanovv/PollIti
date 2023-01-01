@@ -33,9 +33,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto getAuthenticatedUser(Authentication authentication) {
+    public AuthenticatedUserDto getAuthenticatedUser(Authentication authentication) {
         User authenticatedUser = this.userDao.getUsersByUsername(authentication.getName()).get(0);
-        return this.modelMapper.map(authenticatedUser, UserDto.class);
+        return this.modelMapper.map(authenticatedUser, AuthenticatedUserDto.class);
     }
 
     public List<UserDto> getAllUsers() {
