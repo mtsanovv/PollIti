@@ -17,8 +17,27 @@ sap.ui.define([
             sap.ui.getCore().byId(UIComponents.SIDE_NAV).setVisible(bToggle);
         },
 
-        getMainController: function() {
-            return sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_MAIN).getController();
+        showLogoutButton: function(bToggle) {
+            sap.ui.getCore().byId(UIComponents.LOGOUT_BUTTON).setVisible(bToggle);
+        },
+
+        getCurrentRouteName: function() {
+            const oRouter = this.getFirstChildViewController().getRouter();
+            const sCurrentHash = oRouter.getHashChanger().getHash();
+            const oRouteInfo = oRouter.getRouteInfoByHash(sCurrentHash);
+            return oRouteInfo && oRouteInfo.name != Globals.NAV_HOME ? oRouteInfo.name : Globals.NAV_LAUNCHPAD; 
+        },
+
+        getCurrentRouteArguments: function() {
+            const oRouter = this.getFirstChildViewController().getRouter();
+            const sCurrentHash = oRouter.getHashChanger().getHash();
+            return oRouter.getRouteInfoByHash(sCurrentHash).arguments;
+        },
+
+        getFirstChildViewController: function() {
+            // trying to get POLLITI_VIEW_MAIN from child controllers yields an error
+            // thus, our best bet is the first child view (that is, the login) because it is the only view that contains a reference to the owner component
+            return sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_LOGIN).getController();
         },
 
         getApp: function() {
@@ -26,7 +45,7 @@ sap.ui.define([
         },
 
         navToPrevious: function() {
-            const oComponentModel  = this.getMainController().getOwnerComponent().getModel();
+            const oComponentModel  = this.getFirstChildViewController().getOwnerComponent().getModel();
             const aRouteHistory = oComponentModel.getProperty(Globals.ROUTE_HISTORY_MODEL_PATH);
             aRouteHistory.splice(aRouteHistory.length - 1, 1); // remove the current route from the route history
             const oPrevRoute = aRouteHistory.pop();
@@ -37,7 +56,7 @@ sap.ui.define([
                 sRoute = oPrevRoute.route;
                 oArgs = oPrevRoute.arguments;
                 
-                if(sRoute == this.getMainController().getCurrentRouteName()) {
+                if(sRoute == this.getFirstChildViewController().getCurrentRouteName()) {
                     sRoute = Globals.NAV_LAUNCHPAD; // in case the previous route name was also this one go back to launchpad
                 }
             }
@@ -46,7 +65,7 @@ sap.ui.define([
         },
 
         navTo: function(sRoute, oArgs) {
-            this.getMainController().getRouter().navTo(sRoute, oArgs);
+            this.getFirstChildViewController().getRouter().navTo(sRoute, oArgs);
         },
 
         getRouter: function() {

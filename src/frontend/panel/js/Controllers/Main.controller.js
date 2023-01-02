@@ -11,26 +11,13 @@ sap.ui.define([
                 // if there was a specific page requested initially, save it in order to go to it later
                 thisController.pushCurrentRouteToRouteHistory();
                 // we have saved the initially requested page, now let's clean the request URL
-                // getRouter().navTo() is used instead of navTo() because in the onInit method, the view is not defined yet and getMainController throws an error
+                // getRouter().navTo() is used instead of navTo() because in the onInit method, the view is not defined yet and getFirstChildViewController throws an error
                 thisController.getRouter().navTo(Globals.NAV_HOME);
                 // watch for route changes
                 thisController.getRouter().attachRouteMatched(thisController.onRouteChange.bind(thisController));
                 // switch to the login view when all views have been created
                 thisController.getRouter().navTo(Globals.NAV_LOGIN);
             });
-        },
-
-        getCurrentRouteName: function() {
-            const oRouter = this.getRouter();
-            const sCurrentHash = oRouter.getHashChanger().getHash();
-            const oRouteInfo = oRouter.getRouteInfoByHash(sCurrentHash);
-            return oRouteInfo && oRouteInfo.name != Globals.NAV_HOME ? oRouteInfo.name : Globals.NAV_LAUNCHPAD; 
-        },
-
-        getCurrentRouteArguments: function() {
-            const oRouter = this.getRouter();
-            const sCurrentHash = oRouter.getHashChanger().getHash();
-            return oRouter.getRouteInfoByHash(sCurrentHash).arguments;
         },
 
         pushCurrentRouteToRouteHistory: function() {
@@ -60,6 +47,7 @@ sap.ui.define([
             switch(sRouteName) {
                 case Globals.NAV_LOGIN:
                     this.showMainPageNav(false);
+                    this.showLogoutButton(false);
                     this.getApp().setBusy(true);
                     this.getApp().to(UIComponents.POLLITI_VIEW_LOGIN);
                     this.getApp().getCurrentPage().loadPage();
@@ -67,6 +55,27 @@ sap.ui.define([
                     this.pushCurrentRouteToRouteHistory();
                     break;
             }
+        },
+
+        attemptLogout: function() {
+            const thisController = this;
+            const oLogoutButton = sap.ui.getCore().byId(UIComponents.LOGOUT_BUTTON);
+            oLogoutButton.setBusy(true);
+
+            $.ajax({
+                type: 'POST',
+                url: [Config.API_BASE_URL, Globals.LOGOUT_ENDPOINT].join(Globals.URI_DELIMITER),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function() {
+                    oLogoutButton.setBusy(false);
+                    thisController.navTo(Globals.NAV_LOGIN);
+                },
+                error: function() {
+                    oLogoutButton.setBusy(false);
+                }
+            });
         },
 
         changeHTMLPageTitle: function(sTitle) {

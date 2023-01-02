@@ -14,4 +14,12 @@ class UIComponents {
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
+
+    static LOGOUT_BUTTON = 'logoutButton';
+
+    static LOGIN_USERNAME_INPUT = 'loginUsernameInput';
+    static LOGIN_PASSWORD_INPUT = 'loginPasswordInput';
+    static LOGIN_ERROR_DIALOG = 'loginErrorDialog';
+    static LOGIN_BUTTON = 'loginButton';
+    static LOGIN_ERROR_DIALOG_MESSAGE_STRIP = 'loginErrorDialogMessageStrip';
 }

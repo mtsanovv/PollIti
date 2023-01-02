@@ -1,14 +1,19 @@
 class LoginObjectModel {
     constructor(obj) {
         this.sMessage = obj.message;
-        this.oAuthenticatedUser = obj.authenticatedUser;
+        this.sUsername = obj.username;
+        this.sPassword = obj.password;
     }
 
     getMessage() {
         return this.sMessage;
     }
 
-    getAuthenticatedUser() {
-        return this.oAuthenticatedUser;
+    getUsername() {
+        return this.sUsername;
+    }
+
+    getPassword() {
+        return this.sPassword;
     }
 }

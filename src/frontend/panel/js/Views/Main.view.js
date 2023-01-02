@@ -18,6 +18,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
 
         this.createSideNavToggleButton(oToolPage, oToolPageHeader);
         this.createTitle(oToolPageHeader);
+        this.createLogoutButton(oToolPageHeader);
 
         oToolPage.setHeader(oToolPageHeader);
     },
@@ -34,6 +35,19 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
 
         oSideNavToggleButton.setLayoutData(oButtonLayoutData);
         oToolPageHeader.addContent(oSideNavToggleButton);
+    },
+
+    createLogoutButton: function(oToolPageHeader) {
+        const oController = this.getController();
+        const oLogoutButton =  new sap.m.Button(UIComponents.LOGOUT_BUTTON, { icon: 'sap-icon://log', type: 'Transparent', tooltip: Globals.LOGOUT_BUTTON_TOOLTIP });
+        oLogoutButton.attachPress(() => {
+            oController.attemptLogout();
+        });
+        const oButtonLayoutData = new sap.ui.core.LayoutData({
+            layoutData: new sap.m.OverflowToolbarLayoutData({ priority: 'NeverOverflow' })
+        });
+        oLogoutButton.setLayoutData(oButtonLayoutData);
+        oToolPageHeader.addContent(oLogoutButton);
     },
 
     createTitle: function(oToolPageHeader) {

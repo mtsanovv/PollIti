@@ -1,4 +1,9 @@
 class Globals {
+    static ROLES = {
+        Administrator: 'Administrator',
+        Agent: 'Agent'
+    };
+
     static NAV_HOME = 'home';
     static NAV_LOGIN = 'login';
     static NAV_LAUNCHPAD = 'launchpad';
@@ -73,25 +78,27 @@ class Globals {
             id: this.NAV_CREATE_POLL,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_CREATE_POLL].pattern,
             icon: 'sap-icon://create-form',
-            text: this.POLLITI_PAGE_CREATE_POLL_TITLE
+            text: this.POLLITI_PAGE_CREATE_POLL_TITLE,
         },
         {
             id: this.NAV_POLLS_LISTING,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLLS_LISTING].pattern,
             icon: 'sap-icon://form',
-            text: this.POLLITI_PAGE_POLLS_LISTING_TITLE
+            text: this.POLLITI_PAGE_POLLS_LISTING_TITLE,
         },
         {
             id: this.NAV_CREATE_USER,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_CREATE_USER].pattern,
             icon: 'sap-icon://add-employee',
-            text: this.POLLITI_PAGE_CREATE_USER_TITLE
+            text: this.POLLITI_PAGE_CREATE_USER_TITLE,
+            requiredRole: this.ROLES.Administrator
         },
         {
             id: this.NAV_USERS_LISTING,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_USERS_LISTING].pattern,
             icon: 'sap-icon://employee-lookup',
-            text: this.POLLITI_PAGE_USERS_LISTING_TITLE
+            text: this.POLLITI_PAGE_USERS_LISTING_TITLE,
+            requiredRole: this.ROLES.Administrator
         }
     ];
 
@@ -103,8 +110,15 @@ class Globals {
     static MODEL_PATH_KEY = 'obj';
     static MODEL_PATH = this.URI_DELIMITER + this.MODEL_PATH_KEY;
 
-    static ROLES = {
-        Administrator: 'Administrator',
-        Agent: 'Agent'
-    };
+    static ME_ENDPOINT = 'me';
+    static LOGIN_ENDPOINT = 'login';
+    static LOGOUT_ENDPOINT = 'logout';
+
+    static LOGOUT_BUTTON_TOOLTIP = 'Logout';
+
+    static USERNAME_INPUT_PLACEHOLDER = 'Username';
+    static PASSWORD_INPUT_PLACEHOLDER = 'Password';
+
+    static ERROR_DIALOG_BUTTON_TEXT = 'Dismiss';
+    static ERROR_DIALOG_TITLE = 'An Error has Occurred';
 }

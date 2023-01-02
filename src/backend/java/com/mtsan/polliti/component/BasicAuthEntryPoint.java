@@ -28,9 +28,12 @@ public class BasicAuthEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ae) throws IOException {
+        // setting the authentication scheme to Basic triggers a browser prompt for the credentials
+        // that prompt is undeserved as we've got a custom login frontend page to take care of that
+        // in this case, simply introduce a custom authentication scheme - BasicNoBrowserPrompt
+        response.addHeader("WWW-Authenticate", "BasicNoBrowserPrompt realm=\"" + this.getRealmName() + "\"");
         // throwing ResponseStatusException here will create internal server error (after all, we handle the default unauthorized state here)
         // thus, we need to manually create an object, serialize it and send it
-        response.addHeader("WWW-Authenticate", "Basic realm=\"" + this.getRealmName() + "\"");
         this.createAndSendUnauthorizedResponse(request, response);
     }
 
