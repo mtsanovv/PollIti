@@ -91,14 +91,14 @@ class Globals {
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_CREATE_USER].pattern,
             icon: 'sap-icon://add-employee',
             text: this.POLLITI_PAGE_CREATE_USER_TITLE,
-            requiredRole: this.ROLES.Administrator
+            requiredRoles: [this.ROLES.Administrator]
         },
         {
             id: this.NAV_USERS_LISTING,
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_USERS_LISTING].pattern,
             icon: 'sap-icon://employee-lookup',
             text: this.POLLITI_PAGE_USERS_LISTING_TITLE,
-            requiredRole: this.ROLES.Administrator
+            requiredRoles: [this.ROLES.Administrator]
         }
     ];
 

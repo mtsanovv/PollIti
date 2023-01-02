@@ -5,13 +5,12 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
 
     createContent: function() {
         const oPage = new sap.m.Page(UIComponents.POLLITI_PAGE_LOGIN, { showHeader: false });
-        this.createForm(oPage);
         this.createErrorDialog(oPage);
         return oPage;
     },
 
     createForm: function(oPage) {
-        const oBlockLayout = new sap.ui.layout.BlockLayout({ background: sap.ui.layout.BlockBackgroundType.Dashboard });
+        const oBlockLayout = new sap.ui.layout.BlockLayout(UIComponents.LOGIN_BLOCK_LAYOUT, { background: sap.ui.layout.BlockBackgroundType.Dashboard });
         const oBlockLayoutRow = new sap.ui.layout.BlockLayoutRow();
         const oBlockLayoutCell = new sap.ui.layout.BlockLayoutCell({ title: Globals.POLLITI_PAGE_LOGIN_TITLE, titleAlignment: sap.ui.core.HorizontalAlign.Center });
 
@@ -130,7 +129,20 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
     },
 
     loadPage: function() {
+        // clearing the input values by setting empty values is clunky and does not show placeholders (perhaps an OpenUI5 bug?)
+        // thus, recreate the page layout in order to reset it
+        this.recreatePageLayout();
         this.getController().pageLoaded();
+    },
+
+    recreatePageLayout: function() {
+        const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_LOGIN);
+        const oPageBlockLayout = sap.ui.getCore().byId(UIComponents.LOGIN_BLOCK_LAYOUT);
+        if(oPageBlockLayout) {
+            oPage.removeContent(oPageBlockLayout);
+            oPageBlockLayout.destroy();
+        }
+        this.createForm(oPage);
     },
 
     setObjectModel: function(oObjectModel) {

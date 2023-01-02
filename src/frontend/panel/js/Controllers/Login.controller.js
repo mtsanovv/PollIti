@@ -14,8 +14,8 @@ sap.ui.define([
                 xhrFields: {
                     withCredentials: true
                 },
-                success: function() {
-                    thisController.loggedIn();
+                success: function(oResult) {
+                    thisController.loggedIn(oResult.role);
                     thisController.getApp().setBusy(false);
                 },
                 error: function()
@@ -25,11 +25,29 @@ sap.ui.define([
             });
         },
 
-        loggedIn: function() {
+        loggedIn: function(sRole) {
             this.showMainPageNav(true);
-            this.toggleMainPageNav(false);
+            this.toggleMainPageNav(true);
             this.showLogoutButton(true);
             this.navToPrevious();
+            this.filterSideNavItemsByRole(sRole);
+        },
+
+        filterSideNavItemsByRole: function(sRole) {
+            const oMainPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_MAIN);
+            const aSideNavItems = oMainPage.getSideContent().getItem().getItems();
+            for(let i = 0; i < aSideNavItems.length; i++) {
+                const oSideNavItem = aSideNavItems[i];
+                const oSideNavItemModel = Globals.SIDE_NAV_CONTENT[i];
+                const aRequiredRolesForNav = oSideNavItemModel.requiredRoles;
+                if(aRequiredRolesForNav && !aRequiredRolesForNav.includes(sRole)) {
+                    oSideNavItem.setVisible(false);
+                    continue;
+                }
+                if(oSideNavItem.getVisible() == false) {
+                    oSideNavItem.setVisible(true);
+                }
+            }
         },
 
         getBasicAuthString: function(sUsername, sPassword) {
@@ -51,8 +69,8 @@ sap.ui.define([
                 beforeSend: function(oJqXhr) {
                     oJqXhr.setRequestHeader('Authorization', thisController.getBasicAuthString(sUsername, sPassword));
                 },
-                success: function() {
-                    thisController.loggedIn();
+                success: function(oResult) {
+                    thisController.loggedIn(oResult.role);
                     sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON).setBusy(false);
                 },
                 error: function(oJqXhr) {
