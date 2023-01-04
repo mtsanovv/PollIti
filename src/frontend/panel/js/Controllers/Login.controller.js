@@ -16,7 +16,7 @@ sap.ui.define([
                 },
                 success: function(oResult) {
                     thisController.loggedIn(oResult.role);
-                    thisController.getApp().setBusy(false);
+                    // we don't set App.busy to false because we will be navigating anyway
                 },
                 error: function()
                 {
@@ -85,13 +85,6 @@ sap.ui.define([
                     sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON).setBusy(false);
                 }
             });
-        },
-
-        errorOccurred: function(sMessage) {
-            const oModelData = {
-                message: sMessage
-            };
-            this.passModel(new LoginObjectModel(oModelData));
         }
     });
 });

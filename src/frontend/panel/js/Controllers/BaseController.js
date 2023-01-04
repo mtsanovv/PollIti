@@ -78,6 +78,13 @@ sap.ui.define([
             };
             this.getView().setModel(new sap.ui.model.json.JSONModel(oModel));
             this.getView().applyModel();
+        },
+
+        errorOccurred: function(sMessage) {
+            const oModelData = {
+                message: sMessage
+            };
+            this.passModel(new ObjectModel(oModelData));
         }
     });
 });

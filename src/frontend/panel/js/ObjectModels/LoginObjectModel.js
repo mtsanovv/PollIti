@@ -1,12 +1,8 @@
-class LoginObjectModel {
+class LoginObjectModel extends ObjectModel {
     constructor(obj) {
-        this.sMessage = obj.message;
+        super(obj);
         this.sUsername = obj.username;
         this.sPassword = obj.password;
-    }
-
-    getMessage() {
-        return this.sMessage;
     }
 
     getUsername() {

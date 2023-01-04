@@ -39,19 +39,30 @@ sap.ui.define([
 
         createViews: async function() {
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LOGIN, viewName: UIComponents.POLLITI_VIEW_LOGIN})));
+            this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LAUNCHPAD, viewName: UIComponents.POLLITI_VIEW_LAUNCHPAD})));
         },
 
         onRouteChange: function (oEvent) {
             const sRouteName = oEvent.getParameter('name');
             const oArgs = oEvent.getParameter('arguments');
+            const oApp = this.getApp();
+
             switch(sRouteName) {
                 case Globals.NAV_LOGIN:
                     this.showMainPageNav(false);
                     this.showLogoutButton(false);
-                    this.getApp().setBusy(true);
-                    this.getApp().to(UIComponents.POLLITI_VIEW_LOGIN);
-                    this.getApp().getCurrentPage().loadPage();
+                    oApp.setBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_LOGIN);
+                    oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LOGIN_TITLE);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+                case Globals.NAV_LAUNCHPAD:
+                    oApp.setBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_LAUNCHPAD);
+                    oApp.getCurrentPage().loadPage();
+                    this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LAUNCHPAD_TITLE);
+                    this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;
             }
@@ -79,7 +90,7 @@ sap.ui.define([
         },
 
         changeHTMLPageTitle: function(sTitle) {
-            document.title = [Config.AGENCY_NAME, sTitle].join(Globals.HTML_PAGE_TITLE_DELIMITER);
+            document.title = [Config.AGENCY_NAME, 'Panel', sTitle].join(Globals.HTML_PAGE_TITLE_DELIMITER);
         },
 
         changeSelectedNavKey: function(sKey) {
