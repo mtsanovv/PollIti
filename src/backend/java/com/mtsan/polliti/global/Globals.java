@@ -16,6 +16,8 @@ public class Globals {
     public static final short CHART_IMAGE_HEIGHT = 566;
     public static final String CHART_IMAGE_FORMAT = "png";
 
+    public static final String FACEBOOK_URL_TEMPLATE = "https://www.facebook.com/%s";
+    public static final String INSTAGRAM_URL_TEMPLATE = "https://www.instagram.com/%s";
     public static final String PUBLISH_TO_FACEBOOK_PHOTOS_TEMPLATE = "%s/photos";
     public static final String POST_TO_INSTAGRAM_MEDIA_TEMPLATE = "%s/media";
     public static final String PUBLISH_TO_INSTAGRAM_MEDIA_TEMPLATE = "%s/media_publish";

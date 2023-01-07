@@ -1,5 +1,6 @@
 package com.mtsan.polliti.service;
 
+import com.mtsan.polliti.dto.SocialLinksDto;
 import com.mtsan.polliti.global.Globals;
 import com.restfb.BinaryAttachment;
 import com.restfb.FacebookClient;
@@ -73,5 +74,27 @@ public class MetaService {
             FacebookType.class,
             Parameter.with("creation_id", mediaContainer.getId())
         );
+    }
+
+    private String getFacebookPageUrl() {
+        return String.format(Globals.FACEBOOK_URL_TEMPLATE, this.pageId);
+    }
+
+    private String getInstagramPageUrl() {
+        String instagramPageId = this.facebookClient.fetchObject(
+            this.pageId,
+            Page.class,
+            Parameter.with("fields", "instagram_business_account")
+        ).getInstagramBusinessAccount().getId();
+        IgUser igUser = this.facebookClient.fetchObject(
+            instagramPageId,
+            IgUser.class,
+            Parameter.with("fields", "username")
+        );
+        return String.format(Globals.INSTAGRAM_URL_TEMPLATE, igUser.getUsername());
+    }
+
+    public SocialLinksDto getSocialLinks() {
+        return new SocialLinksDto(this.getFacebookPageUrl(), this.getInstagramPageUrl());
     }
 }

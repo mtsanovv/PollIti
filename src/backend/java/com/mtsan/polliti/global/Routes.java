@@ -10,6 +10,8 @@ public class Routes {
 
     public static final String ME_ROUTE = "/me";
 
+    public static final String SOCIALS_ROUTE = "/socials";
+
     public static final String LOGOUT_ROUTE = "/logout";
 
     public static final String LOGIN_ROUTE = "/login";
