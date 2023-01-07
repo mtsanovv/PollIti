@@ -1,0 +1,1 @@
+The polliti-social.woff2 file was created by following this tutorial: https://sdk.openui5.org/topic/21ea0ea94614480d9a910b2e93431291 and by this tool: https://icomoon.io/app, using the SVGs from this directory (size 150x150px).

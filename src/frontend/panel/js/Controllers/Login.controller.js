@@ -38,7 +38,7 @@ sap.ui.define([
             const aSideNavItems = oMainPage.getSideContent().getItem().getItems();
             for(let i = 0; i < aSideNavItems.length; i++) {
                 const oSideNavItem = aSideNavItems[i];
-                const oSideNavItemModel = Globals.SIDE_NAV_CONTENT[i];
+                const oSideNavItemModel = Globals.NAV_CONTENT[i];
                 const aRequiredRolesForNav = oSideNavItemModel.requiredRoles;
                 if(aRequiredRolesForNav && !aRequiredRolesForNav.includes(sRole)) {
                     oSideNavItem.setVisible(false);

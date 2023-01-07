@@ -60,7 +60,10 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
         const oToolPageSideNav = new sap.tnt.SideNavigation(UIComponents.SIDE_NAV);
         const oSideNavList = new sap.tnt.NavigationList();
 
-        for(const oItem of Globals.SIDE_NAV_CONTENT) {
+        for(const oItem of Globals.NAV_CONTENT) {
+            if(oItem.launchpadOnly) {
+                continue;
+            }
             oSideNavList.addItem(new sap.tnt.NavigationListItem(oItem.id, { icon: oItem.icon, text: oItem.text, href: '#/' + oItem.route }).setKey(oItem.id));
         }
 

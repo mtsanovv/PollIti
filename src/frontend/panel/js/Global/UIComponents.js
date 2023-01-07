@@ -1,4 +1,6 @@
 class UIComponents {
+    static POLLITI_SOCIAL_FONT = 'polliti-social';
+
     static POLLITI_COMPONENT = 'PollIti';
     static POLLITI_APP = 'PollIti.App';
 
@@ -26,4 +28,9 @@ class UIComponents {
     static LOGIN_ERROR_DIALOG = 'loginErrorDialog';
     static LOGIN_BUTTON = 'loginButton';
     static LOGIN_ERROR_DIALOG_MESSAGE_STRIP = 'loginErrorDialogMessageStrip';
+
+    static LAUNCHPAD_ERROR_DIALOG = 'launchpadErrorDialog';
+    static LAUNCHPAD_ERROR_DIALOG_MESSAGE_STRIP = 'launchpadErrorDialogMessageStrip';
+    static LAUNCHPAD_WELCOME_TITLE = 'launchpadWelcomeTitle';
+    static LAUNCHPAD_TILES_CONTAINER = 'launchpadTilesContainer';
 }
