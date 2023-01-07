@@ -27,7 +27,6 @@ sap.ui.define([
 
         loggedIn: function(sRole) {
             this.showMainPageNav(true);
-            this.toggleMainPageNav(true);
             this.showLogoutButton(true);
             this.navToPrevious();
             this.filterSideNavItemsByRole(sRole);

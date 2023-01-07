@@ -4,14 +4,6 @@ sap.ui.define([
     'use strict';
 
     return Controller.extend(UIComponents.POLLITI_CONTROLLER_BASE, {
-        toggleMainPageNav: function(bToggle) {
-            const oMainPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_MAIN);
-            sap.ui.getCore().byId(UIComponents.SIDE_NAV_TOGGLE_BUTTON).setEnabled(bToggle);
-            for(const oItem of oMainPage.getSideContent().getItem().getItems()) {
-                oItem.setEnabled(bToggle);
-            }
-        },
-
         showMainPageNav: function(bToggle) {
             sap.ui.getCore().byId(UIComponents.SIDE_NAV_TOGGLE_BUTTON).setVisible(bToggle);
             sap.ui.getCore().byId(UIComponents.SIDE_NAV).setVisible(bToggle);

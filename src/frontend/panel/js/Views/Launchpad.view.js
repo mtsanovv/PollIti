@@ -72,9 +72,10 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LAUNCHPAD, {
 
     tileNavTo(oTileModel) {
         const oController = this.getController();
-        const sUrl = oTileModel.urlEvaluationFunction.call();
-        if(sUrl) {
-            window.open(sUrl, '_blank');
+        const fEvaluateUrl = oTileModel.urlEvaluationFunction;
+        if(fEvaluateUrl) {
+            window.open(fEvaluateUrl.call(), '_blank');
+            return;
         }
         oController.navTo(oTileModel.id);
     },
