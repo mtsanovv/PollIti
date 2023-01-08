@@ -106,8 +106,12 @@ sap.ui.define([
             this.getView().applyModel();
         },
 
-        setHTMLPageTitle: function(sDescription = 'Poll') {
-            document.title = [Config.AGENCY_NAME, sDescription].join(Globals.HTML_PAGE_TITLE_DELIMITER);
+        setHTMLPageTitle: function(sDescription) {
+            const aTitleItems = [Config.AGENCY_NAME, 'Poll'];
+            if(sDescription) {
+                aTitleItems.push(sDescription);
+            }
+            document.title = aTitleItems.join(Globals.HTML_PAGE_TITLE_DELIMITER);
         }
     });
 });
