@@ -98,7 +98,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
         });
         const oErrorDialogMessageStrip = new sap.m.MessageStrip(UIComponents.LOGIN_ERROR_DIALOG_MESSAGE_STRIP, { type: sap.ui.core.MessageType.Error, showIcon: true });
         oErrorDialogMessageStrip.addStyleClass('sapUiResponsiveMargin');
-        const oErrorDialogDismissButton = new sap.m.Button({ text: Globals.ERROR_DIALOG_BUTTON_TEXT, type: sap.m.ButtonType.Emphasized });
+        const oErrorDialogDismissButton = new sap.m.Button({ text: Globals.DIALOG_DISMISS_BUTTON_TEXT, type: sap.m.ButtonType.Emphasized });
         oErrorDialogDismissButton.attachPress(() => {
             oErrorDialog.close();
         });
@@ -135,7 +135,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
         this.getController().pageLoaded();
     },
 
-    recreatePageLayout: function() {
+    recreatePageLayout: async function() {
         const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_LOGIN);
         const oPageBlockLayout = sap.ui.getCore().byId(UIComponents.LOGIN_BLOCK_LAYOUT);
         if(oPageBlockLayout) {

@@ -3,7 +3,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
         return UIComponents.POLLITI_CONTROLLER_MAIN
     },
 
-    createContent: function(oController) {
+    createContent: function() {
         const oToolPage = new sap.tnt.ToolPage(UIComponents.POLLITI_PAGE_MAIN, { sideExpanded: false });
 
         this.createToolPageHeader(oToolPage);
@@ -64,7 +64,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
             if(oItem.launchpadOnly) {
                 continue;
             }
-            oSideNavList.addItem(new sap.tnt.NavigationListItem(oItem.id, { icon: oItem.icon, text: oItem.text, href: '#/' + oItem.route }).setKey(oItem.id));
+            const sItemLink = ['#', oItem.route].join(Globals.URI_DELIMITER);
+            oSideNavList.addItem(new sap.tnt.NavigationListItem(oItem.id, { icon: oItem.icon, text: oItem.text, href: sItemLink }).setKey(oItem.id));
         }
 
         oToolPageSideNav.setItem(oSideNavList);

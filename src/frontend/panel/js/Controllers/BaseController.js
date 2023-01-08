@@ -36,6 +36,10 @@ sap.ui.define([
             return sap.ui.getCore().byId(UIComponents.POLLITI_APP);
         },
 
+        setAppBusy: function(bToggle = true) {
+            this.getApp().setBusy(bToggle);
+        },
+
         navToPrevious: function() {
             const oComponentModel  = this.getFirstChildViewController().getOwnerComponent().getModel();
             const aRouteHistory = oComponentModel.getProperty(Globals.ROUTE_HISTORY_MODEL_PATH);

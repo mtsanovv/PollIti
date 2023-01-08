@@ -7,6 +7,8 @@ class ValidationMessages {
 
     static CONNECTION_ERROR = 'The "' + Config.AGENCY_NAME + '" panel is currently unavailable, try again later'
 
+    static ERROR_WHILE_DELETING_USER_PREFIX = "An error has occurred while deleting the user '";
+
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';
     }

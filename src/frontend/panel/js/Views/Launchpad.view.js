@@ -3,7 +3,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LAUNCHPAD, {
         return UIComponents.POLLITI_CONTROLLER_LAUNCHPAD;
     },
 
-    createContent: function(oController) {
+    createContent: function() {
         const oPage = new sap.m.Page(UIComponents.POLLITI_PAGE_LAUNCHPAD, { title: Globals.POLLITI_PAGE_LAUNCHPAD_TITLE });
         const oVerticalLayout = new sap.ui.layout.VerticalLayout();
         oVerticalLayout.addStyleClass('sapUiResponsiveMargin');
@@ -34,7 +34,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LAUNCHPAD, {
     },
 
     createWelcomeTitle(oVerticalLayout) {
-        const oWelcomeTitle = new sap.m.Title(UIComponents.LAUNCHPAD_WELCOME_TITLE, { titleStyle: sap.ui.core.TitleLevel.H2 });
+        const oWelcomeTitle = new sap.m.Title(UIComponents.LAUNCHPAD_WELCOME_TITLE, { titleStyle: sap.ui.core.TitleLevel.H2, wrapping: true });
         oWelcomeTitle.addStyleClass('sapUiSmallMarginBeginEnd')
                      .addStyleClass('sapUiMediumMarginTopBottom')
                      .setVisible(false);

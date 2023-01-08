@@ -38,25 +38,25 @@ class Globals {
                     pattern: this.NAV_LAUNCHPAD
                 },
                 [this.NAV_POLL]: {
-                    pattern: this.NAV_POLLS + "/{pollId}"
+                    pattern: [this.NAV_POLLS, '{pollId}'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_POLLS_LISTING]: {
                     pattern: this.NAV_POLLS
                 },
                 [this.NAV_CREATE_POLL]: {
-                    pattern: this.NAV_POLLS + '/create'
+                    pattern: [this.NAV_POLLS, 'create'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_USER]: {
-                    pattern: this.NAV_USERS + "/{userId}"
+                    pattern: [this.NAV_USERS, '{username}'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_USERS_LISTING]: {
                     pattern: this.NAV_USERS
                 },
                 [this.NAV_CREATE_USER]: {
-                    pattern: this.NAV_USERS + 'create'
+                    pattern: [this.NAV_USERS, 'create'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_UPDATE_USER]: {
-                    pattern: this.NAV_USERS + "/{userId}/edit"
+                    pattern: [this.NAV_USERS, '{username}', 'edit'].join(this.URI_DELIMITER)
                 }
             }
         }
@@ -64,9 +64,9 @@ class Globals {
 
     static POLLITI_PAGE_LOGIN_TITLE = 'Login';
     static POLLITI_PAGE_LAUNCHPAD_TITLE = 'Launchpad';
-    static POLLITI_PAGE_CREATE_POLL_TITLE = 'Create Poll';
+    static POLLITI_PAGE_CREATE_POLL_TITLE = 'Create a Poll';
     static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
-    static POLLITI_PAGE_CREATE_USER_TITLE = 'Create User';
+    static POLLITI_PAGE_CREATE_USER_TITLE = 'Create a New Agent';
     static POLLITI_PAGE_USERS_LISTING_TITLE = 'Users Listing';
 
     static NAV_CONTENT = [
@@ -128,19 +128,34 @@ class Globals {
     static LOGIN_ENDPOINT = 'login';
     static LOGOUT_ENDPOINT = 'logout';
     static SOCIALS_ENDPOINT = 'socials';
+    static USERS_ENDPOINT = 'users';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
     static USERNAME_INPUT_PLACEHOLDER = 'Username';
     static PASSWORD_INPUT_PLACEHOLDER = 'Password';
 
-    static ERROR_DIALOG_BUTTON_TEXT = 'Dismiss';
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
+    static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
+    static DIALOG_NO_BUTTON_TEXT = 'No';
+    static DIALOG_YES_BUTTON_TEXT = 'Yes';
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 
-    static FACEBOOK_FEED = 'Facebook Feed';
-    static INSTAGRAM_FEED = 'Instagram Feed';
-
     static LAUNCHPAD_WELCOME_MESSAGE_PREFIX = 'Hello, ';
+
+    static USERNAME_TITLE = 'Username';
+    static DISPLAY_NAME_TITLE = 'Display Name';
+    static ACTIONS_TITLE = 'Actions';
+
+    static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Users (';
+    static USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX = "Deleting user '";
+
+    static UPDATE_USER_BUTTON_TEXT = 'Update User';
+    static DELETE_USER_BUTTON_TEXT = 'Delete User';
+    static CREATE_USER_BUTTON_TEXT = 'Create User';
+
+    static escapeRegex(sRegex) {
+        return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
 }

@@ -20,7 +20,7 @@ sap.ui.define([
                 },
                 error: function()
                 {
-                    thisController.getApp().setBusy(false);
+                    thisController.setAppBusy(false);
                 }
             });
         },

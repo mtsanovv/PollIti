@@ -40,6 +40,7 @@ sap.ui.define([
         createViews: async function() {
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LOGIN, viewName: UIComponents.POLLITI_VIEW_LOGIN})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LAUNCHPAD, viewName: UIComponents.POLLITI_VIEW_LAUNCHPAD})));
+            this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_USERS_LISTING, viewName: UIComponents.POLLITI_VIEW_USERS_LISTING})));
         },
 
         onRouteChange: function (oEvent) {
@@ -51,17 +52,25 @@ sap.ui.define([
                 case Globals.NAV_LOGIN:
                     this.showMainPageNav(false);
                     this.showLogoutButton(false);
-                    oApp.setBusy(true);
+                    this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_LOGIN);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LOGIN_TITLE);
                     this.pushCurrentRouteToRouteHistory();
                     break;
                 case Globals.NAV_LAUNCHPAD:
-                    oApp.setBusy(true);
+                    this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_LAUNCHPAD);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LAUNCHPAD_TITLE);
+                    this.changeSelectedNavKey(sRouteName);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+                case Globals.NAV_USERS_LISTING:
+                    this.setAppBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_USERS_LISTING);
+                    oApp.getCurrentPage().loadPage();
+                    this.changeHTMLPageTitle(Globals.POLLITI_PAGE_USERS_LISTING_TITLE);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;

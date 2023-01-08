@@ -17,10 +17,15 @@ sap.ui.define([
                 success: function(oLoggedInUser) {
                     thisController.getSocialUrls(oLoggedInUser);
                 },
-                error: function()
+                error: function(oJqXhr)
                 {
-                    thisController.errorOccurred(ValidationMessages.CONNECTION_ERROR);
-                    thisController.getApp().setBusy(false);
+                    thisController.setAppBusy(false);
+                    if(oJqXhr.readyState != 4 || oJqXhr.status != 401) {
+                        // network error or http status different than 401 Unauthorized
+                        thisController.errorOccurred(ValidationMessages.CONNECTION_ERROR);
+                    } else {
+                        thisController.navTo(Globals.NAV_LOGIN);
+                    }
                 }
             });
         },
@@ -38,12 +43,12 @@ sap.ui.define([
                 success: function(oSocialLinks) {
                     thisController.setSocialLinksInConfig(oSocialLinks);
                     thisController.passModel(new LaunchpadObjectModel(oLoggedInUser));
-                    thisController.getApp().setBusy(false);
+                    thisController.setAppBusy(false);
                 },
                 error: function()
                 {
                     thisController.errorOccurred(ValidationMessages.CONNECTION_ERROR);
-                    thisController.getApp().setBusy(false);
+                    thisController.setAppBusy(false);
                 }
             });
         },
