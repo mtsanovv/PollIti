@@ -14,7 +14,6 @@ class Globals {
     static NAV_POLLS_LISTING = 'pollsListing';
     static NAV_CREATE_POLL = 'createPoll';
     static NAV_USERS = 'users';
-    static NAV_USER = 'user';
     static NAV_USERS_LISTING = 'usersListing';
     static NAV_CREATE_USER = 'createUser';
     static NAV_UPDATE_USER = 'updateUser';
@@ -45,9 +44,6 @@ class Globals {
                 },
                 [this.NAV_CREATE_POLL]: {
                     pattern: [this.NAV_POLLS, 'create'].join(this.URI_DELIMITER)
-                },
-                [this.NAV_USER]: {
-                    pattern: [this.NAV_USERS, '{username}'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_USERS_LISTING]: {
                     pattern: this.NAV_USERS
@@ -153,7 +149,7 @@ class Globals {
 
     static UPDATE_USER_BUTTON_TEXT = 'Update User';
     static DELETE_USER_BUTTON_TEXT = 'Delete User';
-    static CREATE_USER_BUTTON_TEXT = 'Create User';
+    static CREATE_USER_BUTTON_TEXT = 'Add';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

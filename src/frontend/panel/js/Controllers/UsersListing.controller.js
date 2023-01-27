@@ -59,10 +59,6 @@ sap.ui.define([
             });
         },
 
-        navigateToUserDetails: function(sUsername) {
-            this.navTo(Globals.NAV_USER, { username: sUsername });
-        },
-
         navigateToUpdateUser: function(sUsername) {
             this.navTo(Globals.NAV_UPDATE_USER, { username: sUsername });
         },

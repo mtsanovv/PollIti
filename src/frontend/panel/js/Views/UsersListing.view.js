@@ -198,11 +198,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
 
         for(const oUser of aUsers) {
             const oRow = new sap.m.ColumnListItem({ vAlign: sap.ui.core.VerticalAlign.Middle });
-            oRow.setType(sap.m.ListType.Navigation)
-                .attachPress(() => {
-                    oController.navigateToUserDetails(oUser.username);
-                })
-                .addCell(new sap.m.Text({ text: oUser.username }))
+            oRow.addCell(new sap.m.Text({ text: oUser.username }))
                 .addCell(new sap.m.Text({ text: oUser.displayName }));
             this.addUserActionButtonsCellToRow(oRow, oUser);
             oTable.addItem(oRow);
@@ -215,10 +211,11 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
         const thisView = this;
         const oController = this.getController();
         const oUserActionButtonsWrapper = new sap.m.FlexBox({ wrap: sap.m.FlexWrap.Wrap, justifyContent: sap.m.FlexJustifyContent.Center });
-        oUserActionButtonsWrapper
-        oRow.addCell(oUserActionButtonsWrapper); // so that the navigation arrow of the row is always on the right, even for rows without actions
+        oRow.addCell(oUserActionButtonsWrapper);
 
         if(oUser.role == Globals.ROLES.Administrator) {
+            const oNoAdminActionsText = new sap.m.FormattedText({ htmlText: ValidationMessages.NO_ACTIONS_CAN_BE_TAKEN_AGAINST_ADMINS_HTML_TEXT });
+            oUserActionButtonsWrapper.addItem(oNoAdminActionsText);
             return;
         }
 

@@ -9,6 +9,8 @@ class ValidationMessages {
 
     static ERROR_WHILE_DELETING_USER_PREFIX = "An error has occurred while deleting the user '";
 
+    static NO_ACTIONS_CAN_BE_TAKEN_AGAINST_ADMINS_HTML_TEXT = "<span style='font-style: italic; color: #aaa;'>No actions can be taken against an Administrator</span>";
+
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';
     }
