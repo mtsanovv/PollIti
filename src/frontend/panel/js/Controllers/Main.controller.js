@@ -41,6 +41,7 @@ sap.ui.define([
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LOGIN, viewName: UIComponents.POLLITI_VIEW_LOGIN})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LAUNCHPAD, viewName: UIComponents.POLLITI_VIEW_LAUNCHPAD})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_USERS_LISTING, viewName: UIComponents.POLLITI_VIEW_USERS_LISTING})));
+            this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLLS_LISTING, viewName: UIComponents.POLLITI_VIEW_POLLS_LISTING})));
         },
 
         onRouteChange: function (oEvent) {
@@ -71,6 +72,14 @@ sap.ui.define([
                     oApp.to(UIComponents.POLLITI_VIEW_USERS_LISTING);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_USERS_LISTING_TITLE);
+                    this.changeSelectedNavKey(sRouteName);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+                case Globals.NAV_POLLS_LISTING:
+                    this.setAppBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_POLLS_LISTING);
+                    oApp.getCurrentPage().loadPage();
+                    this.changeHTMLPageTitle(Globals.POLLITI_PAGE_POLLS_LISTING_TITLE);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;

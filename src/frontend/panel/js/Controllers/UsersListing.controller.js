@@ -20,10 +20,16 @@ sap.ui.define([
                     }));
                     // after the view fills the table, it sets app.busy to false, so no need to do it here
                 },
-                error: function()
+                error: function(oJqXhr)
                 {
-                    // the only possible error here is a network one so we need to go back to the launchpad
-                    thisController.navTo(Globals.NAV_LAUNCHPAD);
+                    thisController.setAppBusy(false);
+                    if(oJqXhr.readyState != 4 || oJqXhr.status != 401) {
+                        // network error or http status different than 401 Unauthorized
+                        // the UsersListing page cannot handle such an error so the launchpad should do it as it's the main page
+                        thisController.navTo(Globals.NAV_LAUNCHPAD);
+                    } else {
+                        thisController.navTo(Globals.NAV_LOGIN);
+                    }
                 }
             });
         },

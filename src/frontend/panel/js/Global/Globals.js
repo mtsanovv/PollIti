@@ -63,7 +63,8 @@ class Globals {
     static POLLITI_PAGE_CREATE_POLL_TITLE = 'Create a Poll';
     static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
     static POLLITI_PAGE_CREATE_USER_TITLE = 'Create a New Agent';
-    static POLLITI_PAGE_USERS_LISTING_TITLE = 'Users Listing';
+    static POLLITI_PAGE_USERS_LISTING_TITLE = 'Agents Listing';
+    static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
 
     static NAV_CONTENT = [
         {
@@ -125,6 +126,7 @@ class Globals {
     static LOGOUT_ENDPOINT = 'logout';
     static SOCIALS_ENDPOINT = 'socials';
     static USERS_ENDPOINT = 'users';
+    static POLLS_ENDPOINT = 'polls';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
@@ -133,6 +135,7 @@ class Globals {
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
+    static DIALOG_CONTINUE_TO_LAUNCHPAD_BUTTON_TEXT = 'Continue to Launchpad';
     static DIALOG_NO_BUTTON_TEXT = 'No';
     static DIALOG_YES_BUTTON_TEXT = 'Yes';
 
@@ -143,13 +146,17 @@ class Globals {
     static USERNAME_TITLE = 'Username';
     static DISPLAY_NAME_TITLE = 'Display Name';
     static ACTIONS_TITLE = 'Actions';
+    static ID_TITLE = 'ID';
+    static POLL_TITLE_TITLE = 'Poll Title';
 
-    static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Users (';
-    static USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX = "Deleting user '";
+    static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Agents (';
+    static USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX = "Deleting agent '";
 
-    static UPDATE_USER_BUTTON_TEXT = 'Update User';
-    static DELETE_USER_BUTTON_TEXT = 'Delete User';
-    static CREATE_USER_BUTTON_TEXT = 'Add';
+    static UPDATE_USER_BUTTON_TEXT = 'Update Agent';
+    static DELETE_USER_BUTTON_TEXT = 'Delete Agent';
+    static ADD_BUTTON_TEXT = 'Add';
+
+    static POLLS_LISTING_TABLE_HEADER_POLLS_COUNT_PREFIX = 'Polls (';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

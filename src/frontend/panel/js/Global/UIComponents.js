@@ -8,17 +8,20 @@ class UIComponents {
     static POLLITI_VIEW_LOGIN = 'PollIti.Views.Login';
     static POLLITI_VIEW_LAUNCHPAD = 'PollIti.Views.Launchpad';
     static POLLITI_VIEW_USERS_LISTING = 'PollIti.Views.UsersListing';
+    static POLLITI_VIEW_POLLS_LISTING = 'PollIti.Views.PollsListing';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
     static POLLITI_CONTROLLER_LOGIN = 'PollIti.Controllers.Login';
     static POLLITI_CONTROLLER_LAUNCHPAD = 'PollIti.Controllers.Launchpad';
     static POLLITI_CONTROLLER_USERS_LISTING = 'PollIti.Controllers.UsersListing';
+    static POLLITI_CONTROLLER_POLLS_LISTING = 'PollIti.Controllers.PollsListing';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
     static POLLITI_PAGE_LAUNCHPAD = 'PollIti.Pages.Launchpad';
     static POLLITI_PAGE_USERS_LISTING = 'PollIti.Pages.UsersListing';
+    static POLLITI_PAGE_POLLS_LISTING = 'PollIti.Pages.PollsListing';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -44,4 +47,9 @@ class UIComponents {
     static USERS_LISTING_USER_DELETION_DIALOG_YES_BUTTON = 'usersListingUserDeletionDialogYesButton';
     static USERS_LISTING_USER_DELETION_DIALOG_NO_BUTTON = 'usersListingUserDeletionDialogNoButton';
     static USERS_LISTING_USER_DELETION_DIALOG_DISMISS_BUTTON = 'usersListingUserDeletionDialogDismissButton';
+
+    static POLLS_LISTING_TABLE = 'pollsListingTable';
+    static POLLS_LISTING_TABLE_HEADING = 'pollsListingTableHeading';
+    static POLLS_LISTING_ERROR_DIALOG = 'pollsListingErrorDialog';
+    static POLLS_LISTING_ERROR_DIALOG_MESSAGE_STRIP = 'pollsListingErrorDialogMessageStrip';
 }

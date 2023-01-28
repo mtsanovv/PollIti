@@ -87,7 +87,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
                                          thisView.onSearchUsersListing(oEvent);
                                      });
 
-        const oCreateUserButton = new sap.m.Button({ icon: 'sap-icon://add', text: Globals.CREATE_USER_BUTTON_TEXT });
+        const oCreateUserButton = new sap.m.Button({ icon: 'sap-icon://add', text: Globals.ADD_BUTTON_TEXT });
         oCreateUserButton.attachPress(() => {
             oController.navTo(Globals.NAV_CREATE_USER);
         });
@@ -166,13 +166,13 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
 
     applyModel: function() {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
-        this.applyBaseObjectModel();
+        this.applyBasicObjectModel();
         if(!oModel.isBaseObjectModel()) {
             this.applyViewSpecificObjectModel();
         }
     },
 
-    applyBaseObjectModel: function() {
+    applyBasicObjectModel: function() {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
         const sMessage = oModel.getMessage();
 
@@ -193,15 +193,21 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
     addUsersToTable(aUsers) {
         const oTable = sap.ui.getCore().byId(UIComponents.USERS_LISTING_TABLE);
 
-        this.setUsersListingTableHeaderText(aUsers.length);
+        let usersShown = 0;
 
         for(const oUser of aUsers) {
+            if(oUser.role == Globals.ROLES.Administrator) {
+                continue;
+            }
             const oRow = new sap.m.ColumnListItem({ vAlign: sap.ui.core.VerticalAlign.Middle });
             oRow.addCell(new sap.m.Text({ text: oUser.username }))
                 .addCell(new sap.m.Text({ text: oUser.displayName }));
             this.addUserActionButtonsCellToRow(oRow, oUser);
             oTable.addItem(oRow);
+            usersShown++;
         }
+
+        this.setUsersListingTableHeaderText(usersShown);
 
         this.getController().setAppBusy(false);
     },
@@ -211,12 +217,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
         const oController = this.getController();
         const oUserActionButtonsWrapper = new sap.m.FlexBox({ wrap: sap.m.FlexWrap.Wrap, justifyContent: sap.m.FlexJustifyContent.Center });
         oRow.addCell(oUserActionButtonsWrapper);
-
-        if(oUser.role == Globals.ROLES.Administrator) {
-            const oNoAdminActionsText = new sap.m.FormattedText({ htmlText: ValidationMessages.NO_ACTIONS_CAN_BE_TAKEN_AGAINST_ADMINS_HTML_TEXT });
-            oUserActionButtonsWrapper.addItem(oNoAdminActionsText);
-            return;
-        }
 
         const oEditUserButton = new sap.m.Button({ icon: 'sap-icon://user-edit', text:  Globals.UPDATE_USER_BUTTON_TEXT, type: sap.m.ButtonType.Attention });
         oEditUserButton.addStyleClass('sapUiTinyMarginEnd')
@@ -246,7 +246,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
 
         oDialog.setTitle(Globals.USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX + sDisplayName + "'");
         oDialogMessageStrip.setType(sap.ui.core.MessageType.Warning);
-        oDialogMessageStrip.setText("Are you sure that you want to delete the user '" + sDisplayName + "' (" + sUsername + ")?\n\nThis action cannot be undone.");
+        oDialogMessageStrip.setText("Are you sure that you want to delete the agent '" + sDisplayName + "' (" + sUsername + ")?\n\nThis action cannot be undone.");
 
         oDialogYesButton.setVisible(true);
         oDialogNoButton.setVisible(true);
