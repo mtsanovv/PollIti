@@ -127,10 +127,10 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
     },
 
     createUsersListingTableColumns: function(oTable) {
-        const oUsernameColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
+        const oUsernameColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle, hAlign: sap.ui.core.TextAlign.Center });
         oUsernameColumn.setWidth('20%')
                        .setHeader(new sap.m.Text({ text: Globals.USERNAME_TITLE }));
-        const oDisplayNameColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
+        const oDisplayNameColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle, hAlign: sap.ui.core.TextAlign.Center });
         oDisplayNameColumn.setWidth('35%')
                           .setHeader(new sap.m.Text({ text: Globals.DISPLAY_NAME_TITLE }));
         const oActionsColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle, hAlign: sap.ui.core.TextAlign.Center });
@@ -191,7 +191,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
     },
 
     addUsersToTable(aUsers) {
-        const oController = this.getController();
         const oTable = sap.ui.getCore().byId(UIComponents.USERS_LISTING_TABLE);
 
         this.setUsersListingTableHeaderText(aUsers.length);
