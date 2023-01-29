@@ -65,6 +65,7 @@ class Globals {
     static POLLITI_PAGE_CREATE_USER_TITLE = 'Create a New Agent';
     static POLLITI_PAGE_USERS_LISTING_TITLE = 'Agents Listing';
     static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
+    static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = "Edit Agent ";
 
     static NAV_CONTENT = [
         {
@@ -130,6 +131,7 @@ class Globals {
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
+    static INPUT_WIDTH = '295px';
     static USERNAME_INPUT_PLACEHOLDER = 'Username';
     static PASSWORD_INPUT_PLACEHOLDER = 'Password';
 
@@ -138,6 +140,7 @@ class Globals {
     static DIALOG_CONTINUE_TO_LAUNCHPAD_BUTTON_TEXT = 'Continue to Launchpad';
     static DIALOG_NO_BUTTON_TEXT = 'No';
     static DIALOG_YES_BUTTON_TEXT = 'Yes';
+    static DIALOG_RETURN_TO_USERS_LISTING_BUTTON_TEXT = 'Return to ' + this.POLLITI_PAGE_USERS_LISTING_TITLE;
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 
@@ -157,6 +160,8 @@ class Globals {
     static ADD_BUTTON_TEXT = 'Add';
 
     static POLLS_LISTING_TABLE_HEADER_POLLS_COUNT_PREFIX = 'Polls (';
+
+    static USER_EDITOR_FORM_TITLE = 'Agent Details';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

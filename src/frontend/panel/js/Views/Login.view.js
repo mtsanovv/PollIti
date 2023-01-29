@@ -32,6 +32,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
     },
 
     validateLoginFormFieldValue: function(oInput, iMinInputLength) {
+        // no need to put it in the model - just like we have a max length of the field, this method just 'enforces' min field length, this is not actual validation
         const sValue = oInput.getValue();
         if(sValue.length < iMinInputLength) {
             oInput.setValueState(sap.ui.core.ValueState.Error);
@@ -67,7 +68,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
                       .setShowValueStateMessage(false)
                       .setPlaceholder(Globals.USERNAME_INPUT_PLACEHOLDER)
                       .setRequired(true)
-                      .attachLiveChange(this.validateUsernameFieldValue);
+                      .attachLiveChange(this.validateUsernameFieldValue)
+                      .setWidth(Globals.INPUT_WIDTH);
 
         oWrappingFlexBox.addItem(oInputUsername);
     },
@@ -78,7 +80,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
                       .setShowValueStateMessage(false)
                       .setPlaceholder(Globals.PASSWORD_INPUT_PLACEHOLDER)
                       .setRequired(true)
-                      .attachLiveChange(this.validatePasswordFieldValue);
+                      .attachLiveChange(this.validatePasswordFieldValue)
+                      .setWidth(Globals.INPUT_WIDTH);
 
         oWrappingFlexBox.addItem(oInputPassword);
     },

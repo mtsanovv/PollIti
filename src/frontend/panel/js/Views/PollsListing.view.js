@@ -82,7 +82,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
             const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText()];
             let bShowRow = false;
             for(const s of aStringsToLookForMatches) {
-                if(s.match(new RegExp('(' + sQuery + ')+', 'i'))) {
+                if(s.match(new RegExp(sQuery, 'i'))) {
                     bShowRow = true;
                     iPollsShown++;
                     break;
@@ -170,12 +170,5 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
         }
 
         this.getController().setAppBusy(false);
-    },
-
-    setObjectModel: function(oObjectModel) {
-        const oModel = {
-            [Globals.MODEL_PATH_KEY]: oObjectModel
-        };
-        this.setModel(new sap.ui.model.json.JSONModel(oModel));
-    },
+    }
 });

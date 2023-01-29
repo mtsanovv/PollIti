@@ -110,7 +110,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
             const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText()];
             let bShowRow = false;
             for(const s of aStringsToLookForMatches) {
-                if(s.match(new RegExp('(' + sQuery + ')+', 'i'))) {
+                if(s.match(new RegExp(sQuery, 'i'))) {
                     bShowRow = true;
                     iUsersShown++;
                     break;

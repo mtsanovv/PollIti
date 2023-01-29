@@ -9,6 +9,7 @@ class UIComponents {
     static POLLITI_VIEW_LAUNCHPAD = 'PollIti.Views.Launchpad';
     static POLLITI_VIEW_USERS_LISTING = 'PollIti.Views.UsersListing';
     static POLLITI_VIEW_POLLS_LISTING = 'PollIti.Views.PollsListing';
+    static POLLITI_VIEW_USER_EDITOR = 'PollIti.Views.UserEditor';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
@@ -16,12 +17,14 @@ class UIComponents {
     static POLLITI_CONTROLLER_LAUNCHPAD = 'PollIti.Controllers.Launchpad';
     static POLLITI_CONTROLLER_USERS_LISTING = 'PollIti.Controllers.UsersListing';
     static POLLITI_CONTROLLER_POLLS_LISTING = 'PollIti.Controllers.PollsListing';
+    static POLLITI_CONTROLLER_USER_EDITOR = 'PollIti.Controllers.UserEditor';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
     static POLLITI_PAGE_LAUNCHPAD = 'PollIti.Pages.Launchpad';
     static POLLITI_PAGE_USERS_LISTING = 'PollIti.Pages.UsersListing';
     static POLLITI_PAGE_POLLS_LISTING = 'PollIti.Pages.PollsListing';
+    static POLLITI_PAGE_USER_EDITOR = 'PollIti.Pages.UserEditor';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -52,4 +55,13 @@ class UIComponents {
     static POLLS_LISTING_TABLE_HEADING = 'pollsListingTableHeading';
     static POLLS_LISTING_ERROR_DIALOG = 'pollsListingErrorDialog';
     static POLLS_LISTING_ERROR_DIALOG_MESSAGE_STRIP = 'pollsListingErrorDialogMessageStrip';
+
+    static USER_EDITOR_ERROR_DIALOG = 'userEditorErrorDialog';
+    static USER_EDITOR_ERROR_DIALOG_MESSAGE_STRIP = 'userEditorErrorDialogMessageStrip';
+    static USER_EDITOR_ERROR_DIALOG_NAV_TO_LAUNCHPAD_BUTTON = 'userEditorErrorDialogNavToLaunchpadButton';
+    static USER_EDITOR_ERROR_DIALOG_NAV_TO_USERS_LISTING_BUTTON = 'userEditorErrorDialogNavToUsersListingButton';
+    static USER_EDITOR_ERROR_DIALOG_DISMISS_BUTTON = 'userEditorErrorDialogDismissButton';
+    static USER_EDITOR_BLOCK_LAYOUT = 'userEditorBlockLayout';
+    static USER_EDITOR_SUCCESS_MESSAGE_STRIP = 'userEditorSuccessMessageStrip';
+    static USER_EDITOR_FORM_USERNAME_INPUT = 'userEditorFormUsernameInput';
 }

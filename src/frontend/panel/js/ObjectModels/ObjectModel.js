@@ -7,6 +7,10 @@ class ObjectModel {
         return this.sMessage;
     }
 
+    setMessage(sMessage) {
+        this.sMessage = sMessage;
+    }
+
     isBaseObjectModel() {
         if(this.getObjectModelClassName() == ObjectModel.name) {
             return true;
