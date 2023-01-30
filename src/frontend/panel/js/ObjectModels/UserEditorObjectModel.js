@@ -1,13 +1,14 @@
 class UserEditorObjectModel extends ObjectModel {
-    constructor(obj) {
-        super(obj);
-        this.bIsUserUpdate = obj.isUserUpdate ?? false;
+    constructor() {
+        super();
+        this.bIsUserUpdate = false;
         this.bIsSuccess = false;
-        this.sUsername = obj.username;
-        this.sPassword = obj.password;
-        this.sPasswordConfirmation;
-        this.sDisplayName = obj.displayName;
-        this.bEnabled = obj.enabled;
+        this.sInitialUsername = '';
+        this.sUsername = '';
+        this.sPassword = '';
+        this.sPasswordConfirmation = '';
+        this.sDisplayName = '';
+        this.bEnabled = true;
     }
 
     isUserUpdate() {
@@ -26,6 +27,14 @@ class UserEditorObjectModel extends ObjectModel {
         this.bIsSuccess = bIsSuccess;
     }
 
+    getInitialUsername() {
+        return this.sInitialUsername;
+    }
+
+    setInitialUsername(sInitialUsername) {
+        this.sInitialUsername = sInitialUsername;
+    }
+
     getUsername() {
         return this.sUsername;
     }
@@ -42,7 +51,7 @@ class UserEditorObjectModel extends ObjectModel {
         return this.sDisplayName;
     }
 
-    getEnabled() {
+    isAgentAccountEnabled() {
         return this.bEnabled;
     }
 
@@ -62,7 +71,7 @@ class UserEditorObjectModel extends ObjectModel {
         this.sDisplayName = sDisplayName;
     }
 
-    setEnabled(bEnabled) {
+    setAgentAccountEnabled(bEnabled) {
         this.bEnabled = bEnabled;
     }
 
@@ -74,6 +83,36 @@ class UserEditorObjectModel extends ObjectModel {
 
         if(!sUsername.match(new RegExp(ValidationConstants.USERNAME_INPUT_REGEX))) {
             return ValidationMessages.USERNAME_INPUT_REGEX_REQUIREMENT_NOT_MET;
+        }
+
+        return '';
+    }
+
+    getDisplayNameFieldError() {
+        const sDisplayName = this.getDisplayName();
+        if(sDisplayName.length < ValidationConstants.DISPLAY_NAME_INPUT_MIN_LENGTH) {
+            return ValidationMessages.DISPLAY_NAME_INPUT_MIN_LENGTH_NOT_MET;
+        }
+
+        return '';
+    }
+
+    getPasswordFieldError() {
+        const sPassword = this.getPassword();
+        if(sPassword.length < ValidationConstants.PASSWORD_INPUT_MIN_LENGTH) {
+            return ValidationMessages.PASSWORD_INPUT_MIN_LENGTH_NOT_MET;
+        }
+
+        if(!sPassword.match(new RegExp(ValidationConstants.PASSWORD_INPUT_REGEX))) {
+            return ValidationMessages.PASSWORD_INPUT_REGEX_REQUIREMENT_NOT_MET;
+        }
+
+        return '';
+    }
+
+    getPasswordConfirmationFieldError() {
+        if(this.getPasswordConfirmation() != this.getPassword()) {
+            return ValidationMessages.PASSWORD_CONFIRMATION_DOES_NOT_MATCH_THE_PASSWORD;
         }
 
         return '';

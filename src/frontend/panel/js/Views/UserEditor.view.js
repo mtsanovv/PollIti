@@ -65,11 +65,11 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
 
     resetPage: function(sUserToEdit) {
         const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_USER_EDITOR);
-        const oModel = new UserEditorObjectModel({});
+        const oModel = new UserEditorObjectModel();
 
         if(sUserToEdit) {
             oModel.setIsUserUpdate(true);
-            oModel.setUsername(sUserToEdit);
+            oModel.setInitialUsername(sUserToEdit);
         }
 
         this.setObjectModel(oModel);
@@ -161,30 +161,163 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         if(sUsernameFieldError) {
             oInput.setValueStateText(sUsernameFieldError);
             oInput.setValueState(sap.ui.core.ValueState.Error);
-            return;
+            return false;
         }
 
         oInput.setValueState(sap.ui.core.ValueState.None);
+        return true;
     },
 
     createDisplayNameInput: function(oWrappingFlexBox) {
+        const oInputDisplayName = new sap.m.Input(UIComponents.USER_EDITOR_FORM_DISPLAY_NAME_INPUT, { maxLength: ValidationConstants.DISPLAY_NAME_INPUT_MAX_LENGTH });
+        oInputDisplayName.addStyleClass('sapUiSmallMarginBottom')
+            	         .setShowValueStateMessage(true)
+                         .setRequired(true)
+                         .setPlaceholder(Globals.DISPLAY_NAME_INPUT_PLACEHOLDER)
+                         .setWidth(Globals.INPUT_WIDTH)
+                         .attachLiveChange(this.saveDisplayNameInput);
 
+        oWrappingFlexBox.addItem(oInputDisplayName);
+    },
+
+    saveDisplayNameInput: function() {
+        // this here does not reference the view, so we need to manually get it
+        const oLoginPageView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_USER_EDITOR);
+        const oModel = oLoginPageView.getModel().getProperty(Globals.MODEL_PATH);
+        const sDisplayNameInputValue = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_DISPLAY_NAME_INPUT).getValue();
+
+        oModel.setDisplayName(sDisplayNameInputValue);
+        oLoginPageView.validateDisplayNameInput();
+    },
+
+    validateDisplayNameInput: function() {
+        const oInput = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_DISPLAY_NAME_INPUT);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sDisplayNameFieldError = oModel.getDisplayNameFieldError();
+
+        if(sDisplayNameFieldError) {
+            oInput.setValueStateText(sDisplayNameFieldError);
+            oInput.setValueState(sap.ui.core.ValueState.Error);
+            return false;
+        }
+
+        oInput.setValueState(sap.ui.core.ValueState.None);
+        return true;
     },
 
     createPasswordInput: function(oWrappingFlexBox) {
+        const oInputPassword = new sap.m.Input(UIComponents.USER_EDITOR_FORM_PASSWORD_INPUT, {
+            maxLength: ValidationConstants.PASSWORD_INPUT_MAX_LENGTH,
+            type: sap.m.InputType.Password
+        });
+        oInputPassword.addStyleClass('sapUiSmallMarginBottom')
+            	      .setShowValueStateMessage(true)
+                      .setRequired(true)
+                      .setPlaceholder(Globals.PASSWORD_INPUT_PLACEHOLDER)
+                      .setWidth(Globals.INPUT_WIDTH)
+                      .attachLiveChange(this.savePasswordInput);
 
+        oWrappingFlexBox.addItem(oInputPassword);
+    },
+
+    savePasswordInput: function() {
+        // this here does not reference the view, so we need to manually get it
+        const oLoginPageView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_USER_EDITOR);
+        const oModel = oLoginPageView.getModel().getProperty(Globals.MODEL_PATH);
+        const sPasswordInputValue = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_PASSWORD_INPUT).getValue();
+
+        oModel.setPassword(sPasswordInputValue);
+        oLoginPageView.validatePasswordInput();
+        oLoginPageView.validatePasswordConfirmationInput();
+    },
+
+    validatePasswordInput: function() {
+        const oInput = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_PASSWORD_INPUT);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sPasswordFieldError = oModel.getPasswordFieldError();
+
+        if(sPasswordFieldError) {
+            oInput.setValueStateText(sPasswordFieldError);
+            oInput.setValueState(sap.ui.core.ValueState.Error);
+            return false;
+        }
+
+        oInput.setValueState(sap.ui.core.ValueState.None);
+        return true;
     },
 
     createPasswordConfirmationInput: function(oWrappingFlexBox) {
+        const oInputPasswordConfirmation = new sap.m.Input(UIComponents.USER_EDITOR_FORM_PASSWORD_CONFIRMATION_INPUT, {
+            maxLength: ValidationConstants.PASSWORD_INPUT_MAX_LENGTH,
+            type: sap.m.InputType.Password
+        });
+        oInputPasswordConfirmation.addStyleClass('sapUiSmallMarginBottom')
+            	      .setShowValueStateMessage(true)
+                      .setRequired(true)
+                      .setPlaceholder(Globals.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER)
+                      .setWidth(Globals.INPUT_WIDTH)
+                      .attachLiveChange(this.savePasswordConfirmationInput);
 
+        oWrappingFlexBox.addItem(oInputPasswordConfirmation);
+    },
+
+    savePasswordConfirmationInput: function() {
+        // this here does not reference the view, so we need to manually get it
+        const oLoginPageView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_USER_EDITOR);
+        const oModel = oLoginPageView.getModel().getProperty(Globals.MODEL_PATH);
+        const sPasswordConfirmationInputValue = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_PASSWORD_CONFIRMATION_INPUT).getValue();
+
+        oModel.setPasswordConfirmation(sPasswordConfirmationInputValue);
+        oLoginPageView.validatePasswordConfirmationInput();
+    },
+
+    validatePasswordConfirmationInput: function() {
+        const oInput = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_PASSWORD_CONFIRMATION_INPUT);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sPasswordConfirmationFieldError = oModel.getPasswordConfirmationFieldError();
+
+        if(sPasswordConfirmationFieldError) {
+            oInput.setValueStateText(sPasswordConfirmationFieldError);
+            oInput.setValueState(sap.ui.core.ValueState.Error);
+            return false;
+        }
+
+        oInput.setValueState(sap.ui.core.ValueState.None);
+        return true;
     },
 
     createEnabledInput: function(oWrappingFlexBox) {
-
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oEnabledCheckbox = new sap.m.CheckBox({ selected: oModel.isAgentAccountEnabled(), text: Globals.ENABLED_TITLE });
+        oEnabledCheckbox.attachSelect((oEvent) => {
+            oModel.setAgentAccountEnabled(oEvent.getParameters().selected);
+        });
+        oWrappingFlexBox.addItem(oEnabledCheckbox);
     },
 
     createSubmitButton: function(oWrappingFlexBox) {
+        const thisView = this;
+        const oController = this.getController();
+        const oSubmitButton = new sap.m.Button(UIComponents.USER_EDITOR_FORM_SUBMIT_BUTTON, { type: sap.m.ButtonType.Emphasized, text: Globals.SUBMIT_BUTTON_TEXT });
+        oSubmitButton.setBusyIndicatorDelay(0)
+                     .attachPress((oEvent) => {
+                         if(!thisView.validateInputs()) {
+                            return;
+                         }
+                         oEvent.getSource().setBusy(true);
+                         oController.submitAgentDetails();
+                     });
+        oWrappingFlexBox.addItem(oSubmitButton);
+    },
 
+    validateInputs: function() {
+        let bAreAllInputsOkay = true;
+        const aInputsValidityValues = [ this.validateUsernameInput(), this.validateDisplayNameInput(), this.validatePasswordInput(), this.validatePasswordConfirmationInput() ];
+        for(const bInputValid of aInputsValidityValues) {
+            bAreAllInputsOkay &&= bInputValid;
+        }
+
+        return bAreAllInputsOkay;
     },
 
     applyModel: function() {

@@ -133,7 +133,9 @@ class Globals {
 
     static INPUT_WIDTH = '295px';
     static USERNAME_INPUT_PLACEHOLDER = 'Username';
+    static DISPLAY_NAME_INPUT_PLACEHOLDER = 'Display name';
     static PASSWORD_INPUT_PLACEHOLDER = 'Password';
+    static PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = 'Re-type the password';
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
@@ -141,6 +143,7 @@ class Globals {
     static DIALOG_NO_BUTTON_TEXT = 'No';
     static DIALOG_YES_BUTTON_TEXT = 'Yes';
     static DIALOG_RETURN_TO_USERS_LISTING_BUTTON_TEXT = 'Return to ' + this.POLLITI_PAGE_USERS_LISTING_TITLE;
+    static SUBMIT_BUTTON_TEXT = 'Submit';
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 
@@ -151,6 +154,7 @@ class Globals {
     static ACTIONS_TITLE = 'Actions';
     static ID_TITLE = 'ID';
     static POLL_TITLE_TITLE = 'Poll Title';
+    static ENABLED_TITLE = 'Agent account enabled';
 
     static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Agents (';
     static USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX = "Deleting agent '";
@@ -161,7 +165,7 @@ class Globals {
 
     static POLLS_LISTING_TABLE_HEADER_POLLS_COUNT_PREFIX = 'Polls (';
 
-    static USER_EDITOR_FORM_TITLE = 'Agent Details';
+    static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

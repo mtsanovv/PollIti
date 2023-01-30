@@ -1,5 +1,5 @@
 class ObjectModel {
-    constructor(obj) {
+    constructor(obj = {}) {
         this.sMessage = obj.message;
     }
 

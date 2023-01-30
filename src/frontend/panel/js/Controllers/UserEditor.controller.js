@@ -9,6 +9,10 @@ sap.ui.define([
             // 401 means nav to login!!!
         },
 
+        submitAgentDetails: function() {
+
+        },
+
         // Override
         errorOccurred: function(sMessage) {
             // UserEditor cannot make use of the basic object model due to the fact that it does not contain information whether this is an update or create page

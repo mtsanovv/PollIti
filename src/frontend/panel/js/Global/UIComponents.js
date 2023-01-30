@@ -64,4 +64,9 @@ class UIComponents {
     static USER_EDITOR_BLOCK_LAYOUT = 'userEditorBlockLayout';
     static USER_EDITOR_SUCCESS_MESSAGE_STRIP = 'userEditorSuccessMessageStrip';
     static USER_EDITOR_FORM_USERNAME_INPUT = 'userEditorFormUsernameInput';
+    static USER_EDITOR_FORM_DISPLAY_NAME_INPUT = 'userEditorFormDisplayNameInput';
+    static USER_EDITOR_FORM_PASSWORD_INPUT = 'userEditorFormPasswordInput';
+    static USER_EDITOR_FORM_PASSWORD_CONFIRMATION_INPUT = 'userEditorFormPasswordConfirmationInput';
+    static USER_EDITOR_FORM_CHECKBOX_INPUT = 'userEditorFormCheckboxInput';
+    static USER_EDITOR_FORM_SUBMIT_BUTTON = 'userEditorFormSubmitButton';
 }

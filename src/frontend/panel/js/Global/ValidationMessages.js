@@ -5,6 +5,10 @@ class ValidationMessages {
     static PASSWORD_INPUT_MIN_LENGTH_NOT_MET = this.getMinimumLengthMessage(ValidationConstants.PASSWORD_INPUT_MIN_LENGTH);
     static PASSWORD_INPUT_REGEX_REQUIREMENT_NOT_MET = 'Whitespaces are not allowed';
 
+    static DISPLAY_NAME_INPUT_MIN_LENGTH_NOT_MET = this.getMinimumLengthMessage(ValidationConstants.DISPLAY_NAME_INPUT_MIN_LENGTH);
+
+    static PASSWORD_CONFIRMATION_DOES_NOT_MATCH_THE_PASSWORD = 'The passwords do not match';
+
     static CONNECTION_ERROR = 'The "' + Config.AGENCY_NAME + '" panel is currently unavailable, try again later';
     static UNEXPECTED_SERVER_RESPONSE = 'Unexpected response from the server';
 
