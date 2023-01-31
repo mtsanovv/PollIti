@@ -77,9 +77,8 @@ sap.ui.define([
                         // network error or http status different than 401 Unauthorized
                         thisController.errorOccurred(ValidationMessages.CONNECTION_ERROR);
                     } else {
-                        const oResult = JSON.parse(oJqXhr.responseText);
-                        const sReasonMessage = oResult.content.reason;
-                        thisController.errorOccurred(sReasonMessage);
+                        const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
+                        thisController.errorOccurred(sErrorMessage);
                     }
                     sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON).setBusy(false);
                 }

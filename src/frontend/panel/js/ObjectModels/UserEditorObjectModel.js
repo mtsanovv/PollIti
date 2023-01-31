@@ -9,6 +9,7 @@ class UserEditorObjectModel extends ObjectModel {
         this.sPasswordConfirmation = '';
         this.sDisplayName = '';
         this.bEnabled = true;
+        this.bIsErrorMessageDismissable = false;
     }
 
     isUserUpdate() {
@@ -73,6 +74,14 @@ class UserEditorObjectModel extends ObjectModel {
 
     setAgentAccountEnabled(bEnabled) {
         this.bEnabled = bEnabled;
+    }
+
+    isErrorMessageDismissable() {
+        return this.bIsErrorMessageDismissable;
+    }
+
+    setIsErrorMessageDismissable(bIsErrorMessageDismissable) {
+        this.bIsErrorMessageDismissable = bIsErrorMessageDismissable;
     }
 
     getUsernameFieldError() {

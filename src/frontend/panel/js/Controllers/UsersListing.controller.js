@@ -57,9 +57,8 @@ sap.ui.define([
                         // network error or http status different than 400 Bad Request
                         thisController.errorOccurred(ValidationMessages.ERROR_WHILE_DELETING_USER_PREFIX + sUsernameToDelete + "'");
                     } else {
-                        const oResult = JSON.parse(oJqXhr.responseText);
-                        const sReasonMessage = oResult.content.reason;
-                        thisController.errorOccurred(sReasonMessage);
+                        const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
+                        thisController.errorOccurred(sErrorMessage);
                     }
                 }
             });

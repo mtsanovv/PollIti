@@ -322,6 +322,55 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
 
     applyModel: function() {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        // in the update agent case, after we initially fetch the user's data successfully, the submission is not successful (yet) so isSuccess will be false
+        // however, there will be no error message because everything is going as intended
+        // in this case, only fill the form fields
+        if(oModel.isUserUpdate() && !oModel.isSuccess() && !oModel.getMessage()) {
+            this.fillFormFieldsWithAgentDetails();
+            return;
+        }
+
+        if(!oModel.isSuccess()) {
+            this.handleFailure();
+            return;
+        }
+
+        this.handleSuccess();
+    },
+
+    fillFormFieldsWithAgentDetails: function() {
+
+    },
+
+    handleFailure: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sMessage = oModel.getMessage();
+        const oErrorDialog = sap.ui.getCore().byId(UIComponents.USER_EDITOR_ERROR_DIALOG);
+        const oErrorDialogMessageStrip = sap.ui.getCore().byId(UIComponents.USER_EDITOR_ERROR_DIALOG_MESSAGE_STRIP);
+
+        oErrorDialogMessageStrip.setText(sMessage);
+        this.hideIrrelevantButtonsFromErrorDialog();
+        oErrorDialog.open();
+    },
+
+    hideIrrelevantButtonsFromErrorDialog: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oErrorDialogDismissButton = sap.ui.getCore().byId(UIComponents.USER_EDITOR_ERROR_DIALOG_DISMISS_BUTTON);
+        const oErrorDialogContinueToLaunchpadButton = sap.ui.getCore().byId(UIComponents.USER_EDITOR_ERROR_DIALOG_NAV_TO_LAUNCHPAD_BUTTON);
+        const oErrorDialogContinueToUsersListingButton = sap.ui.getCore().byId(UIComponents.USER_EDITOR_ERROR_DIALOG_NAV_TO_USERS_LISTING_BUTTON);
+
+        const bIsUserUpdatePage = oModel.isUserUpdate();
+        const bShouldShowDismissButton = oModel.isErrorMessageDismissable();
+        const bShouldShowContinueToLaunchpadButton = !bShouldShowDismissButton && !bIsUserUpdatePage;
+        const bShouldShowReturnToUsersListingButton = !bShouldShowDismissButton && bIsUserUpdatePage;
+
+        oErrorDialogDismissButton.setVisible(bShouldShowDismissButton);
+        oErrorDialogContinueToLaunchpadButton.setVisible(bShouldShowContinueToLaunchpadButton);
+        oErrorDialogContinueToUsersListingButton.setVisible(bShouldShowReturnToUsersListingButton);
+    },
+
+    handleSuccess: function() {
+
     },
 
     setObjectModel: function(oObjectModel) {

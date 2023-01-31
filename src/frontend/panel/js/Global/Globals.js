@@ -167,6 +167,10 @@ class Globals {
 
     static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
 
+    static COMPOSITE_ERROR_MESSAGE_DELIMITER = "\n• ";
+
+    static POLLITI_BACKEND_REQUEST_CONTENT_TYPE = 'application/json';
+
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     }

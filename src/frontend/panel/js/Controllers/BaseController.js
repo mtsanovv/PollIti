@@ -81,6 +81,21 @@ sap.ui.define([
                 message: sMessage
             };
             this.passModel(new ObjectModel(oModelData));
+        },
+
+        createCompositeErrorMessage: function(sResponseText) {
+            const oResult = JSON.parse(sResponseText);
+            const aErrorMessage = [ oResult.content.reason ];
+            for(const sKey in oResult.content) {
+                if(sKey != "reason") {
+                    aErrorMessage.push(oResult.content[sKey]);
+                }
+            }
+            if(aErrorMessage.length > 1) {
+                // make the reason the 'header' of the error message
+                aErrorMessage[0] += "\n";
+            }
+            return aErrorMessage.join(Globals.COMPOSITE_ERROR_MESSAGE_DELIMITER);
         }
     });
 });
