@@ -27,7 +27,7 @@ sap.ui.define([
                         // network error or http status different than 404 and 401
                         thisController.errorOccurred(ValidationMessages.UNEXPECTED_SERVER_RESPONSE);
                     } else if(oJqXhr.status == 404) {
-                        thisController.errorOccurred(ValidationMessages.NO_POLLS_AVAILABLE);
+                        thisController.passModel(new PollsListingObjectModel({ polls: [] }));
                     } else {
                         thisController.navTo(Globals.NAV_LOGIN);
                     }

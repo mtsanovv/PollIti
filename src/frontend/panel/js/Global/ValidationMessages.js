@@ -14,8 +14,6 @@ class ValidationMessages {
 
     static ERROR_WHILE_DELETING_USER_PREFIX = "An error has occurred while deleting the user '";
 
-    static NO_POLLS_AVAILABLE = 'There are no polls available';
-
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';
     }
