@@ -92,7 +92,20 @@ sap.ui.define([
                     oApp.to(UIComponents.POLLITI_VIEW_USER_EDITOR);
                     oApp.getCurrentPage().loadPage();
                     oNestedPage.setTitle(sPageTitle);
-                    this.changeHTMLPageTitle(Globals.POLLITI_PAGE_CREATE_USER_TITLE);
+                    this.changeHTMLPageTitle(sPageTitle);
+                    this.changeSelectedNavKey(sRouteName);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+                case Globals.NAV_UPDATE_USER:
+                    const sUsername = oArgs.username;
+                    const sUpdatePageTitle = Globals.POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX + "'" + sUsername + "'";
+                    const oNestedUpdatePage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_USER_EDITOR);
+
+                    this.setAppBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_USER_EDITOR);
+                    oApp.getCurrentPage().loadPage(sUsername);
+                    oNestedUpdatePage.setTitle(sUpdatePageTitle);
+                    this.changeHTMLPageTitle(sUpdatePageTitle);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;
@@ -118,10 +131,6 @@ sap.ui.define([
                     oLogoutButton.setBusy(false);
                 }
             });
-        },
-
-        changeHTMLPageTitle: function(sTitle) {
-            document.title = [Config.AGENCY_NAME, 'Panel', sTitle].join(Globals.HTML_PAGE_TITLE_DELIMITER);
         },
 
         changeSelectedNavKey: function(sKey) {

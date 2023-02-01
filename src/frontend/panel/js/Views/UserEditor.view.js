@@ -221,11 +221,19 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         oInputPassword.addStyleClass('sapUiSmallMarginBottom')
             	      .setShowValueStateMessage(true)
                       .setRequired(true)
-                      .setPlaceholder(Globals.PASSWORD_INPUT_PLACEHOLDER)
+                      .setPlaceholder(this.getPasswordInputPlaceholderText())
                       .setWidth(Globals.INPUT_WIDTH)
                       .attachLiveChange(this.savePasswordInput);
 
         oWrappingFlexBox.addItem(oInputPassword);
+    },
+
+    getPasswordInputPlaceholderText: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        if(oModel.isUserUpdate()) {
+            return Globals.UPDATE_AGENT_PASSWORD_INPUT_PLACEHOLDER;
+        }
+        return Globals.PASSWORD_INPUT_PLACEHOLDER;
     },
 
     savePasswordInput: function() {
@@ -262,11 +270,19 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         oInputPasswordConfirmation.addStyleClass('sapUiSmallMarginBottom')
             	      .setShowValueStateMessage(true)
                       .setRequired(true)
-                      .setPlaceholder(Globals.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER)
+                      .setPlaceholder(this.getPasswordConfirmationInputPlaceholderText())
                       .setWidth(Globals.INPUT_WIDTH)
                       .attachLiveChange(this.savePasswordConfirmationInput);
 
         oWrappingFlexBox.addItem(oInputPasswordConfirmation);
+    },
+
+    getPasswordConfirmationInputPlaceholderText: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        if(oModel.isUserUpdate()) {
+            return Globals.UPDATE_AGENT_PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER;
+        }
+        return Globals.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER;
     },
 
     savePasswordConfirmationInput: function() {
@@ -296,7 +312,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
 
     createEnabledInput: function(oWrappingFlexBox) {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
-        const oEnabledCheckbox = new sap.m.CheckBox({ selected: oModel.isAgentAccountEnabled(), text: Globals.ENABLED_TITLE });
+        const oEnabledCheckbox = new sap.m.CheckBox(UIComponents.USER_EDITOR_FORM_CHECKBOX_INPUT, { selected: oModel.isAgentAccountEnabled(), text: Globals.ENABLED_TITLE });
         oEnabledCheckbox.attachSelect((oEvent) => {
             oModel.setAgentAccountEnabled(oEvent.getParameters().selected);
         });
@@ -347,7 +363,16 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
     },
 
     fillFormFieldsWithAgentDetails: function() {
+        const oController = this.getController();
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oUsernameField = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_USERNAME_INPUT);
+        const oDisplayNameField = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_DISPLAY_NAME_INPUT);
+        const oEnabledCheckbox = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_CHECKBOX_INPUT);
 
+        oUsernameField.setValue(oModel.getUsername());
+        oDisplayNameField.setValue(oModel.getDisplayName());
+        oEnabledCheckbox.setSelected(oModel.isAgentAccountEnabled());
+        oController.setAppBusy(false);
     },
 
     handleFailure: function() {
@@ -400,7 +425,17 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
     },
 
     handleSuccessfulUserUpdate: function() {
+        const oController = this.getController();
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_USER_EDITOR);
+        const sUsername = oModel.getUsername();
+        const sUpdatePageTitle = Globals.POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX + "'" + sUsername + "'";
+        oModel.setInitialUsername(sUsername);
+        oController.changeHTMLPageTitle(sUpdatePageTitle);
+        oPage.setTitle(sUpdatePageTitle);
 
+        const sSuccessMessage = "Agent '" + sUsername + "' updated successfully";
+        this.showSuccessMessageInStrip(sSuccessMessage);
     },
 
     showSuccessMessageInStrip: function(sMessage) {

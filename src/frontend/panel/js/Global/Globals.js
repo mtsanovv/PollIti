@@ -135,7 +135,9 @@ class Globals {
     static USERNAME_INPUT_PLACEHOLDER = 'Username';
     static DISPLAY_NAME_INPUT_PLACEHOLDER = 'Display name';
     static PASSWORD_INPUT_PLACEHOLDER = 'Password';
+    static UPDATE_AGENT_PASSWORD_INPUT_PLACEHOLDER = 'New password (optional)';
     static PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = 'Re-type the password';
+    static UPDATE_AGENT_PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = this.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER + ' (if applicable)';
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';

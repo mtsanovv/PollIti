@@ -5,8 +5,43 @@ sap.ui.define([
 
     return BaseController.extend(UIComponents.POLLITI_CONTROLLER_USER_EDITOR, {
         pageLoaded: function() {
-            // call ajax only if bIsUserUpdate in the model is set to true
-            // 401 means nav to login!!!
+            const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
+            if(oModel.isUserUpdate() && oModel.getInitialUsername()) {
+                this.fetchAgentDetails();
+            }
+        },
+
+        fetchAgentDetails: function() {
+            const thisController = this;
+            const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
+            const sEndpoint = [Config.API_BASE_URL, Globals.USERS_ENDPOINT, oModel.getInitialUsername()].join(Globals.URI_DELIMITER);
+
+            $.ajax({
+                type: 'GET',
+                url: sEndpoint,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(oUser) {
+                    oModel.setUsername(oUser.username);
+                    oModel.setDisplayName(oUser.displayName);
+                    oModel.setAgentAccountEnabled(oUser.enabled);
+                    thisController.passModel(oModel);
+                },
+                error: function(oJqXhr)
+                {
+                    if(oJqXhr.readyState != 4 || (oJqXhr.status != 404 && oJqXhr.status != 401)) {
+                        // network error or http status different than 404 and 401
+                        thisController.errorOccurred(ValidationMessages.UNEXPECTED_SERVER_RESPONSE);
+                    } else if(oJqXhr.status == 404) {
+                        const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
+                        thisController.errorOccurred(sErrorMessage);
+                    } else {
+                        thisController.navTo(Globals.NAV_LOGIN);
+                    }
+                    thisController.setAppBusy(false);
+                }
+            });
         },
 
         submitAgentDetails: function() {
@@ -14,12 +49,7 @@ sap.ui.define([
             const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
             const sEndpoint = this.getSubmitEndpoint();
             const sHttpVerb = this.getSubmitHttpVerb();
-            const oRequestBody = {
-                username: oModel.getUsername(),
-                displayName: oModel.getDisplayName(),
-                password: oModel.getPassword(),
-                enabled: oModel.isAgentAccountEnabled()
-            };
+            const oRequestBody = this.getSubmitRequestBody();
 
             $.ajax({
                 type: sHttpVerb,
@@ -47,6 +77,29 @@ sap.ui.define([
                     sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_SUBMIT_BUTTON).setBusy(false);
                 }
             });
+        },
+
+        getSubmitRequestBody: function() {
+            const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
+            const sAgentUsername = oModel.getUsername();
+            const sAgentInitialUsername = oModel.getInitialUsername();
+            const sAgentPassword = oModel.getPassword();
+
+            const oRequestBody = {
+                displayName: oModel.getDisplayName(),
+                enabled: oModel.isAgentAccountEnabled()
+            };
+
+            if(sAgentPassword) {
+                oRequestBody['password'] = sAgentPassword;
+            }
+
+            if(sAgentInitialUsername != sAgentUsername) {
+                // the initial username when creating a new user is '', so this will also work when creating a new user
+                oRequestBody['username'] = sAgentUsername;
+            }
+
+            return oRequestBody;
         },
 
         getSubmitHttpVerb: function() {

@@ -96,6 +96,10 @@ sap.ui.define([
                 aErrorMessage[0] += "\n";
             }
             return aErrorMessage.join(Globals.COMPOSITE_ERROR_MESSAGE_DELIMITER);
+        },
+
+        changeHTMLPageTitle: function(sTitle) {
+            document.title = [Config.AGENCY_NAME, 'Panel', sTitle].join(Globals.HTML_PAGE_TITLE_DELIMITER);
         }
     });
 });

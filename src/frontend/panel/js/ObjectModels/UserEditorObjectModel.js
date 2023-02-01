@@ -108,6 +108,10 @@ class UserEditorObjectModel extends ObjectModel {
 
     getPasswordFieldError() {
         const sPassword = this.getPassword();
+        if(this.isUserUpdate() && sPassword.length == 0) {
+            return '';
+        }
+
         if(sPassword.length < ValidationConstants.PASSWORD_INPUT_MIN_LENGTH) {
             return ValidationMessages.PASSWORD_INPUT_MIN_LENGTH_NOT_MET;
         }
