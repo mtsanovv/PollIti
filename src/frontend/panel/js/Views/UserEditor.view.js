@@ -64,7 +64,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
     },
 
     resetPage: function(sUserToEdit) {
-        const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_USER_EDITOR);
         const oModel = new UserEditorObjectModel();
 
         if(sUserToEdit) {
@@ -106,17 +105,26 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
     },
 
     fillFormBlockLayoutCell: function(oBlockLayoutCell) {
-        const oWrappingFlexBox = new sap.m.FlexBox({ alignItems: sap.m.FlexAlignItems.Center, direction: sap.m.FlexDirection.Column  });
+        const oWrappingFlexBox = new sap.m.FlexBox({ alignItems: sap.m.FlexAlignItems.Center, direction: sap.m.FlexDirection.Column });
+        const oFieldsWrappingFlexBox = new sap.m.FlexBox(UIComponents.USER_EDITOR_FORM_FIELDS_WRAPPER_FLEXBOX, {
+            alignItems: sap.m.FlexAlignItems.Center,
+            direction: sap.m.FlexDirection.Column
+        });
 
         this.createSuccessMessageStrip(oWrappingFlexBox);
-        this.createUsernameInput(oWrappingFlexBox);
-        this.createDisplayNameInput(oWrappingFlexBox);
-        this.createPasswordInput(oWrappingFlexBox);
-        this.createPasswordConfirmationInput(oWrappingFlexBox);
-        this.createEnabledInput(oWrappingFlexBox);
-        this.createSubmitButton(oWrappingFlexBox);
+        this.createFields(oFieldsWrappingFlexBox);
 
+        oWrappingFlexBox.addItem(oFieldsWrappingFlexBox);
         oBlockLayoutCell.addContent(oWrappingFlexBox);
+    },
+
+    createFields: function(oFieldsWrappingFlexBox) {
+        this.createUsernameInput(oFieldsWrappingFlexBox);
+        this.createDisplayNameInput(oFieldsWrappingFlexBox);
+        this.createPasswordInput(oFieldsWrappingFlexBox);
+        this.createPasswordConfirmationInput(oFieldsWrappingFlexBox);
+        this.createEnabledInput(oFieldsWrappingFlexBox);
+        this.createSubmitButton(oFieldsWrappingFlexBox);
     },
 
     createSuccessMessageStrip: function(oWrappingFlexBox) {
@@ -370,7 +378,35 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
     },
 
     handleSuccess: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        if(!oModel.isUserUpdate()) {
+            this.handleSuccessfulUserCreation();
+            return;
+        }
 
+        this.handleSuccessfulUserUpdate();
+    },
+
+    handleSuccessfulUserCreation: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sSuccessMessage = "Agent '" + oModel.getUsername() + "' created successfully";
+        this.showSuccessMessageInStrip(sSuccessMessage);
+
+        const oFieldsWrapper = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_FIELDS_WRAPPER_FLEXBOX);
+        oFieldsWrapper.destroyItems();
+        oFieldsWrapper.removeAllItems();
+        this.setObjectModel(new UserEditorObjectModel()); // reset the object model so that we start anew
+        this.createFields(oFieldsWrapper);
+    },
+
+    handleSuccessfulUserUpdate: function() {
+
+    },
+
+    showSuccessMessageInStrip: function(sMessage) {
+        const oSuccessMessageStrip = sap.ui.getCore().byId(UIComponents.USER_EDITOR_SUCCESS_MESSAGE_STRIP);
+        oSuccessMessageStrip.setText(sMessage);
+        oSuccessMessageStrip.setVisible(true);
     },
 
     setObjectModel: function(oObjectModel) {

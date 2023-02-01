@@ -69,4 +69,5 @@ class UIComponents {
     static USER_EDITOR_FORM_PASSWORD_CONFIRMATION_INPUT = 'userEditorFormPasswordConfirmationInput';
     static USER_EDITOR_FORM_CHECKBOX_INPUT = 'userEditorFormCheckboxInput';
     static USER_EDITOR_FORM_SUBMIT_BUTTON = 'userEditorFormSubmitButton';
+    static USER_EDITOR_FORM_FIELDS_WRAPPER_FLEXBOX = 'userEditorFormFieldsWrapperFlexBox';
 }
