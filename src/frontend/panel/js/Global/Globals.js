@@ -36,14 +36,14 @@ class Globals {
                 [this.NAV_LAUNCHPAD]: {
                     pattern: this.NAV_LAUNCHPAD
                 },
-                [this.NAV_POLL]: {
-                    pattern: [this.NAV_POLLS, '{pollId}'].join(this.URI_DELIMITER)
-                },
                 [this.NAV_POLLS_LISTING]: {
                     pattern: this.NAV_POLLS
                 },
                 [this.NAV_CREATE_POLL]: {
                     pattern: [this.NAV_POLLS, 'create'].join(this.URI_DELIMITER)
+                },
+                [this.NAV_POLL]: {
+                    pattern: [this.NAV_POLLS, '{pollId}'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_USERS_LISTING]: {
                     pattern: this.NAV_USERS
@@ -138,6 +138,8 @@ class Globals {
     static UPDATE_AGENT_PASSWORD_INPUT_PLACEHOLDER = 'New password (optional)';
     static PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = 'Re-type the password';
     static UPDATE_AGENT_PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = this.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER + ' (if applicable)';
+    static POLL_TITLE_INPUT_PLACEHOLDER = 'Poll title';
+    static THRESHOLD_PLACEHOLDER = 'Threshold percentage (optional)';
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
@@ -168,6 +170,7 @@ class Globals {
     static POLLS_LISTING_TABLE_HEADER_POLLS_COUNT_PREFIX = 'Polls (';
 
     static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
+    static POLL_CREATION_FORM_TITLE = 'Poll Details';
 
     static COMPOSITE_ERROR_MESSAGE_DELIMITER = "\n• ";
 

@@ -10,6 +10,7 @@ class UIComponents {
     static POLLITI_VIEW_USERS_LISTING = 'PollIti.Views.UsersListing';
     static POLLITI_VIEW_POLLS_LISTING = 'PollIti.Views.PollsListing';
     static POLLITI_VIEW_USER_EDITOR = 'PollIti.Views.UserEditor';
+    static POLLITI_VIEW_POLL_CREATION = 'PollIti.Views.PollCreation';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
@@ -18,6 +19,7 @@ class UIComponents {
     static POLLITI_CONTROLLER_USERS_LISTING = 'PollIti.Controllers.UsersListing';
     static POLLITI_CONTROLLER_POLLS_LISTING = 'PollIti.Controllers.PollsListing';
     static POLLITI_CONTROLLER_USER_EDITOR = 'PollIti.Controllers.UserEditor';
+    static POLLITI_CONTROLLER_POLL_CREATION = 'PollIti.Controllers.PollCreation';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
@@ -25,6 +27,7 @@ class UIComponents {
     static POLLITI_PAGE_USERS_LISTING = 'PollIti.Pages.UsersListing';
     static POLLITI_PAGE_POLLS_LISTING = 'PollIti.Pages.PollsListing';
     static POLLITI_PAGE_USER_EDITOR = 'PollIti.Pages.UserEditor';
+    static POLLITI_PAGE_POLL_CREATION = 'PollIti.Pages.PollCreation';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -70,4 +73,15 @@ class UIComponents {
     static USER_EDITOR_FORM_CHECKBOX_INPUT = 'userEditorFormCheckboxInput';
     static USER_EDITOR_FORM_SUBMIT_BUTTON = 'userEditorFormSubmitButton';
     static USER_EDITOR_FORM_FIELDS_WRAPPER_FLEXBOX = 'userEditorFormFieldsWrapperFlexBox';
+
+    static POLL_CREATION_ERROR_DIALOG = 'pollCreationErrorDialog';
+    static POLL_CREATION_ERROR_DIALOG_MESSAGE_STRIP = 'pollCreationErrorDialogMessageStrip';
+    static POLL_CREATION_ERROR_DIALOG_NAV_TO_LAUNCHPAD_BUTTON = 'pollCreationErrorDialogNavToLaunchpadButton';
+    static POLL_CREATION_ERROR_DIALOG_DISMISS_BUTTON = 'pollCreationErrorDialogDismissButton';
+    static POLL_CREATION_BLOCK_LAYOUT = 'pollCreationBlockLayout';
+    static POLL_CREATION_SUCCESS_MESSAGE_STRIP = 'pollCreationSuccessMessageStrip';
+    static POLL_CREATION_FORM_SUBMIT_BUTTON = 'pollCreationFormSubmitButton';
+    static POLL_CREATION_FORM_FIELDS_WRAPPER_FLEXBOX = 'pollCreationFormFieldsWrapperFlexBox';
+    static POLL_CREATION_FORM_POLL_TITLE_INPUT = 'pollCreationFormPollTitleInput';
+    static POLL_CREATION_FORM_THRESHOLD_INPUT = 'pollCreationFormThresholdInput';
 }

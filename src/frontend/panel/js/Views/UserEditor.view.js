@@ -112,13 +112,13 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         });
 
         this.createSuccessMessageStrip(oWrappingFlexBox);
-        this.createFields(oFieldsWrappingFlexBox);
+        this.createFieldsAndSubmitButton(oFieldsWrappingFlexBox);
 
         oWrappingFlexBox.addItem(oFieldsWrappingFlexBox);
         oBlockLayoutCell.addContent(oWrappingFlexBox);
     },
 
-    createFields: function(oFieldsWrappingFlexBox) {
+    createFieldsAndSubmitButton: function(oFieldsWrappingFlexBox) {
         this.createUsernameInput(oFieldsWrappingFlexBox);
         this.createDisplayNameInput(oFieldsWrappingFlexBox);
         this.createPasswordInput(oFieldsWrappingFlexBox);
@@ -421,7 +421,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         oFieldsWrapper.destroyItems();
         oFieldsWrapper.removeAllItems();
         this.setObjectModel(new UserEditorObjectModel()); // reset the object model so that we start anew
-        this.createFields(oFieldsWrapper);
+        this.createFieldsAndSubmitButton(oFieldsWrapper);
     },
 
     handleSuccessfulUserUpdate: function() {
