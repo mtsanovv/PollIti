@@ -6,6 +6,7 @@ public class ValidationMessages {
     private static final String THE_PREFIX = "The ";
     private static final String MUST_NOT_BE_EMPTY_SUFFIX = " must not be empty";
     private static final String CHARACTERS_LONG_SUFFIX = " characters long";
+    private static final String SHOULD_BE_LESS_THAN_GLUE = " should be less than ";
     private static final String HAS_TO_BE_BETWEEN_GLUE = " has to be between ";
     private static final String AND_GLUE = " and ";
 
@@ -64,7 +65,6 @@ public class ValidationMessages {
 
     private static final String POLL_WITH_ID_PREFIX = "Poll with ID '%d' ";
     public static final String POLL_NOT_FOUND = POLL_WITH_ID_PREFIX + "not found";
-    public static final String POLL_OPTIONS_ALREADY_ADDED = POLL_WITH_ID_PREFIX + "already has options added";
 
     private static final String POLL_OPTIONS_PREFIX = "Poll options ";
     public static final String POLL_OPTIONS_UNIQUE = POLL_OPTIONS_PREFIX + "should be unique";
@@ -81,6 +81,11 @@ public class ValidationMessages {
     private static final String POLL_OPTION_NAME = "poll option";
     public static final String POLL_OPTIONS_EMPTY = "At least one " + POLL_OPTION_NAME + " is required";
     public static final String POLL_OPTION_EMPTY = THE_PREFIX + POLL_OPTION_NAME + MUST_NOT_BE_EMPTY_SUFFIX;
+    public static final String POLL_OPTION_REQUIREMENTS = THE_PREFIX +
+                                                          POLL_OPTION_NAME +
+            SHOULD_BE_LESS_THAN_GLUE +
+                                                          ValidationConstants.POLL_OPTION_MAX_LENGTH +
+                                                          CHARACTERS_LONG_SUFFIX;
     public static final String POLL_OPTION_TITLE_EMPTY = THE_PREFIX + POLL_OPTION_NAME + " title" + MUST_NOT_BE_EMPTY_SUFFIX;
     public static final String POLL_OPTION_NOT_FOUND = THE_PREFIX + POLL_OPTION_NAME + " '%s' is not available for poll with ID '%d'";
 

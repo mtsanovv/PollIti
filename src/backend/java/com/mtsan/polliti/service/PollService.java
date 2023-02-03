@@ -44,21 +44,13 @@ public class PollService {
         Poll poll = this.modelMapper.map(newPollDto, Poll.class);
         poll.setUndecidedVotes(0L);
         Poll savedPollWithId = this.pollDao.save(poll);
+        this.savePollOptions(poll, newPollDto.getOptions());
         return this.modelMapper.map(savedPollWithId, IdDto.class);
     }
 
     public void deletePoll(Long pollId) {
         this.verifyThatPollIdExists(pollId);
         this.pollDao.deleteById(pollId);
-    }
-
-    public void addOptionsToPoll(Long pollId, NewPollOptionsDto newPollOptionsDto) {
-        this.verifyThatPollIdExists(pollId);
-        Poll poll = this.pollDao.findById(pollId).get();
-        if(poll.getPollOptions().size() > 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ValidationMessages.POLL_OPTIONS_ALREADY_ADDED, pollId));
-        }
-        this.savePollOptions(poll, newPollOptionsDto.getOptions());
     }
 
     public PollVotesDto getPollVotes(Long pollId) {

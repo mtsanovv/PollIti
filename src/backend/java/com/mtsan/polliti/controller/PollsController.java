@@ -71,12 +71,6 @@ public class PollsController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @RequestMapping(value = "/{pollId}/options", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Void> addPollOptions(@PathVariable Long pollId, @Valid @RequestBody NewPollOptionsDto newPollOptionsDto) {
-        this.pollService.addOptionsToPoll(pollId, newPollOptionsDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @RequestMapping(value = "/{pollId}/votes", method = RequestMethod.GET)
     public ResponseEntity<PollVotesDto> getPollVotes(@PathVariable Long pollId) {
         return ResponseEntity.status(HttpStatus.OK).body(this.pollService.getPollVotes(pollId));
