@@ -84,4 +84,5 @@ class UIComponents {
     static POLL_CREATION_FORM_FIELDS_WRAPPER_FLEXBOX = 'pollCreationFormFieldsWrapperFlexBox';
     static POLL_CREATION_FORM_POLL_TITLE_INPUT = 'pollCreationFormPollTitleInput';
     static POLL_CREATION_FORM_THRESHOLD_INPUT = 'pollCreationFormThresholdInput';
+    static POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX = 'pollCreationFormOptionsWrapperFlexBox';
 }

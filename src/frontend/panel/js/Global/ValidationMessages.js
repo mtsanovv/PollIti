@@ -12,6 +12,9 @@ class ValidationMessages {
     static POLL_THRESHOLD_INPUT_REGEX_REQUIREMENT_NOT_MET = 'Only digits 0-9 are allowed';
     static POLL_THRESHOLD_INPUT_RANGE_NOT_MET = 'The number should be between ' + ValidationConstants.POLL_THRESHOLD_INPUT_MIN_VALUE + ' and ' + ValidationConstants.POLL_THRESHOLD_INPUT_MAX_VALUE;
 
+    static POLL_OPTION_INPUT_EMPTY = 'Required';
+    static POLL_OPTION_INPUT_NOT_UNIQUE = "This option already exists";
+
     static PASSWORD_CONFIRMATION_DOES_NOT_MATCH_THE_PASSWORD = 'The passwords do not match';
 
     static CONNECTION_ERROR = 'The "' + Config.AGENCY_NAME + '" panel is currently unavailable, try again later';

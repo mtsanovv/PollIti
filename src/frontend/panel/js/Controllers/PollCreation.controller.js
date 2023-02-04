@@ -5,7 +5,49 @@ sap.ui.define([
 
     return BaseController.extend(UIComponents.POLLITI_CONTROLLER_POLL_CREATION, {
         submitPoll: function() {
+            const thisController = this;
+            const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
+            const sEndpoint = [Config.API_BASE_URL, Globals.POLLS_ENDPOINT].join(Globals.URI_DELIMITER);;
+            const oRequestBody = this.getSubmitRequestBody();
 
+            $.ajax({
+                type: 'POST',
+                url: sEndpoint,
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: JSON.stringify(oRequestBody),
+                contentType: Globals.POLLITI_BACKEND_REQUEST_CONTENT_TYPE,
+                success: function(oResult) {
+                    oModel.setId(oResult.id);
+                    thisController.passModel(oModel);
+                    sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_SUBMIT_BUTTON).setBusy(false);
+                },
+                error: function(oJqXhr) {
+                    if(oJqXhr.readyState != 4 || (oJqXhr.status != 400 && oJqXhr.status != 401)) {
+                        // network error or http status different than 400 and 401
+                        thisController.errorOccurred(ValidationMessages.UNEXPECTED_SERVER_RESPONSE);
+                    } else if(oJqXhr.status == 400) {
+                        const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
+                        thisController.errorOccurred(sErrorMessage, true);
+                    } else {
+                        thisController.navTo(Globals.NAV_LOGIN);
+                    }
+                    sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_SUBMIT_BUTTON).setBusy(false);
+                }
+            });
+        },
+
+        getSubmitRequestBody: function() {
+            const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
+
+            const oRequestBody = {
+                title: oModel.getTitle(),
+                threshold: oModel.getThresholdPercentage(),
+                options: oModel.getOptions()
+            };
+
+            return oRequestBody;
         },
 
         // Override

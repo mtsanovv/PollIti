@@ -102,6 +102,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
     createFieldsAndSubmitButton: function(oFieldsWrappingFlexBox) {
         this.createPollTitleInput(oFieldsWrappingFlexBox);
         this.createThresholdInput(oFieldsWrappingFlexBox);
+        this.createOptionsInputs(oFieldsWrappingFlexBox);
+        this.createAddRemoveOptionsButtons(oFieldsWrappingFlexBox);
         this.createSubmitButton(oFieldsWrappingFlexBox);
     },
 
@@ -147,7 +149,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
         const oInputThreshold = new sap.m.Input(UIComponents.POLL_CREATION_FORM_THRESHOLD_INPUT);
         oInputThreshold.addStyleClass('sapUiSmallMarginBottom')
             	       .setShowValueStateMessage(true)
-                       .setPlaceholder(Globals.THRESHOLD_PLACEHOLDER)
+                       .setPlaceholder(Globals.THRESHOLD_INPUT_PLACEHOLDER)
                        .setWidth(Globals.INPUT_WIDTH)
                        .attachLiveChange(this.saveThresholdInput);
 
@@ -166,7 +168,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
     validateThresholdInput: function() {
         const oInput = sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_THRESHOLD_INPUT);
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
-        const sThresholdFieldError = oModel.geThresholdFieldError();
+        const sThresholdFieldError = oModel.getThresholdFieldError();
 
         if(sThresholdFieldError) {
             oInput.setValueStateText(sThresholdFieldError);
@@ -176,6 +178,120 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
 
         oInput.setValueState(sap.ui.core.ValueState.None);
         return true;
+    },
+
+    createOptionsInputs: function(oWrappingFlexBox) {
+        const oFlexBoxOptionsWrapper = new sap.m.FlexBox(UIComponents.POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX, {
+            alignItems: sap.m.FlexAlignItems.Center,
+            direction: sap.m.FlexDirection.Column
+        });
+        for(let i = 0; i < ValidationConstants.POLL_OPTIONS_MIN_COUNT; i++) {
+            this.createOptionInput(oFlexBoxOptionsWrapper);
+        }
+        oWrappingFlexBox.addItem(oFlexBoxOptionsWrapper);
+    },
+
+    createOptionInput(oWrappingFlexBox) {
+        const iOptionConsecutiveNumber = oWrappingFlexBox.getItems().length;
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oOptionInput = new sap.m.Input({ maxLength: ValidationConstants.POLL_TITLE_INPUT_MAX_LENGTH });
+        oOptionInput.addStyleClass('sapUiSmallMarginBottom')
+            	    .setShowValueStateMessage(true)
+                    .setRequired(true)
+                    .setPlaceholder(Globals.POLL_OPTION_INPUT_PREFIX_PLACEHOLDER + (iOptionConsecutiveNumber + 1))
+                    .setWidth(Globals.INPUT_WIDTH)
+                    .attachLiveChange(this.saveOptionInput);
+        oModel.setOptionAt(iOptionConsecutiveNumber, '');
+        oWrappingFlexBox.addItem(oOptionInput);
+    },
+
+    saveOptionInput(oLiveChangeEvent) {
+         // this here does not reference the view, so we need to manually get it
+        const oLoginPageView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_POLL_CREATION);
+        const oModel = oLoginPageView.getModel().getProperty(Globals.MODEL_PATH);
+        const oInput = oLiveChangeEvent.getSource();
+        const oFlexBoxOptionsWrapper = oInput.getParent();
+        const iOptionConsecutiveNumber = oFlexBoxOptionsWrapper.getItems().indexOf(oInput);
+
+        oModel.setOptionAt(iOptionConsecutiveNumber, oInput.getValue());
+        oLoginPageView.validateOptionInput(oInput, iOptionConsecutiveNumber);
+    },
+
+    validateOptionInput: function(oInput, iOptionConsecutiveNumber) {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sOptionError = oModel.getOptionFieldErrorAt(iOptionConsecutiveNumber);
+
+        if(sOptionError) {
+            oInput.setValueStateText(sOptionError);
+            oInput.setValueState(sap.ui.core.ValueState.Error);
+            return false;
+        }
+
+        oInput.setValueState(sap.ui.core.ValueState.None);
+        return true;
+    },
+
+    validateOptionsInputs: function() {
+        const oFlexBoxOptionsWrapper = sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX);
+        const aOptionInputs = oFlexBoxOptionsWrapper.getItems();
+        let bAreAllOptionsValid = true;
+
+        for(let i = 0; i < aOptionInputs.length; i++) {
+            bAreAllOptionsValid = this.validateOptionInput(aOptionInputs[i], i) && bAreAllOptionsValid;
+        }
+
+        return bAreAllOptionsValid;
+    },
+
+    createAddRemoveOptionsButtons: function(oWrappingFlexBox) {
+        const thisView = this;
+        const oFlexBoxOptionsWrapper = sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX);
+
+        const oFlexBoxAddRemoveOptionsButtonsWrapper = new sap.m.FlexBox({ alignItems: sap.m.FlexAlignItems.Center, direction: sap.m.FlexDirection.Row});
+        oFlexBoxAddRemoveOptionsButtonsWrapper.addStyleClass('sapUiSmallMarginBottom');
+
+        const oAddOptionButton = new sap.m.Button({ icon: 'sap-icon://add', text: Globals.ADD_OPTION_BUTTON_TEXT });
+        oAddOptionButton.addStyleClass('sapUiTinyMarginEnd')
+                        .attachPress(() => {
+                            thisView.createOptionInput(oFlexBoxOptionsWrapper);
+                            if(oFlexBoxOptionsWrapper.getItems().length == ValidationConstants.POLL_OPTIONS_MAX_COUNT) {
+                                oAddOptionButton.setEnabled(false);
+                            }
+
+                            if(oFlexBoxOptionsWrapper.getItems().length > ValidationConstants.POLL_OPTIONS_MIN_COUNT) {
+                                oRemoveOptionButton.setEnabled(true);
+                            }
+                        });
+
+        const oRemoveOptionButton = new sap.m.Button({ icon: 'sap-icon://less', text: Globals.REMOVE_OPTION_BUTTON_TEXT });
+        oRemoveOptionButton.setEnabled(false)
+                           .attachPress(() => {
+                               thisView.removeLastOptionInput();
+                               if(oFlexBoxOptionsWrapper.getItems().length < ValidationConstants.POLL_OPTIONS_MAX_COUNT) {
+                                   oAddOptionButton.setEnabled(true);
+                               }
+
+                               if(oFlexBoxOptionsWrapper.getItems().length == ValidationConstants.POLL_OPTIONS_MIN_COUNT) {
+                                   oRemoveOptionButton.setEnabled(false);
+                               }
+                           });
+
+        oFlexBoxAddRemoveOptionsButtonsWrapper.addItem(oAddOptionButton);
+        oFlexBoxAddRemoveOptionsButtonsWrapper.addItem(oRemoveOptionButton);
+
+        oWrappingFlexBox.addItem(oFlexBoxAddRemoveOptionsButtonsWrapper);
+    },
+
+    removeLastOptionInput: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oFlexBoxOptionsWrapper = sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX);
+        const aOptionInputs = oFlexBoxOptionsWrapper.getItems();
+        const iLastOptionConsecutiveNumber = aOptionInputs.length - 1;
+        const oLastOptionInput = aOptionInputs[iLastOptionConsecutiveNumber];
+
+        oFlexBoxOptionsWrapper.removeItem(oLastOptionInput);
+        oModel.removeOptionAt(iLastOptionConsecutiveNumber);
+        oLastOptionInput.destroy();
     },
 
     createSuccessMessageStrip: function(oWrappingFlexBox) {
@@ -207,9 +323,9 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
 
     validateInputs: function() {
         let bAreAllInputsOkay = true;
-        const aInputsValidityValues = [ ];
+        const aInputsValidityValues = [ this.validatePollTitleInput(), this.validateThresholdInput(), this.validateOptionsInputs() ];
         for(const bInputValid of aInputsValidityValues) {
-            bAreAllInputsOkay &&= bInputValid;
+            bAreAllInputsOkay = bInputValid && bAreAllInputsOkay;
         }
 
         return bAreAllInputsOkay;
@@ -227,10 +343,37 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
     },
 
     handleFailure: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sMessage = oModel.getMessage();
+        const oErrorDialog = sap.ui.getCore().byId(UIComponents.POLL_CREATION_ERROR_DIALOG);
+        const oErrorDialogMessageStrip = sap.ui.getCore().byId(UIComponents.POLL_CREATION_ERROR_DIALOG_MESSAGE_STRIP);
 
+        oErrorDialogMessageStrip.setText(sMessage);
+        this.hideIrrelevantButtonsFromErrorDialog();
+        oErrorDialog.open();
+    },
+
+    hideIrrelevantButtonsFromErrorDialog: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oErrorDialogDismissButton = sap.ui.getCore().byId(UIComponents.POLL_CREATION_ERROR_DIALOG_DISMISS_BUTTON);
+        const oErrorDialogContinueToLaunchpadButton = sap.ui.getCore().byId(UIComponents.POLL_CREATION_ERROR_DIALOG_NAV_TO_LAUNCHPAD_BUTTON);
+
+        const bShouldShowDismissButton = oModel.isErrorMessageDismissable();
+
+        oErrorDialogDismissButton.setVisible(bShouldShowDismissButton);
+        oErrorDialogContinueToLaunchpadButton.setVisible(!bShouldShowDismissButton);
     },
 
     handleSuccess: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const sSuccessMessage = "Poll #" + oModel.getId() + " created successfully";
+        this.showSuccessMessageInStrip(sSuccessMessage);
+
+        const oFieldsWrapper = sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_FIELDS_WRAPPER_FLEXBOX);
+        oFieldsWrapper.destroyItems();
+        oFieldsWrapper.removeAllItems();
+        this.setObjectModel(new PollCreationObjectModel()); // reset the object model so that we start anew
+        this.createFieldsAndSubmitButton(oFieldsWrapper);
     },
 
     showSuccessMessageInStrip: function(sMessage) {

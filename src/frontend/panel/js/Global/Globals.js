@@ -139,7 +139,8 @@ class Globals {
     static PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = 'Re-type the password';
     static UPDATE_AGENT_PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER = this.PASSWORD_CONFIRMATION_INPUT_PLACEHOLDER + ' (if applicable)';
     static POLL_TITLE_INPUT_PLACEHOLDER = 'Poll title';
-    static THRESHOLD_PLACEHOLDER = 'Threshold percentage (optional)';
+    static THRESHOLD_INPUT_PLACEHOLDER = 'Threshold percentage (optional)';
+    static POLL_OPTION_INPUT_PREFIX_PLACEHOLDER = 'Poll option ';
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
@@ -148,6 +149,8 @@ class Globals {
     static DIALOG_YES_BUTTON_TEXT = 'Yes';
     static DIALOG_RETURN_TO_USERS_LISTING_BUTTON_TEXT = 'Return to ' + this.POLLITI_PAGE_USERS_LISTING_TITLE;
     static SUBMIT_BUTTON_TEXT = 'Submit';
+    static ADD_OPTION_BUTTON_TEXT = 'Add option';
+    static REMOVE_OPTION_BUTTON_TEXT = 'Remove option above';
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 

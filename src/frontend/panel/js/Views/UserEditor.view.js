@@ -338,7 +338,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
         let bAreAllInputsOkay = true;
         const aInputsValidityValues = [ this.validateUsernameInput(), this.validateDisplayNameInput(), this.validatePasswordInput(), this.validatePasswordConfirmationInput() ];
         for(const bInputValid of aInputsValidityValues) {
-            bAreAllInputsOkay &&= bInputValid;
+            bAreAllInputsOkay = bInputValid && bAreAllInputsOkay;
         }
 
         return bAreAllInputsOkay;
