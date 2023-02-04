@@ -21,7 +21,6 @@ sap.ui.define([
                 success: function(oResult) {
                     oModel.setId(oResult.id);
                     thisController.passModel(oModel);
-                    sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_SUBMIT_BUTTON).setBusy(false);
                 },
                 error: function(oJqXhr) {
                     if(oJqXhr.readyState != 4 || (oJqXhr.status != 400 && oJqXhr.status != 401)) {
@@ -33,7 +32,6 @@ sap.ui.define([
                     } else {
                         thisController.navTo(Globals.NAV_LOGIN);
                     }
-                    sap.ui.getCore().byId(UIComponents.POLL_CREATION_FORM_SUBMIT_BUTTON).setBusy(false);
                 }
             });
         },

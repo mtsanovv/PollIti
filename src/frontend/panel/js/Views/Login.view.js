@@ -160,8 +160,10 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
         const sMessage = oModel.getMessage();
         const oErrorDialog = sap.ui.getCore().byId(UIComponents.LOGIN_ERROR_DIALOG);
         const oErrorDialogMessageStrip = sap.ui.getCore().byId(UIComponents.LOGIN_ERROR_DIALOG_MESSAGE_STRIP);
+        const oSubmitButton = sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON);
 
         if(sMessage) {
+            oSubmitButton.setBusy(false);
             oErrorDialogMessageStrip.setText(sMessage);
             oErrorDialog.open();
         }

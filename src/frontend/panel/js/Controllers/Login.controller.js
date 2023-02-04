@@ -70,7 +70,6 @@ sap.ui.define([
                 },
                 success: function(oResult) {
                     thisController.loggedIn(oResult.role);
-                    sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON).setBusy(false);
                 },
                 error: function(oJqXhr) {
                     if(oJqXhr.readyState != 4 || oJqXhr.status != 401) {
@@ -80,7 +79,6 @@ sap.ui.define([
                         const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
                         thisController.errorOccurred(sErrorMessage);
                     }
-                    sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON).setBusy(false);
                 }
             });
         }

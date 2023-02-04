@@ -62,7 +62,6 @@ sap.ui.define([
                 success: function() {
                     oModel.setIsSuccess(true);
                     thisController.passModel(oModel);
-                    sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_SUBMIT_BUTTON).setBusy(false);
                 },
                 error: function(oJqXhr) {
                     if(oJqXhr.readyState != 4 || (oJqXhr.status != 400 && oJqXhr.status != 401)) {
@@ -74,7 +73,6 @@ sap.ui.define([
                     } else {
                         thisController.navTo(Globals.NAV_LOGIN);
                     }
-                    sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_SUBMIT_BUTTON).setBusy(false);
                 }
             });
         },
