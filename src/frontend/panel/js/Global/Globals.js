@@ -186,8 +186,9 @@ class Globals {
     static POLL_ACTIONS_FILTER_KEY = 'pollActions';
 
     static POLL_CHART_DATASET_LABEL = 'Votes';
-    static POLL_CHART_TOTAL_VOTES_PREFIX = 'Total Votes: ';
+    static POLL_CHART_TOTAL_VOTES_PREFIX = 'Total votes: ';
     static POLL_CHART_UNDECIDED_BAR_TITLE = 'Undecided';
+    static POLL_CHART_THRESHOLD_PREFIX = 'Threshold: ';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

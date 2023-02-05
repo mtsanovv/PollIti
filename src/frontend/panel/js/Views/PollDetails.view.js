@@ -191,7 +191,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
 
         const iTotalVotes = oModel.getTotalVotes();
         const iThreshold = oModel.getThreshold();
-        const dThresholdLinePosition = iThreshold / 100 * iTotalVotes;
 
         new Chart(oCanvasDomElement, {
             type: 'bar',
@@ -232,9 +231,21 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
                         color: 'white',
                         font: {
                             weight: 'normal',
+                            size: '18em'
+                        },
+                        padding: {
+                            top: 20,
+                            bottom: 10
+                        }
+                    },
+                    subtitle: {
+                        display: true,
+                        text: Globals.POLL_CHART_THRESHOLD_PREFIX + iThreshold + '%',
+                        color: '#91c8f6',
+                        font: {
+                            weight: 'normal',
                             size: '15em'
                         },
-                        padding: 30
                     },
                     legend: {
                         display: false
@@ -262,29 +273,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
                             const sPercentage = iPercentage + '%';
                             return sPercentage;
                         },
-                    },
-                    annotation: {
-                        annotations: {
-                            line: {
-                                type: 'line',
-                                yMin: dThresholdLinePosition,
-                                yMax: dThresholdLinePosition,
-                                borderWidth: 3,
-                                borderColor: '#91c8f6',
-                                borderDash: [10, 5],
-                                label: {
-                                    display: true,
-                                    content: 'Threshold: ' + iThreshold + '%',
-                                    position: 'end',
-                                    backgroundColor: '#91c8f6',
-                                    color: '#29313a',
-                                    padding: 3,
-                                    font: {
-                                        size: '12em'
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
