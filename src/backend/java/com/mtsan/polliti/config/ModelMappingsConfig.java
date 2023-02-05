@@ -27,7 +27,7 @@ public class ModelMappingsConfig {
     public ModelMappingsConfig(ModelMapperWrapper modelMapper) {
         this.modelMapper = modelMapper;
         this.mapResponseStatusExceptionToExceptionDto();
-        this.mapPollModelToPollResultsDto();
+        this.mapPollModelToPollVotesDto();
         this.mapPollModelToPollTitleWithOptionsDto();
     }
 
@@ -47,8 +47,9 @@ public class ModelMappingsConfig {
         );
     }
 
-    private void mapPollModelToPollResultsDto() {
+    private void mapPollModelToPollVotesDto() {
         TypeMap<Poll, PollVotesDto> propertyMapper = this.modelMapper.createTypeMap(Poll.class, PollVotesDto.class);
+
         Converter<List<PollOption>, HashMap<String, Long>> pollOptionsToHashMapWithResults = c -> {
             LinkedHashMap<String, Long> hashMapWithResults = new LinkedHashMap<>();
             for(PollOption pollOption : c.getSource()) {
@@ -56,8 +57,21 @@ public class ModelMappingsConfig {
             }
             return hashMapWithResults;
         };
+
+        Converter<List<PollOption>, List<String>> listOfPollOptionsToListOfStrings = c -> {
+            ArrayList<String> optionTitles = new ArrayList<>();
+            for(PollOption pollOption : c.getSource()) {
+                optionTitles.add(pollOption.getTitle());
+            }
+            return optionTitles;
+        };
+
         propertyMapper.addMappings(
             mapper -> mapper.using(pollOptionsToHashMapWithResults).map(Poll::getPollOptions, PollVotesDto::setOptionsVotes)
+        );
+
+        propertyMapper.addMappings(
+            mapper -> mapper.using(listOfPollOptionsToListOfStrings).map(Poll::getPollOptions, PollVotesDto::setOriginalOptionsListOrder)
         );
     }
 
