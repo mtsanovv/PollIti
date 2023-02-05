@@ -1,3 +1,5 @@
+Chart.defaults.font.family = '"72","72full",Arial,Helvetica,sans-serif';
+
 class UIComponents {
     static POLLITI_SOCIAL_FONT = 'polliti-social';
 
@@ -11,6 +13,7 @@ class UIComponents {
     static POLLITI_VIEW_POLLS_LISTING = 'PollIti.Views.PollsListing';
     static POLLITI_VIEW_USER_EDITOR = 'PollIti.Views.UserEditor';
     static POLLITI_VIEW_POLL_CREATION = 'PollIti.Views.PollCreation';
+    static POLLITI_VIEW_POLL_DETAILS = 'PollIti.Views.PollDetails';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
@@ -20,6 +23,7 @@ class UIComponents {
     static POLLITI_CONTROLLER_POLLS_LISTING = 'PollIti.Controllers.PollsListing';
     static POLLITI_CONTROLLER_USER_EDITOR = 'PollIti.Controllers.UserEditor';
     static POLLITI_CONTROLLER_POLL_CREATION = 'PollIti.Controllers.PollCreation';
+    static POLLITI_CONTROLLER_POLL_DETAILS = 'PollIti.Controllers.PollDetails';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
@@ -28,6 +32,7 @@ class UIComponents {
     static POLLITI_PAGE_POLLS_LISTING = 'PollIti.Pages.PollsListing';
     static POLLITI_PAGE_USER_EDITOR = 'PollIti.Pages.UserEditor';
     static POLLITI_PAGE_POLL_CREATION = 'PollIti.Pages.PollCreation';
+    static POLLITI_PAGE_POLL_DETAILS = 'PollIti.Pages.PollDetails';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -85,4 +90,28 @@ class UIComponents {
     static POLL_CREATION_FORM_POLL_TITLE_INPUT = 'pollCreationFormPollTitleInput';
     static POLL_CREATION_FORM_THRESHOLD_INPUT = 'pollCreationFormThresholdInput';
     static POLL_CREATION_FORM_OPTIONS_WRAPPER_FLEXBOX = 'pollCreationFormOptionsWrapperFlexBox';
+
+    static POLL_DETAILS_DIALOG = 'pollDetailsDialog';
+    static POLL_DETAILS_DIALOG_MESSAGE_STRIP = 'pollDetailsDialogMessageStrip';
+    static POLL_DETAILS_DIALOG_YES_BUTTON = 'pollDetailsDialogYesButton';
+    static POLL_DETAILS_DIALOG_NO_BUTTON = 'pollDetailsDialogNoButton';
+    static POLL_DETAILS_DIALOG_NAV_TO_POLLS_LISTING_BUTTON = 'upollDetailsDialogNavToPollsListingButton';
+    static POLL_DETAILS_OBJECT_HEADER = 'pollDetailsObjectHeader';
+    static POLL_DETAILS_ICON_TAB_BAR = 'pollDetailsIconTabBar';
+    static POLL_DETAILS_POLL_DETAILS_FILTER = 'pollDetailsPollDetailsFilter';
+    static POLL_DETAILS_POLL_ACTIONS_FILTER = 'pollDetailsPollActionsFilter';
+    static POLL_DETAILS_CHART_CANVAS = 'pollDetailsChartCanvas';
+    static POLL_DETAILS_CHART_CANVAS_HTML = "<canvas id='" + this.POLL_DETAILS_CHART_CANVAS + "'></canvas>";
+    static POLL_DETAILS_CHART_BAR_COLORS = [
+        '#ffa600',
+        '#ff7c43',
+        '#f95d6a',
+        '#d45087',
+        '#a05195',
+        '#665191',
+        '#2f4b7c',
+        '#003f5c',
+        '#022638'
+    ];
+    static POLL_DETAILS_CHART_UNDECIDED_BAR_COLOR = '#888888';
 }

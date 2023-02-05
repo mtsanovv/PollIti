@@ -17,8 +17,7 @@ sap.ui.define([
                 success: function(oLoggedInUser) {
                     thisController.getSocialUrls(oLoggedInUser);
                 },
-                error: function(oJqXhr)
-                {
+                error: function(oJqXhr) {
                     thisController.setAppBusy(false);
                     if(oJqXhr.readyState != 4 || oJqXhr.status != 401) {
                         // network error or http status different than 401 Unauthorized
@@ -45,8 +44,7 @@ sap.ui.define([
                     thisController.passModel(new LaunchpadObjectModel(oLoggedInUser));
                     thisController.setAppBusy(false);
                 },
-                error: function()
-                {
+                error: function() {
                     thisController.errorOccurred(ValidationMessages.CONNECTION_ERROR);
                     thisController.setAppBusy(false);
                 }

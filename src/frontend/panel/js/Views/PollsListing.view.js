@@ -101,7 +101,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
     createPollsListingTableColumns: function(oTable) {
         const oIdColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
         oIdColumn.setWidth('10%')
-                 .setHeader(new sap.m.Text({ text: Globals.ID_TITLE }));
+                 .setHeader(new sap.m.Text({ text: Globals.POLL_ID_TITLE }));
         const oPollTitleColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
         oPollTitleColumn.setWidth('90%')
                         .setHeader(new sap.m.Text({ text: Globals.POLL_TITLE_TITLE }));

@@ -44,6 +44,7 @@ sap.ui.define([
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLLS_LISTING, viewName: UIComponents.POLLITI_VIEW_POLLS_LISTING})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_USER_EDITOR, viewName: UIComponents.POLLITI_VIEW_USER_EDITOR})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLL_CREATION, viewName: UIComponents.POLLITI_VIEW_POLL_CREATION})));
+            this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLL_DETAILS, viewName: UIComponents.POLLITI_VIEW_POLL_DETAILS})));
         },
 
         onRouteChange: function (oEvent) {
@@ -115,6 +116,19 @@ sap.ui.define([
                     oApp.to(UIComponents.POLLITI_VIEW_POLL_CREATION);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_CREATE_POLL_TITLE);
+                    this.changeSelectedNavKey(sRouteName);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+                case Globals.NAV_POLL:
+                    const sPollId = oArgs.pollId;
+                    const sPollDetailsPageTitle = Globals.POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX + sPollId;
+                    const oNestedPollDetailsPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_POLL_DETAILS);
+
+                    this.setAppBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_POLL_DETAILS);
+                    oApp.getCurrentPage().loadPage(sPollId);
+                    oNestedPollDetailsPage.setTitle(sPollDetailsPageTitle);
+                    this.changeHTMLPageTitle(sPollDetailsPageTitle);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;

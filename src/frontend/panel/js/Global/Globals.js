@@ -65,7 +65,8 @@ class Globals {
     static POLLITI_PAGE_CREATE_USER_TITLE = 'Create a New Agent';
     static POLLITI_PAGE_USERS_LISTING_TITLE = 'Agents Listing';
     static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
-    static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = "Edit Agent ";
+    static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = 'Edit Agent ';
+    static POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX = 'Poll #';
 
     static NAV_CONTENT = [
         {
@@ -128,6 +129,7 @@ class Globals {
     static SOCIALS_ENDPOINT = 'socials';
     static USERS_ENDPOINT = 'users';
     static POLLS_ENDPOINT = 'polls';
+    static POLLS_VOTES_ENDPOINT_SUFFIX = 'votes';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
@@ -151,6 +153,7 @@ class Globals {
     static SUBMIT_BUTTON_TEXT = 'Submit';
     static ADD_OPTION_BUTTON_TEXT = 'Add option';
     static REMOVE_OPTION_BUTTON_TEXT = 'Remove option above';
+    static DIALOG_RETURN_TO_POLLS_LISTING_BUTTON_TEXT = 'Return to ' + this.POLLITI_PAGE_POLLS_LISTING_TITLE;
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 
@@ -159,7 +162,7 @@ class Globals {
     static USERNAME_TITLE = 'Username';
     static DISPLAY_NAME_TITLE = 'Display Name';
     static ACTIONS_TITLE = 'Actions';
-    static ID_TITLE = 'ID';
+    static POLL_ID_TITLE = 'Poll ID';
     static POLL_TITLE_TITLE = 'Poll Title';
     static ENABLED_TITLE = 'Agent account enabled';
 
@@ -178,6 +181,13 @@ class Globals {
     static COMPOSITE_ERROR_MESSAGE_DELIMITER = "\n• ";
 
     static POLLITI_BACKEND_REQUEST_CONTENT_TYPE = 'application/json';
+
+    static POLL_DETAILS_FILTER_KEY = 'pollDetails';
+    static POLL_ACTIONS_FILTER_KEY = 'pollActions';
+
+    static POLL_CHART_DATASET_LABEL = 'Votes';
+    static POLL_CHART_TOTAL_VOTES_PREFIX = 'Total Votes: ';
+    static POLL_CHART_UNDECIDED_BAR_TITLE = 'Undecided';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

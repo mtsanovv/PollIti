@@ -4,6 +4,10 @@
     <meta charset="utf-8">
 
     <script type="text/javascript" src="config.js"></script>
+    <!-- Chart.js -->
+    <script src="//cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.2/dist/chartjs-plugin-annotation.min.js"></script>
     <!-- Global constants  -->
     <script type="text/javascript" src="js/Global/UIComponents.js"></script>
     <script type="text/javascript" src="js/Global/ValidationConstants.js"></script>
@@ -17,6 +21,7 @@
     <script type="text/javascript" src="js/ObjectModels/PollsListingObjectModel.js"></script>
     <script type="text/javascript" src="js/ObjectModels/UserEditorObjectModel.js"></script>
     <script type="text/javascript" src="js/ObjectModels/PollCreationObjectModel.js"></script>
+    <script type="text/javascript" src="js/ObjectModels/PollDetailsObjectModel.js"></script>
 
     <script id="sap-ui-bootstrap"
         src="https://sdk.openui5.org/1.108.2/resources/sap-ui-core.js"
@@ -27,6 +32,7 @@
         data-sap-ui-compatVersion="edge"
         data-sap-ui-async="true">
     </script>
+
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
     <script type="text/javascript">
           window.cookieconsent_options = { "message": "This website uses cookies to ensure you get the best experience.", "dismiss": "Got it!", "learnMore": "Learn more", "link": "https://www.cookiesandyou.com/", "theme": "dark-bottom" };

@@ -18,8 +18,7 @@ sap.ui.define([
                     thisController.loggedIn(oResult.role);
                     // we don't set App.busy to false because we will be navigating anyway
                 },
-                error: function()
-                {
+                error: function() {
                     thisController.setAppBusy(false);
                 }
             });

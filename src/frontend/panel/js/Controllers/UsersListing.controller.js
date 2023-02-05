@@ -20,8 +20,7 @@ sap.ui.define([
                     }));
                     // after the view fills the table, it sets app.busy to false, so no need to do it here
                 },
-                error: function(oJqXhr)
-                {
+                error: function(oJqXhr) {
                     thisController.setAppBusy(false);
                     if(oJqXhr.readyState != 4 || oJqXhr.status != 401) {
                         // network error or http status different than 401 Unauthorized
@@ -51,8 +50,7 @@ sap.ui.define([
                     thisController.setAppBusy(true);
                     oView.loadPage();
                 },
-                error: function(oJqXhr)
-                {
+                error: function(oJqXhr) {
                     if(oJqXhr.readyState != 4 || oJqXhr.status != 400) {
                         // network error or http status different than 400 Bad Request
                         thisController.errorOccurred(ValidationMessages.ERROR_WHILE_DELETING_USER_PREFIX + sUsernameToDelete + "'");

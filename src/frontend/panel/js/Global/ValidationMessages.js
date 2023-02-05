@@ -13,7 +13,7 @@ class ValidationMessages {
     static POLL_THRESHOLD_INPUT_RANGE_NOT_MET = 'The number should be between ' + ValidationConstants.POLL_THRESHOLD_INPUT_MIN_VALUE + ' and ' + ValidationConstants.POLL_THRESHOLD_INPUT_MAX_VALUE;
 
     static POLL_OPTION_INPUT_EMPTY = 'Required';
-    static POLL_OPTION_INPUT_NOT_UNIQUE = "This option already exists";
+    static POLL_OPTION_INPUT_NOT_UNIQUE = 'This option already exists';
 
     static PASSWORD_CONFIRMATION_DOES_NOT_MATCH_THE_PASSWORD = 'The passwords do not match';
 

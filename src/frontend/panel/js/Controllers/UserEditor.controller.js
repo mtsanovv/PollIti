@@ -28,8 +28,7 @@ sap.ui.define([
                     oModel.setAgentAccountEnabled(oUser.enabled);
                     thisController.passModel(oModel);
                 },
-                error: function(oJqXhr)
-                {
+                error: function(oJqXhr) {
                     if(oJqXhr.readyState != 4 || (oJqXhr.status != 404 && oJqXhr.status != 401)) {
                         // network error or http status different than 404 and 401
                         thisController.errorOccurred(ValidationMessages.UNEXPECTED_SERVER_RESPONSE);

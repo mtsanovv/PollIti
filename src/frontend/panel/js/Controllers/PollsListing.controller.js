@@ -20,8 +20,7 @@ sap.ui.define([
                     }));
                     // after the view fills the table, it sets app.busy to false, so no need to do it here
                 },
-                error: function(oJqXhr)
-                {
+                error: function(oJqXhr) {
                     thisController.setAppBusy(false);
                     if(oJqXhr.readyState != 4 || (oJqXhr.status != 404 && oJqXhr.status != 401)) {
                         // network error or http status different than 404 and 401
