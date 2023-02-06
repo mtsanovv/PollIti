@@ -21,6 +21,7 @@ class ValidationMessages {
     static UNEXPECTED_SERVER_RESPONSE = 'Unexpected response from the server';
 
     static ERROR_WHILE_DELETING_USER_PREFIX = "An error has occurred while deleting the user '";
+    static ERROR_WHILE_DELETING_POLL = 'An error has occurred while deleting this poll';
 
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';

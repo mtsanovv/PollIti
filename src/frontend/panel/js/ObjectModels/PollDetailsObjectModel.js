@@ -7,6 +7,7 @@ class PollDetailsObjectModel extends ObjectModel {
         this.oOptionsVotes = obj.optionsVotes;
         this.iUndecidedVotes = obj.undecidedVotes;
         this.aOriginalSortedOptionsList = obj.originalOptionsListOrder;
+        this.bIsShowingPollDeletionDialog = false;
     }
 
     getId() {
@@ -47,5 +48,13 @@ class PollDetailsObjectModel extends ObjectModel {
         const aValues = Object.values(this.oOptionsVotes);
         aValues.sort((a, b) => b - a);
         return aValues;
+    }
+
+    isShowingPollDeletionDialog() {
+        return this.bIsShowingPollDeletionDialog;
+    }
+
+    setIsShowingPollDeletionDialog(bIsShowingPollDeletionDialog) {
+        this.bIsShowingPollDeletionDialog = bIsShowingPollDeletionDialog;
     }
 }

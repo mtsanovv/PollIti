@@ -51,12 +51,15 @@ sap.ui.define([
                     oView.loadPage();
                 },
                 error: function(oJqXhr) {
-                    if(oJqXhr.readyState != 4 || oJqXhr.status != 400) {
-                        // network error or http status different than 400 Bad Request
+                    if(oJqXhr.readyState != 4 || (oJqXhr.status != 400 && oJqXhr.status != 401)) {
+                        // network error or http status different than 400 Bad Request and 401 Unauthorized
                         thisController.errorOccurred(ValidationMessages.ERROR_WHILE_DELETING_USER_PREFIX + sUsernameToDelete + "'");
-                    } else {
+                    } else if(oJqXhr.status == 400) {
                         const sErrorMessage = thisController.createCompositeErrorMessage(oJqXhr.responseText);
                         thisController.errorOccurred(sErrorMessage);
+                    } else {
+                        oView.resetPage(); // so that the dialog closes
+                        thisController.navTo(Globals.NAV_LOGIN);
                     }
                 }
             });

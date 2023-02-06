@@ -122,12 +122,10 @@ sap.ui.define([
                 case Globals.NAV_POLL:
                     const sPollId = oArgs.pollId;
                     const sPollDetailsPageTitle = Globals.POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX + sPollId;
-                    const oNestedPollDetailsPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_POLL_DETAILS);
 
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_POLL_DETAILS);
                     oApp.getCurrentPage().loadPage(sPollId);
-                    oNestedPollDetailsPage.setTitle(sPollDetailsPageTitle);
                     this.changeHTMLPageTitle(sPollDetailsPageTitle);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();

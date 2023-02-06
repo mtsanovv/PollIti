@@ -4,7 +4,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
     },
 
     createContent: function(oController) {
-        const oPage = new sap.m.Page(UIComponents.POLLITI_PAGE_POLL_DETAILS, { showNavButton: true });
+        const oPage = new sap.m.Page(UIComponents.POLLITI_PAGE_POLL_DETAILS, { showNavButton: true, title: Globals.POLLITI_PAGE_POLL_DETAILS_NESTED_PAGE_TITLE });
         oPage.attachNavButtonPress(() => {
             oController.navToPrevious();
         });
@@ -35,8 +35,15 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
             type: sap.m.ButtonType.Success  
         });
         oDialogYesButton.attachPress(() => {
-            oDialog.setBusy(true);
-            oController.tryDeletePoll();
+            // when the parent function is called, oModel is not defined yet, thus we will get it when the button is pressed
+            const oModel = thisView.getModel().getProperty(Globals.MODEL_PATH);
+            if(oModel.isShowingPollDeletionDialog()) {
+                oDialog.setBusy(true);
+                oController.tryDeletePoll();
+                return;
+            }
+            oDialog.close();
+            oController.navToManualPollVotingMode();
         });
 
         const oDialogNoButton = new sap.m.Button(UIComponents.POLL_DETAILS_DIALOG_NO_BUTTON, {
@@ -94,9 +101,18 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
     },
 
     resetPage: function() {
+        const oDialog = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG);
         const oObjectHeader = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_OBJECT_HEADER);
         const oIconTabBar = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_ICON_TAB_BAR);
         const aFilterIds = [ UIComponents.POLL_DETAILS_POLL_DETAILS_FILTER, UIComponents.POLL_DETAILS_POLL_ACTIONS_FILTER ];
+
+        if(oDialog.isBusy()) {
+            oDialog.setBusy(false);
+        }
+
+        if(oDialog.isOpen()) {
+            oDialog.close();
+        }
 
         oObjectHeader.setVisible(false);
         oIconTabBar.setVisible(false);
@@ -166,13 +182,40 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
     fillPollDetailsFilter: function() {
         const oPollDetailsFilter = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_POLL_DETAILS_FILTER);
         this.createBarChart(oPollDetailsFilter);
+        this.createPollDetailsButtons(oPollDetailsFilter);
+    },
+
+    createPollDetailsButtons: function(oContainer) {
+        const thisView = this;
+        const oFlexBox = new sap.m.FlexBox({ justifyContent: sap.m.FlexJustifyContent.Center, wrap: sap.m.FlexWrap.Wrap });
+        oFlexBox.addStyleClass('sapUiMediumMarginTopBottom');
+
+        const oDeleteButton = new sap.m.Button({ icon: 'sap-icon://delete', text: Globals.DELETE_POLL_BUTTON_TEXT, type: sap.m.ButtonType.Reject });
+        oDeleteButton.addStyleClass('sapUiSmallMarginBottom')
+                     .addStyleClass('sapUiTinyMarginEnd')
+                     .attachPress(() => {
+                         thisView.showPollDeletionDialog();
+                     });
+
+        const oEnterTabletPollModeButton = new sap.m.Button({ text: Globals.ENTER_MANUAL_VOTING_MODE_BUTTON_TEXT, type: sap.m.ButtonType.Emphasized });
+        oEnterTabletPollModeButton.attachPress(() => {
+                                      thisView.showTabletPollModeWarningDialog();
+                                  });
+
+        oFlexBox.addItem(oDeleteButton);
+        oFlexBox.addItem(oEnterTabletPollModeButton);
+
+        oContainer.addContent(oFlexBox);
     },
 
     createBarChart: function(oContainer) {
         const thisView = this;
         const oCanvasHtml = new sap.ui.core.HTML({ content: UIComponents.POLL_DETAILS_CHART_CANVAS_HTML });
-        oCanvasHtml.attachAfterRendering((oEvent) => {
-            thisView.fillBarChartCanvas();
+        oCanvasHtml.attachAfterRendering(() => {
+            if(!thisView.getModel().getProperty(Globals.MODEL_PATH).isBaseObjectModel()) {
+                // sometimes this gets rerendered when the base object model is passed
+                thisView.fillBarChartCanvas();
+            }
         });
         oContainer.addContent(oCanvasHtml);
     },
@@ -205,7 +248,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
               }]
             },
             options: {
-                aspectRatio: 0.7,
+                aspectRatio: 0.6,
                 maintainAspectRatio: false,
                 scales: {
                     x: {
@@ -246,6 +289,9 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
                             weight: 'normal',
                             size: '15em'
                         },
+                        padding: {
+                            bottom: 30
+                        }
                     },
                     legend: {
                         display: false
@@ -298,7 +344,52 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
         oDialogNoButton.setVisible(false);
         oDialogNavToPollsListingButton.setVisible(true);
 
-        oDialog.setBusy(false);
+        if(oDialog.isBusy()) {
+            oDialog.setBusy(false);
+        }
+
+        if(!oDialog.isOpen()) {
+            oDialog.open();
+        }
+    },
+
+    showPollDeletionDialog: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oDialog = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG);
+        const oDialogMessageStrip = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_MESSAGE_STRIP);
+        const oDialogYesButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_YES_BUTTON);
+        const oDialogNoButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_NO_BUTTON);
+        const oDialogNavToPollsListingButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_NAV_TO_POLLS_LISTING_BUTTON);
+
+        oDialog.setTitle(Globals.POLL_DELETION_DIALOG_TITLE);
+        oDialogMessageStrip.setType(sap.ui.core.MessageType.Warning);
+        oDialogMessageStrip.setText(Globals.POLL_DELETION_WARNING);
+
+        oDialogYesButton.setVisible(true);
+        oDialogNoButton.setVisible(true);
+        oDialogNavToPollsListingButton.setVisible(false);
+
+        oModel.setIsShowingPollDeletionDialog(true);
+        oDialog.open();
+    },
+
+    showTabletPollModeWarningDialog: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const oDialog = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG);
+        const oDialogMessageStrip = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_MESSAGE_STRIP);
+        const oDialogYesButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_YES_BUTTON);
+        const oDialogNoButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_NO_BUTTON);
+        const oDialogNavToPollsListingButton = sap.ui.getCore().byId(UIComponents.POLL_DETAILS_DIALOG_NAV_TO_POLLS_LISTING_BUTTON);
+
+        oDialog.setTitle(Globals.POLL_MANUAL_VOTING_DIALOG_TITLE);
+        oDialogMessageStrip.setType(sap.ui.core.MessageType.Warning);
+        oDialogMessageStrip.setText(Globals.POLL_MANUAL_VOTING_WARNING);
+
+        oDialogYesButton.setVisible(true);
+        oDialogNoButton.setVisible(true);
+        oDialogNavToPollsListingButton.setVisible(false);
+
+        oModel.setIsShowingPollDeletionDialog(false);
         oDialog.open();
     },
 
@@ -307,5 +398,5 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
             [Globals.MODEL_PATH_KEY]: oObjectModel
         };
         this.setModel(new sap.ui.model.json.JSONModel(oModel));
-    },
+    }
 });

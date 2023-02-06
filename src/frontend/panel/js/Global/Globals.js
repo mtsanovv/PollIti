@@ -13,6 +13,7 @@ class Globals {
     static NAV_POLL = 'poll';
     static NAV_POLLS_LISTING = 'pollsListing';
     static NAV_CREATE_POLL = 'createPoll';
+    static NAV_POLL_VOTING = 'pollVoting';
     static NAV_USERS = 'users';
     static NAV_USERS_LISTING = 'usersListing';
     static NAV_CREATE_USER = 'createUser';
@@ -45,6 +46,9 @@ class Globals {
                 [this.NAV_POLL]: {
                     pattern: [this.NAV_POLLS, '{pollId}'].join(this.URI_DELIMITER)
                 },
+                [this.NAV_POLL_VOTING]: {
+                    pattern: [this.NAV_POLLS, '{pollId}', 'vote'].join(this.URI_DELIMITER)
+                },
                 [this.NAV_USERS_LISTING]: {
                     pattern: this.NAV_USERS
                 },
@@ -67,6 +71,7 @@ class Globals {
     static POLLITI_PAGE_POLLS_LISTING_TITLE = 'Polls Listing';
     static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = 'Edit Agent ';
     static POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX = 'Poll #';
+    static POLLITI_PAGE_POLL_DETAILS_NESTED_PAGE_TITLE = 'Poll';
 
     static NAV_CONTENT = [
         {
@@ -189,6 +194,15 @@ class Globals {
     static POLL_CHART_TOTAL_VOTES_PREFIX = 'Total votes: ';
     static POLL_CHART_UNDECIDED_BAR_TITLE = 'Undecided';
     static POLL_CHART_THRESHOLD_PREFIX = 'Threshold: ';
+
+    static DELETE_POLL_BUTTON_TEXT = 'Delete This Poll';
+    static ENTER_MANUAL_VOTING_MODE_BUTTON_TEXT = 'Enter Manual Poll Voting Mode';
+
+    static POLL_DELETION_DIALOG_TITLE = 'Deleting This Poll';
+    static POLL_DELETION_WARNING = "Are you sure that you want to delete this poll?\n\nThis action cannot be undone.";
+
+    static POLL_MANUAL_VOTING_DIALOG_TITLE = 'Entering Manual Poll Voting Mode';
+    static POLL_MANUAL_VOTING_WARNING = "You are entering manual poll voting mode. For security reasons, the only available controls will be a list of choices and a 'Submit' button. Once the vote is cast, you will be logged out and you will have to log in again.\n\nWould you like to continue?";
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

@@ -101,7 +101,7 @@ class UIComponents {
     static POLL_DETAILS_POLL_DETAILS_FILTER = 'pollDetailsPollDetailsFilter';
     static POLL_DETAILS_POLL_ACTIONS_FILTER = 'pollDetailsPollActionsFilter';
     static POLL_DETAILS_CHART_CANVAS = 'pollDetailsChartCanvas';
-    static POLL_DETAILS_CHART_CANVAS_HTML = "<canvas id='" + this.POLL_DETAILS_CHART_CANVAS + "'></canvas>";
+    static POLL_DETAILS_CHART_CANVAS_HTML = "<div><canvas id='" + this.POLL_DETAILS_CHART_CANVAS + "'></canvas></div>";
     static POLL_DETAILS_CHART_BAR_COLORS = [
         '#ffa600',
         '#ff7c43',
