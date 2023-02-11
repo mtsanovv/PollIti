@@ -20,7 +20,10 @@ public class ValidationConstants {
 
     public static final short POLL_OPTIONS_MIN_COUNT = 2;
     public static final short POLL_OPTIONS_MAX_COUNT = 9;
-    public static final short POLL_OPTION_MAX_LENGTH = 128;
+    public static final short POLL_OPTION_MAX = 128;
 
     public static final short MIN_OPTIONS_THAT_MEET_THRESHOLD_IN_ORDER_TO_POST_TO_SOCIAL = 2;
+
+    public static final short EMAIL_ADDRESS_MAX = 320;
+    public static final String EMAIL_REGEX = ".+[@].+[\\.].+";
 }

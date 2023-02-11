@@ -19,6 +19,9 @@ public class PollToken {
     @Column(name = "expires_on")
     private Date expiresOn;
 
+    @Column(name = "email")
+    private String email;
+
     @ManyToOne
     @JoinColumn(name = "poll")
     private Poll poll;
@@ -26,8 +29,9 @@ public class PollToken {
     public PollToken() {
     }
 
-    public PollToken(Date expiresOn, Poll poll) {
+    public PollToken(Date expiresOn, String email, Poll poll) {
         this.expiresOn = expiresOn;
+        this.email = email;
         this.poll = poll;
     }
 
@@ -45,6 +49,14 @@ public class PollToken {
 
     public void setExpiresOn(Date expiresOn) {
         this.expiresOn = expiresOn;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Poll getPoll() {

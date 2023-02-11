@@ -20,7 +20,7 @@ public class NewPollDto {
     @NotEmpty(message = ValidationMessages.POLL_OPTIONS_EMPTY)
     @UniqueElements(message = ValidationMessages.POLL_OPTIONS_UNIQUE)
     @Size(min = ValidationConstants.POLL_OPTIONS_MIN_COUNT, max = ValidationConstants.POLL_OPTIONS_MAX_COUNT, message = ValidationMessages.POLL_OPTIONS_COUNT_REQUIREMENTS)
-    private List<@NotBlank(message = ValidationMessages.POLL_OPTION_EMPTY) @Size(max = ValidationConstants.POLL_OPTION_MAX_LENGTH, message = ValidationMessages.POLL_OPTION_REQUIREMENTS) String> options;
+    private List<@NotBlank(message = ValidationMessages.POLL_OPTION_EMPTY) @Size(max = ValidationConstants.POLL_OPTION_MAX, message = ValidationMessages.POLL_OPTION_REQUIREMENTS) String> options;
 
     public NewPollDto() {
     }

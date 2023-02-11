@@ -57,9 +57,15 @@ public class PollTokenService {
     }
 
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
-        String pollTitle = this.pollService.getPollTitleById(pollId);
-        PollToken pollToken = this.createPollToken(pollId);
-        this.sendTokenToEmail(pollToken, pollTitle, emailDto.getEmail());
+        String email = emailDto.getEmail();
+        Poll poll = this.pollDao.findById(pollId).get();
+
+        if(this.pollTokenDao.getTokenCountByEmailAndPollId(email, poll) >= 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ValidationMessages.POLL_TOKEN_ALREADY_SENT, email));
+        }
+
+        PollToken pollToken = this.createPollToken(email, poll);
+        this.sendTokenToEmail(pollToken, poll.getTitle(), email);
     }
 
     public PollTitleWithOptionsDto getPollTitleWithOptionsByToken(UUID token) {
@@ -88,10 +94,9 @@ public class PollTokenService {
         }
     }
 
-    private PollToken createPollToken(Long pollId) {
-        Poll poll = this.pollDao.findById(pollId).get();
+    private PollToken createPollToken(String email, Poll poll) {
         Date nextWeek = Date.valueOf(LocalDate.now(ZoneOffset.UTC).plus(Globals.POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES, ChronoUnit.WEEKS));
-        PollToken newPollToken = new PollToken(nextWeek, poll);
+        PollToken newPollToken = new PollToken(nextWeek, email, poll);
         return this.pollTokenDao.save(newPollToken);
     }
 
