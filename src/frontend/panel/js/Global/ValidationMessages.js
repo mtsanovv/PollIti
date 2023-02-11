@@ -12,7 +12,6 @@ class ValidationMessages {
     static POLL_THRESHOLD_INPUT_REGEX_REQUIREMENT_NOT_MET = 'Only digits 0-9 are allowed';
     static POLL_THRESHOLD_INPUT_RANGE_NOT_MET = 'The number should be between ' + ValidationConstants.POLL_THRESHOLD_INPUT_MIN_VALUE + ' and ' + ValidationConstants.POLL_THRESHOLD_INPUT_MAX_VALUE;
 
-    static POLL_OPTION_INPUT_EMPTY = 'Required';
     static POLL_OPTION_INPUT_NOT_UNIQUE = 'This option already exists';
 
     static PASSWORD_CONFIRMATION_DOES_NOT_MATCH_THE_PASSWORD = 'The passwords do not match';
@@ -22,6 +21,11 @@ class ValidationMessages {
 
     static ERROR_WHILE_DELETING_USER_PREFIX = "An error has occurred while deleting the user '";
     static ERROR_WHILE_DELETING_POLL = 'An error has occurred while deleting this poll';
+
+    static REQUIRED_INPUT_EMPTY = 'Required';
+    static INPUT_INVALID = 'Invalid';
+
+    static INVITATION_SENT_SUCCESSFULLY = 'Invitation sent successfully';
 
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';

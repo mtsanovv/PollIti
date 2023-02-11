@@ -135,6 +135,9 @@ class Globals {
     static USERS_ENDPOINT = 'users';
     static POLLS_ENDPOINT = 'polls';
     static POLLS_VOTES_ENDPOINT_SUFFIX = 'votes';
+    static POLLS_SHARING_FACEBOOK_ENDPOINT_SUFFIX = ['sharing', 'facebook'].join(this.URI_DELIMITER);
+    static POLLS_SHARING_FACEBOOK_AND_INSTAGRAM_ENDPOINT_SUFFIX = ['sharing', 'facebookAndInstagram'].join(this.URI_DELIMITER);
+    static POLLS_TOKENS_ENDPOINT_SUFFIX = 'tokens';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
@@ -148,6 +151,7 @@ class Globals {
     static POLL_TITLE_INPUT_PLACEHOLDER = 'Poll title';
     static THRESHOLD_INPUT_PLACEHOLDER = 'Threshold percentage (optional)';
     static POLL_OPTION_INPUT_PREFIX_PLACEHOLDER = 'Poll option ';
+    static EMAIL_ADDRESS_PLACEHOLDER = 'Email address';
 
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
@@ -204,7 +208,102 @@ class Globals {
     static POLL_MANUAL_VOTING_DIALOG_TITLE = 'Entering Manual Poll Voting Mode';
     static POLL_MANUAL_VOTING_WARNING = "You are entering manual poll voting mode. For security reasons, the only available controls will be a list of choices and a 'Submit' button. Once the vote is cast, you will be logged out and you will have to log in again.\n\nWould you like to continue?";
 
+    static SHARE_TO_FACEBOOK_BUTTON_TEXT = 'Share poll results to Facebook only';
+    static SHARE_TO_FACEBOOK_AND_INSTAGRAM_BUTTON_TEXT = 'Share poll results to Facebook and Instagram';
+    static SHARE_VIA_EMAIL_BUTTON_TEXT = 'Send poll invitation';
+
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+
+    static getPollResultsChartDefinition(aLabels, aValues, aBarColors, iTotalVotes, iThreshold) {
+        return {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data: {
+              labels: aLabels,
+              datasets: [{
+                label: Globals.POLL_CHART_DATASET_LABEL,
+                data: aValues,
+                borderWidth: 1,
+                backgroundColor: aBarColors
+              }]
+            },
+            options: {
+                aspectRatio: 0.6,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: true,
+                            color: 'rgba(255, 255, 255, 0.5)'
+                        }
+                    },
+                    y: {
+                        display: false
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: Globals.POLL_CHART_TOTAL_VOTES_PREFIX + iTotalVotes,
+                        color: 'white',
+                        font: {
+                            weight: 'normal',
+                            size: '18em'
+                        },
+                        padding: {
+                            top: 20,
+                            bottom: 10
+                        }
+                    },
+                    subtitle: {
+                        display: true,
+                        text: Globals.POLL_CHART_THRESHOLD_PREFIX + iThreshold + '%',
+                        color: '#91c8f6',
+                        font: {
+                            weight: 'normal',
+                            size: '15em'
+                        },
+                        padding: {
+                            bottom: 30
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        color: 'white',
+                        anchor: 'end',
+                        align: 'end',
+                        offset: -5,
+                        labels: {
+                            title: {
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        formatter: (iValue, oCtx) => {
+                            let iSum = 0;
+                            const aData = oCtx.chart.data.datasets[0].data;
+                            aData.map(iData => iSum += iData);
+                            let iPercentage = (iValue * 100 / iSum).toFixed(1);
+                            if(isNaN(iPercentage)) {
+                                iPercentage = 0;
+                            }
+                            const sPercentage = iPercentage + '%';
+                            return sPercentage;
+                        },
+                    }
+                }
+            }
+        };
     }
 }

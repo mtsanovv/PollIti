@@ -95,7 +95,8 @@ class UIComponents {
     static POLL_DETAILS_DIALOG_MESSAGE_STRIP = 'pollDetailsDialogMessageStrip';
     static POLL_DETAILS_DIALOG_YES_BUTTON = 'pollDetailsDialogYesButton';
     static POLL_DETAILS_DIALOG_NO_BUTTON = 'pollDetailsDialogNoButton';
-    static POLL_DETAILS_DIALOG_NAV_TO_POLLS_LISTING_BUTTON = 'upollDetailsDialogNavToPollsListingButton';
+    static POLL_DETAILS_DIALOG_NAV_TO_POLLS_LISTING_BUTTON = 'pollDetailsDialogNavToPollsListingButton';
+    static POLL_DETAILS_DIALOG_DISMISS_BUTTON = 'pollDetailsDialogDismissButton';
     static POLL_DETAILS_OBJECT_HEADER = 'pollDetailsObjectHeader';
     static POLL_DETAILS_ICON_TAB_BAR = 'pollDetailsIconTabBar';
     static POLL_DETAILS_POLL_DETAILS_FILTER = 'pollDetailsPollDetailsFilter';
@@ -114,4 +115,9 @@ class UIComponents {
         '#022638'
     ];
     static POLL_DETAILS_CHART_UNDECIDED_BAR_COLOR = '#888888';
+
+    static POLL_ACTIONS_SHARE_TO_FB_BUTTON = 'pollActionsShareToFbButton';
+    static POLL_ACTIONS_SHARE_TO_FB_AND_INSTA_BUTTON = 'pollActionsShareToFbAndInstaButton';
+    static POLL_ACTIONS_EMAIL_ADDRESS_INPUT = 'pollActionsEmailAddressInput';
+    static POLL_ACTIONS_SHARE_VIA_EMAIL_BUTTON = 'pollActionsShareViaEmailButton';
 }

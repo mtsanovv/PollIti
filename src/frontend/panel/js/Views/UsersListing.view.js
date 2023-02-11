@@ -218,12 +218,12 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
         const oUserActionButtonsWrapper = new sap.m.FlexBox({ wrap: sap.m.FlexWrap.Wrap, justifyContent: sap.m.FlexJustifyContent.Center });
         oRow.addCell(oUserActionButtonsWrapper);
 
-        const oEditUserButton = new sap.m.Button({ icon: 'sap-icon://user-edit', text:  Globals.UPDATE_USER_BUTTON_TEXT, type: sap.m.ButtonType.Attention });
+        const oEditUserButton = new sap.m.Button({ icon: 'sap-icon://user-edit', text:  Globals.UPDATE_USER_BUTTON_TEXT, type: sap.m.ButtonType.Critical });
         oEditUserButton.addStyleClass('sapUiTinyMarginEnd')
                        .attachPress(() => {
                            oController.navigateToUpdateUser(oUser.username);
                        });
-        const oDeleteUserButton = new sap.m.Button({ icon: 'sap-icon://delete', text: Globals.DELETE_USER_BUTTON_TEXT, type: sap.m.ButtonType.Reject });
+        const oDeleteUserButton = new sap.m.Button({ icon: 'sap-icon://delete', text: Globals.DELETE_USER_BUTTON_TEXT, type: sap.m.ButtonType.Negative });
         oDeleteUserButton.addStyleClass('sapUiTinyMarginBeginEnd')
                          .attachPress(() => {
                              thisView.showUserDeletionDialog(oUser.username, oUser.displayName);

@@ -99,7 +99,7 @@ class PollCreationObjectModel extends ObjectModel {
         const sOption = aOptions[iOptionIndex];
 
         if(!sOption) {
-            return ValidationMessages.POLL_OPTION_INPUT_EMPTY;
+            return ValidationMessages.REQUIRED_INPUT_EMPTY;
         }
 
         const iOptionOccurrences = aOptions.filter(sOptionTitle => sOptionTitle == sOption).length;
