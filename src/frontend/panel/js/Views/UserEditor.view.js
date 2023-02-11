@@ -438,6 +438,9 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USER_EDITOR, {
 
         const sSuccessMessage = "Agent '" + sUsername + "' updated successfully";
         this.showSuccessMessageInStrip(sSuccessMessage);
+
+        const oSubmitButton = sap.ui.getCore().byId(UIComponents.USER_EDITOR_FORM_SUBMIT_BUTTON);
+        oSubmitButton.setBusy(false);
     },
 
     showSuccessMessageInStrip: function(sMessage) {
