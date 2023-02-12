@@ -13,6 +13,34 @@ sap.ui.define([
             sap.ui.getCore().byId(UIComponents.LOGOUT_BUTTON).setVisible(bToggle);
         },
 
+        ajaxLogout: function(oButton, oDialog, aNavToArguments) {
+            const thisController = this;
+            if(!aNavToArguments) {
+                aNavToArguments = [Globals.NAV_LOGIN];
+            }
+            const fOnServerResponse = () => {
+                oButton.setBusy(false);
+                if(oDialog) {
+                    oDialog.close();
+                }
+                thisController.navTo(...aNavToArguments); // on error, we're probably also logged out because most likely the server dropped the connection
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: [Config.API_BASE_URL, Globals.LOGOUT_ENDPOINT].join(Globals.URI_DELIMITER),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: fOnServerResponse,
+                error: fOnServerResponse
+            });
+        },
+
+        getPollIdFromCurrentRouteArguments: function() {
+            return this.getCurrentRouteArguments().pollId;
+        },
+
         getCurrentRouteName: function() {
             const oRouter = this.getFirstChildViewController().getRouter();
             const sCurrentHash = oRouter.getHashChanger().getHash();

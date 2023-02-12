@@ -46,7 +46,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_MAIN, {
         const oButtonLayoutData = new sap.ui.core.LayoutData({
             layoutData: new sap.m.OverflowToolbarLayoutData({ priority: 'NeverOverflow' })
         });
-        oLogoutButton.setLayoutData(oButtonLayoutData);
+        oLogoutButton.setLayoutData(oButtonLayoutData)
+                     .setBusyIndicatorDelay(0);
         oToolPageHeader.addContent(oLogoutButton);
     },
 

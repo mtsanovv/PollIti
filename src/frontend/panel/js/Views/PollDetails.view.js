@@ -190,14 +190,18 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
         const aValues = oModel.getOptionsValuesSortedDescending();
 
         // undecided votes are handled separately
-        aLabels.push(Globals.POLL_CHART_UNDECIDED_BAR_TITLE);
+        aLabels.push(Globals.POLL_UNDECIDED_OPTION);
         aBarColors.push(UIComponents.POLL_DETAILS_CHART_UNDECIDED_BAR_COLOR);
         aValues.push(oModel.getUndecidedVotes());
 
         const iTotalVotes = oModel.getTotalVotes();
         const iThreshold = oModel.getThreshold();
 
-        new Chart(oCanvasDomElement, Globals.getPollResultsChartDefinition(aLabels, aValues, aBarColors, iTotalVotes, iThreshold));
+        try {
+            new Chart(oCanvasDomElement, Globals.getPollResultsChartDefinition(aLabels, aValues, aBarColors, iTotalVotes, iThreshold));
+        } catch(e) {
+            console.warn(e.message);
+        }
     },
 
     createPollDetailsButtons: function(oContainer) {
@@ -461,12 +465,5 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
         oButton.setBusy(false);
         oButton.setEnabled(false);
         oButton.setType(sap.m.ButtonType.Success);
-    },
-
-    setObjectModel: function(oObjectModel) {
-        const oModel = {
-            [Globals.MODEL_PATH_KEY]: oObjectModel
-        };
-        this.setModel(new sap.ui.model.json.JSONModel(oModel));
     }
 });

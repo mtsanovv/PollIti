@@ -171,10 +171,6 @@ sap.ui.define([
             this.navTo(Globals.NAV_POLL_VOTING, { pollId: sPollId });
         },
 
-        getPollIdFromCurrentRouteArguments: function() {
-            return this.getCurrentRouteArguments().pollId;
-        },
-
         sharingErrorOccurred: function(sMessage) {
             // since sharing errors are non fatal and can only happen in certain circumstances, they have separate handling
             const oModelData = {

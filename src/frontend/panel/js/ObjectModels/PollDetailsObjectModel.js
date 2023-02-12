@@ -6,7 +6,7 @@ class PollDetailsObjectModel extends ObjectModel {
         this.iThreshold = obj.threshold;
         this.oOptionsVotes = obj.optionsVotes;
         this.iUndecidedVotes = obj.undecidedVotes;
-        this.aOriginalSortedOptionsList = obj.originalOptionsListOrder;
+        this.aOriginalSortedOptionsList = obj.options;
         this.bIsShowingPollDeletionDialog = false;
         this.sSharingError = obj.sharingError;
         this.bIsFacebookSharingSuccessful = obj.isFacebookSharingSuccessful;

@@ -138,6 +138,8 @@ class Globals {
     static POLLS_SHARING_FACEBOOK_ENDPOINT_SUFFIX = ['sharing', 'facebook'].join(this.URI_DELIMITER);
     static POLLS_SHARING_FACEBOOK_AND_INSTAGRAM_ENDPOINT_SUFFIX = ['sharing', 'facebookAndInstagram'].join(this.URI_DELIMITER);
     static POLLS_TOKENS_ENDPOINT_SUFFIX = 'tokens';
+    static POLLS_UNDECIDED_ENDPOINT_SUFFIX = 'undecided';
+    static POLLS_OPTION_ENDPOINT_SUFFIX = 'option';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
@@ -153,6 +155,7 @@ class Globals {
     static POLL_OPTION_INPUT_PREFIX_PLACEHOLDER = 'Poll option ';
     static EMAIL_ADDRESS_PLACEHOLDER = 'Email address';
 
+    static SUCCESS_DIALOG_TITLE = 'Success';
     static ERROR_DIALOG_TITLE = 'An Error has Occurred';
     static DIALOG_DISMISS_BUTTON_TEXT = 'Dismiss';
     static DIALOG_CONTINUE_TO_LAUNCHPAD_BUTTON_TEXT = 'Continue to Launchpad';
@@ -163,6 +166,7 @@ class Globals {
     static ADD_OPTION_BUTTON_TEXT = 'Add option';
     static REMOVE_OPTION_BUTTON_TEXT = 'Remove option above';
     static DIALOG_RETURN_TO_POLLS_LISTING_BUTTON_TEXT = 'Return to ' + this.POLLITI_PAGE_POLLS_LISTING_TITLE;
+    static DIALOG_CONTINUE_BUTTON_TEXT = 'Continue';
 
     static ACTION_UNAVAILABLE = 'Action unavailable';
 
@@ -194,9 +198,10 @@ class Globals {
     static POLL_DETAILS_FILTER_KEY = 'pollDetails';
     static POLL_ACTIONS_FILTER_KEY = 'pollActions';
 
+    static POLL_UNDECIDED_OPTION = 'Undecided';
+
     static POLL_CHART_DATASET_LABEL = 'Votes';
     static POLL_CHART_TOTAL_VOTES_PREFIX = 'Total votes: ';
-    static POLL_CHART_UNDECIDED_BAR_TITLE = 'Undecided';
     static POLL_CHART_THRESHOLD_PREFIX = 'Threshold: ';
 
     static DELETE_POLL_BUTTON_TEXT = 'Delete This Poll';
@@ -206,7 +211,7 @@ class Globals {
     static POLL_DELETION_WARNING = "Are you sure that you want to delete this poll?\n\nThis action cannot be undone.";
 
     static POLL_MANUAL_VOTING_DIALOG_TITLE = 'Entering Manual Poll Voting Mode';
-    static POLL_MANUAL_VOTING_WARNING = "You are entering manual poll voting mode. For security reasons, the only available controls will be a list of choices and a 'Submit' button. Once the vote is cast, you will be logged out and you will have to log in again.\n\nWould you like to continue?";
+    static POLL_MANUAL_VOTING_WARNING = "You are entering manual poll voting mode. For security reasons, the only available controls will be the logout button, a list of choices and a 'Submit' button. Once the vote is cast, you will be logged out and you will have to log in again.\n\nWould you like to continue?";
 
     static SHARE_TO_FACEBOOK_BUTTON_TEXT = 'Share poll results to Facebook only';
     static SHARE_TO_FACEBOOK_AND_INSTAGRAM_BUTTON_TEXT = 'Share poll results to Facebook and Instagram';

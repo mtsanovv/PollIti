@@ -14,6 +14,7 @@ class UIComponents {
     static POLLITI_VIEW_USER_EDITOR = 'PollIti.Views.UserEditor';
     static POLLITI_VIEW_POLL_CREATION = 'PollIti.Views.PollCreation';
     static POLLITI_VIEW_POLL_DETAILS = 'PollIti.Views.PollDetails';
+    static POLLITI_VIEW_POLL_VOTING = 'PollIti.Views.PollVoting';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
@@ -24,6 +25,7 @@ class UIComponents {
     static POLLITI_CONTROLLER_USER_EDITOR = 'PollIti.Controllers.UserEditor';
     static POLLITI_CONTROLLER_POLL_CREATION = 'PollIti.Controllers.PollCreation';
     static POLLITI_CONTROLLER_POLL_DETAILS = 'PollIti.Controllers.PollDetails';
+    static POLLITI_CONTROLLER_POLL_VOTING = 'PollIti.Controllers.PollVoting';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
@@ -33,6 +35,7 @@ class UIComponents {
     static POLLITI_PAGE_USER_EDITOR = 'PollIti.Pages.UserEditor';
     static POLLITI_PAGE_POLL_CREATION = 'PollIti.Pages.PollCreation';
     static POLLITI_PAGE_POLL_DETAILS = 'PollIti.Pages.PollDetails';
+    static POLLITI_PAGE_POLL_VOTING = 'PollIti.Pages.PollVoting';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -120,4 +123,12 @@ class UIComponents {
     static POLL_ACTIONS_SHARE_TO_FB_AND_INSTA_BUTTON = 'pollActionsShareToFbAndInstaButton';
     static POLL_ACTIONS_EMAIL_ADDRESS_INPUT = 'pollActionsEmailAddressInput';
     static POLL_ACTIONS_SHARE_VIA_EMAIL_BUTTON = 'pollActionsShareViaEmailButton';
+
+    static POLL_VOTING_DIALOG = 'pollVotingDialog';
+    static POLL_VOTING_DIALOG_MESSAGE_STRIP = 'pollVotingDialogMessageStrip';
+    static POLL_VOTING_DIALOG_CONTINUE_BUTTON = 'pollVotingDialogContinueButton';
+    static POLL_VOTING_NAV_TO_POLLS_LISTING_BUTTON = 'pollVotingDialogNavToPollsListingButton';
+    static POLL_VOTING_PAGE_LAYOUT = 'pollVotingPageLayout';
+    static POLL_VOTING_RADIO_BUTTON_GROUP = 'pollVotingRadioButtonGroup';
+    static POLL_VOTING_SUBMIT_BUTTON = 'pollVotingSubmitButton';
 }

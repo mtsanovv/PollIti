@@ -1,22 +1,19 @@
-class MainObjectModel {
+class PollVotingObjectModel extends ObjectModel {
     constructor(obj) {
-        this.sMessage = obj.message;
-        this.bSuccess = obj.success;
-        this.sPollTitle = obj.pollTitle;
-        this.aPollOptions = obj.pollOptions;
+        super(obj);
+        this.bIsSuccess = obj.success;
+        this.sPollTitle = obj.title;
+        this.aPollOptions = obj.options;
         this.iSelectedOptionIndex;
-    }
-
-    getMessage() {
-        return this.sMessage;
+        this.sVotingError = obj.votingError;
     }
 
     isSuccess() {
-        return this.bSuccess;
+        return this.bIsSuccess;
     }
 
-    setSuccess(bNewSuccessStatus) {
-        this.bSuccess = bNewSuccessStatus;
+    setSuccess(bIsSuccess) {
+        this.bIsSuccess = bIsSuccess;
     }
 
     getPollTitle() {
@@ -33,5 +30,9 @@ class MainObjectModel {
 
     setSelectedOptionIndex(iIndex) {
         this.iSelectedOptionIndex = iIndex;
+    }
+
+    getVotingError() {
+        return this.sVotingError;
     }
 }

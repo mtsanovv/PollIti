@@ -26,8 +26,7 @@ sap.ui.define([
                     oThisController.passModel(oModel);
                     oMainPage.setBusy(false);
                 },
-                error: function (oJqXhr)
-                {
+                error: function (oJqXhr) {
                     if(oJqXhr.readyState != 4 || oJqXhr.status != 404) {
                         // network error or http status different than 404 Not Found
                         oThisController.errorOccurred(ValidationMessages.POLL_UNAVAILABLE);
@@ -82,8 +81,7 @@ sap.ui.define([
                     oThisController.passModel(new MainObjectModel(oModelData));
                     oMainPage.setBusy(false);
                 },
-                error: function ()
-                {
+                error: function () {
                     oThisController.errorOccurred(ValidationMessages.VOTING_FAILED);
                     oMainPage.setBusy(false);
                 }

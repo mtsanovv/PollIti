@@ -27,6 +27,9 @@ class ValidationMessages {
 
     static INVITATION_SENT_SUCCESSFULLY = 'Invitation sent successfully';
 
+    static MANUAL_VOTING_VOTE_CAST_FAIL = 'Your vote could not be cast. Bring this to the attention of the person in charge.';
+    static MANUAL_VOTING_VOTE_CAST_SUCCESS = 'Your vote was cast successfully. Thank you!';
+
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';
     }

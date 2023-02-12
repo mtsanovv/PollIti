@@ -20,12 +20,9 @@ sap.ui.define([
             });
         },
 
-        pushCurrentRouteToRouteHistory: function() {
+        pushRouteToRouteHistory: function(oNewRoute) {
+            // only the Main controller knows about the owner component
             const oComponentModel = this.getOwnerComponent().getModel();
-            const oNewRoute = {
-                route: this.getCurrentRouteName(),
-                arguments: this.getCurrentRouteArguments()
-            };
             if(oComponentModel) {
                 const aRouteHistory = oComponentModel.getProperty(Globals.ROUTE_HISTORY_MODEL_PATH);
                 aRouteHistory.push(oNewRoute);
@@ -37,6 +34,14 @@ sap.ui.define([
             );
         },
 
+        pushCurrentRouteToRouteHistory: function() {
+            const oNewRoute = {
+                route: this.getCurrentRouteName(),
+                arguments: this.getCurrentRouteArguments()
+            };
+            this.pushRouteToRouteHistory(oNewRoute);
+        },
+
         createViews: async function() {
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LOGIN, viewName: UIComponents.POLLITI_VIEW_LOGIN})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_LAUNCHPAD, viewName: UIComponents.POLLITI_VIEW_LAUNCHPAD})));
@@ -45,9 +50,18 @@ sap.ui.define([
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_USER_EDITOR, viewName: UIComponents.POLLITI_VIEW_USER_EDITOR})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLL_CREATION, viewName: UIComponents.POLLITI_VIEW_POLL_CREATION})));
             this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLL_DETAILS, viewName: UIComponents.POLLITI_VIEW_POLL_DETAILS})));
+            this.getApp().addPage((await sap.ui.core.mvc.JSView.create({id: UIComponents.POLLITI_VIEW_POLL_VOTING, viewName: UIComponents.POLLITI_VIEW_POLL_VOTING})));
         },
 
-        onRouteChange: function (oEvent) {
+        awaitCurrentPageActivation: async function(sPageId) {
+            const oApp = this.getApp();
+            while(oApp.getCurrentPage().getId() != sPageId) {
+                // block the UI thread until the current page is loaded (usually this is a race condition when switching too fast between pages)
+                await new Promise(fResolve => setTimeout(fResolve, 100));
+            }
+        },
+
+        onRouteChange: async function (oEvent) {
             const sRouteName = oEvent.getParameter('name');
             const oArgs = oEvent.getParameter('arguments');
             const oApp = this.getApp();
@@ -58,6 +72,7 @@ sap.ui.define([
                     this.showLogoutButton(false);
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_LOGIN);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_LOGIN);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LOGIN_TITLE);
                     this.pushCurrentRouteToRouteHistory();
@@ -65,6 +80,7 @@ sap.ui.define([
                 case Globals.NAV_LAUNCHPAD:
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_LAUNCHPAD);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_LAUNCHPAD);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_LAUNCHPAD_TITLE);
                     this.changeSelectedNavKey(sRouteName);
@@ -73,6 +89,7 @@ sap.ui.define([
                 case Globals.NAV_USERS_LISTING:
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_USERS_LISTING);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_USERS_LISTING);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_USERS_LISTING_TITLE);
                     this.changeSelectedNavKey(sRouteName);
@@ -81,6 +98,7 @@ sap.ui.define([
                 case Globals.NAV_POLLS_LISTING:
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_POLLS_LISTING);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_POLLS_LISTING);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_POLLS_LISTING_TITLE);
                     this.changeSelectedNavKey(sRouteName);
@@ -92,6 +110,7 @@ sap.ui.define([
 
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_USER_EDITOR);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_USER_EDITOR);
                     oApp.getCurrentPage().loadPage();
                     oNestedPage.setTitle(sPageTitle);
                     this.changeHTMLPageTitle(sPageTitle);
@@ -105,6 +124,7 @@ sap.ui.define([
 
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_USER_EDITOR);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_USER_EDITOR);
                     oApp.getCurrentPage().loadPage(sUsername);
                     oNestedUpdatePage.setTitle(sUpdatePageTitle);
                     this.changeHTMLPageTitle(sUpdatePageTitle);
@@ -114,6 +134,7 @@ sap.ui.define([
                 case Globals.NAV_CREATE_POLL:
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_POLL_CREATION);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_POLL_CREATION);
                     oApp.getCurrentPage().loadPage();
                     this.changeHTMLPageTitle(Globals.POLLITI_PAGE_CREATE_POLL_TITLE);
                     this.changeSelectedNavKey(sRouteName);
@@ -125,8 +146,22 @@ sap.ui.define([
 
                     this.setAppBusy(true);
                     oApp.to(UIComponents.POLLITI_VIEW_POLL_DETAILS);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_POLL_DETAILS);
                     oApp.getCurrentPage().loadPage(sPollId);
                     this.changeHTMLPageTitle(sPollDetailsPageTitle);
+                    this.changeSelectedNavKey(sRouteName);
+                    this.pushCurrentRouteToRouteHistory();
+                    break;
+
+                case Globals.NAV_POLL_VOTING:
+                    const sVotingPollId = oArgs.pollId;
+                    const sPollVotingPageTitle = Globals.POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX + sVotingPollId + ' Voting';
+
+                    this.setAppBusy(true);
+                    oApp.to(UIComponents.POLLITI_VIEW_POLL_VOTING);
+                    await this.awaitCurrentPageActivation(UIComponents.POLLITI_VIEW_POLL_VOTING);
+                    oApp.getCurrentPage().loadPage(sVotingPollId);
+                    this.changeHTMLPageTitle(sPollVotingPageTitle);
                     this.changeSelectedNavKey(sRouteName);
                     this.pushCurrentRouteToRouteHistory();
                     break;
@@ -138,20 +173,7 @@ sap.ui.define([
             const oLogoutButton = sap.ui.getCore().byId(UIComponents.LOGOUT_BUTTON);
             oLogoutButton.setBusy(true);
 
-            $.ajax({
-                type: 'POST',
-                url: [Config.API_BASE_URL, Globals.LOGOUT_ENDPOINT].join(Globals.URI_DELIMITER),
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function() {
-                    oLogoutButton.setBusy(false);
-                    thisController.navTo(Globals.NAV_LOGIN);
-                },
-                error: function() {
-                    oLogoutButton.setBusy(false);
-                }
-            });
+            this.ajaxLogout(oLogoutButton);
         },
 
         changeSelectedNavKey: function(sKey) {
