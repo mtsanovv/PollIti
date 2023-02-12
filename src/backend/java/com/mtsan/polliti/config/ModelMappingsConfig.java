@@ -1,14 +1,16 @@
 package com.mtsan.polliti.config;
 
-import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
-import com.mtsan.polliti.util.ModelMapperWrapper;
 import com.mtsan.polliti.dto.ExceptionDto;
+import com.mtsan.polliti.dto.poll.PollDto;
+import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
 import com.mtsan.polliti.dto.poll.PollVotesDto;
 import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.model.Poll;
 import com.mtsan.polliti.model.PollOption;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.modelmapper.Converter;
 import org.modelmapper.TypeMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ public class ModelMappingsConfig {
         this.mapResponseStatusExceptionToExceptionDto();
         this.mapPollModelToPollVotesDto();
         this.mapPollModelToPollTitleWithOptionsDto();
+        this.mapPollModelToPollDto();
     }
 
     private void mapResponseStatusExceptionToExceptionDto() {
@@ -58,35 +61,34 @@ public class ModelMappingsConfig {
             return hashMapWithResults;
         };
 
-        Converter<List<PollOption>, List<String>> listOfPollOptionsToListOfStrings = c -> {
-            ArrayList<String> optionTitles = new ArrayList<>();
-            for(PollOption pollOption : c.getSource()) {
-                optionTitles.add(pollOption.getTitle());
-            }
-            return optionTitles;
-        };
-
         propertyMapper.addMappings(
             mapper -> mapper.using(pollOptionsToHashMapWithResults).map(Poll::getPollOptions, PollVotesDto::setOptionsVotes)
-        );
-
-        propertyMapper.addMappings(
-            mapper -> mapper.using(listOfPollOptionsToListOfStrings).map(Poll::getPollOptions, PollVotesDto::setOriginalOptionsListOrder)
         );
     }
 
     private void mapPollModelToPollTitleWithOptionsDto() {
         TypeMap<Poll, PollTitleWithOptionsDto> propertyMapper = this.modelMapper.createTypeMap(Poll.class, PollTitleWithOptionsDto.class);
-        Converter<List<PollOption>, List<String>> pollOptionsToListOfStrings = c -> {
-            List<String> options = new ArrayList<>();
-            for(PollOption pollOption : c.getSource()) {
-                options.add(pollOption.getTitle());
-            }
-            return options;
-        };
+        Converter<List<PollOption>, List<String>> pollOptionsToListOfStrings = this::mapPollOptionsToListOfStrings;
         propertyMapper.addMapping(Poll::getTitle, PollTitleWithOptionsDto::setPollTitle);
         propertyMapper.addMappings(
             mapper -> mapper.using(pollOptionsToListOfStrings).map(Poll::getPollOptions, PollTitleWithOptionsDto::setPollOptions)
         );
+    }
+
+    private void mapPollModelToPollDto() {
+        TypeMap<Poll, PollDto> propertyMapper = this.modelMapper.createTypeMap(Poll.class, PollDto.class);
+        Converter<List<PollOption>, List<String>> pollOptionsToListOfStrings = this::mapPollOptionsToListOfStrings;
+
+        propertyMapper.addMappings(
+            mapper -> mapper.using(pollOptionsToListOfStrings).map(Poll::getPollOptions, PollDto::setOptions)
+        );
+    }
+
+    private List<String> mapPollOptionsToListOfStrings(MappingContext<List<PollOption>, List<String>> mappingContext) {
+        List<String> options = new ArrayList<>();
+        for(PollOption pollOption : mappingContext.getSource()) {
+            options.add(pollOption.getTitle());
+        }
+        return options;
     }
 }

@@ -1,11 +1,15 @@
 package com.mtsan.polliti.dto.poll;
 
+import java.util.List;
+
 public class PollDto {
     private Long id;
 
     private String title;
 
     private Byte threshold;
+
+    private List<String> options;
 
     public PollDto() {
     }
@@ -32,5 +36,13 @@ public class PollDto {
 
     public void setThreshold(Byte threshold) {
         this.threshold = threshold;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
 }
