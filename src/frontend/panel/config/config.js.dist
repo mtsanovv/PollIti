@@ -1,0 +1,6 @@
+class Config {
+    static API_BASE_URL = '<API_BASE_URL>';
+    static AGENCY_NAME = '<AGENCY_NAME>';
+    static FACEBOOK_URL = ''; // should be defined when the launchpad is loaded
+    static INSTAGRAM_URL = ''; // should be defined when the launchpad is loaded
+}

@@ -1,0 +1,4 @@
+class Config {
+    static API_BASE_URL = '<API_BASE_URL>';
+    static AGENCY_NAME = '<AGENCY_NAME>';
+}
