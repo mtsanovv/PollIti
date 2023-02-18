@@ -25,7 +25,7 @@ CREATE TABLE `polls_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `polls_tokens` (
-  `uuid` varchar(255) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   `expires_on` date NOT NULL,
   `email` varchar(320) NOT NULL,
   `poll` bigint(20) NOT NULL

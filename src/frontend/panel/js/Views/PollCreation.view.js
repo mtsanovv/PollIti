@@ -194,7 +194,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_CREATION, {
     createOptionInput(oWrappingFlexBox) {
         const iOptionConsecutiveNumber = oWrappingFlexBox.getItems().length;
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
-        const oOptionInput = new sap.m.Input({ maxLength: ValidationConstants.POLL_TITLE_INPUT_MAX_LENGTH });
+        const oOptionInput = new sap.m.Input({ maxLength: ValidationConstants.POLL_OPTION_INPUT_MAX_LENGTH });
         oOptionInput.addStyleClass('sapUiSmallMarginBottom')
             	    .setShowValueStateMessage(true)
                     .setRequired(true)

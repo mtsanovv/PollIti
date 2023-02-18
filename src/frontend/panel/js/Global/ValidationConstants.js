@@ -1,14 +1,14 @@
 class ValidationConstants {
-    static USERNAME_INPUT_MAX_LENGTH = 128;
-    static USERNAME_INPUT_MIN_LENGTH = 3;
+    static USERNAME_INPUT_MIN_LENGTH = 6;
+    static USERNAME_INPUT_MAX_LENGTH = 30;
     static USERNAME_INPUT_REGEX =  '^\\w+$';
 
-    static PASSWORD_INPUT_MAX_LENGTH = 50;
     static PASSWORD_INPUT_MIN_LENGTH = 8;
+    static PASSWORD_INPUT_MAX_LENGTH = 50;
     static PASSWORD_INPUT_REGEX = '^[^\\s]+$';
 
     static DISPLAY_NAME_INPUT_MIN_LENGTH = 3;
-    static DISPLAY_NAME_INPUT_MAX_LENGTH = 1024;
+    static DISPLAY_NAME_INPUT_MAX_LENGTH = 128;
 
     static POLL_TITLE_INPUT_MIN_LENGTH = 10;
     static POLL_TITLE_INPUT_MAX_LENGTH = 256;
@@ -20,7 +20,7 @@ class ValidationConstants {
     static POLL_OPTIONS_MIN_COUNT = 2;
     static POLL_OPTIONS_MAX_COUNT = 9;
 
-    static POLL_OPTION_INPUT_MAX_LENGTH = 128;
+    static POLL_OPTION_INPUT_MAX_LENGTH = 32;
 
     static EMAIL_INPUT_MAX_LENGTH = 320;
     static EMAIL_INPUT_REGEX = "^[^@]+[@][^@]+[\\.][^@]+$";

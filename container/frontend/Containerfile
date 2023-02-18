@@ -1,0 +1,4 @@
+FROM docker.io/nginx:stable-alpine
+COPY container/frontend/default.conf /etc/nginx/conf.d/default.conf
+COPY src/frontend /var/www/
+EXPOSE 80

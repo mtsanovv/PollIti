@@ -8,7 +8,9 @@
 }
 
 .chart-title {
-    -fx-font-size: 30px;
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+    -fx-font-size: 25px;
     -fx-padding: 10px;
     -fx-text-fill: -fx-font-color-style;
     -fx-font-family: -fx-font-color-family-style;
@@ -25,13 +27,14 @@
     -fx-tick-label-fill: -fx-font-color-style;
 }
 
+/* The agency name, masked as label of the x axis */
 .axis-label {
-  -fx-alignment: center-right;
-  -fx-padding: 15px 15px 10px 15px;
-  -fx-font-size: 20px !important;
-  -fx-text-fill: -fx-font-color-style;
-  -fx-font-style: italic;
-  -fx-font-family: -fx-font-color-family-style;
+    -fx-alignment: center-right;
+    -fx-padding: 15px 15px 10px 15px;
+    -fx-font-size: 20px !important;
+    -fx-text-fill: -fx-font-color-style;
+    -fx-font-style: italic;
+    -fx-font-family: -fx-font-color-family-style;
 }
 
 .data0.chart-bar { -fx-bar-fill: #ffa600; }
@@ -43,7 +46,7 @@
 .data6.chart-bar { -fx-bar-fill: #2f4b7c; }
 .data7.chart-bar { -fx-bar-fill: #003f5c; }
 .data8.chart-bar { -fx-bar-fill: #022638; }
-/* in ValidationConstants, max custom options are 9 and undecided votes are always gray*/
+/* in ValidationConstants, max custom options are 9 and undecided votes are always gray */
 
 /* from Globals.java */
 #undecided-votes-bar {

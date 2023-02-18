@@ -153,7 +153,8 @@ public class PollResultsChartGenerationService {
             yAxisUpperBound = undecidedOptionVotes;
         }
 
-        return yAxisUpperBound + Globals.CHART_Y_UPPER_BOUND_ADDITION; // the idea is to have a bigger y axis upper bound so that the label of the tallest bar is always shown
+        // the idea is to have a bigger y axis upper bound so that the label of the tallest bar is always shown
+        return yAxisUpperBound + Globals.CHART_Y_AXIS_UPPER_BOUND_INCREASE;
     }
 
     private BarChart<String, Long> createBarChart(Long pollId) {

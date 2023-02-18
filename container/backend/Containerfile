@@ -10,4 +10,4 @@ ENV DISPLAY=:99
 COPY --from=build /home/polliti_backend/target/polliti-0.0.1-SNAPSHOT.jar /usr/local/lib/polliti/polliti_backend.jar
 EXPOSE 8080
 
-CMD Xvfb :99 & > /dev/null & java -jar /usr/local/lib/polliti/polliti_backend.jar --spring.config.location=/usr/local/lib/polliti/application.properties
+CMD rm -f /tmp/.X99-lock ; Xvfb :99 & java -jar /usr/local/lib/polliti/polliti_backend.jar --spring.config.location=/usr/local/lib/polliti/application.properties
