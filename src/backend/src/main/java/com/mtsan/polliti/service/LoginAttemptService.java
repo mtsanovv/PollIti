@@ -50,7 +50,7 @@ public class LoginAttemptService {
     }
 
     public String getIpAddress(HttpServletRequest httpServletRequest) {
-        String xForwardedForHeader = httpServletRequest.getHeader(Globals.X_FORWARDER_FOR_HEADER);
+        String xForwardedForHeader = httpServletRequest.getHeader(Globals.X_FORWARDED_FOR_HEADER);
         if (xForwardedForHeader == null) {
             return httpServletRequest.getRemoteAddr();
         }
