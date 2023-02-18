@@ -1,5 +1,5 @@
 .root {
-    -fx-font-family-style: 'Helvetica', 'Arial', sans-serif;
+    -fx-font-family-style: sans-serif;
     -fx-font-color-style: #ffffff;
 }
 
@@ -27,7 +27,7 @@
 
 .axis-label {
   -fx-alignment: center-right;
-  -fx-padding: 15px;
+  -fx-padding: 15px 15px 10px 15px;
   -fx-font-size: 20px !important;
   -fx-text-fill: -fx-font-color-style;
   -fx-font-style: italic;

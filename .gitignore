@@ -64,3 +64,4 @@ mvnw.cmd
 # PollIti apps configuration files
 application.properties
 config.js
+config.yml

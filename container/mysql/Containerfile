@@ -1,0 +1,4 @@
+FROM registry.access.redhat.com/rhscl/mysql-80-rhel7:latest
+USER root
+RUN yum -y install httpd-tools && yum -y clean all  && rm -rf /var/cache
+USER mysql

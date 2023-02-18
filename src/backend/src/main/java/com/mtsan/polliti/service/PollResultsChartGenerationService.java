@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -42,7 +43,7 @@ public class PollResultsChartGenerationService {
     }
 
     public byte[] getPollResultsChartImage(Long pollId) throws ExecutionException, InterruptedException {
-        BarChart<String, Long> chart = this.createBarChart();
+        BarChart<String, Long> chart = this.createBarChart(pollId);
         BarChart.Series<String, Long> series = this.createChartMainSeries(pollId, this.getTotalPollVotes(pollId));
 
         chart.getData().add(series);
@@ -136,7 +137,26 @@ public class PollResultsChartGenerationService {
         return series;
     }
 
-    private BarChart<String, Long> createBarChart() {
+    private Long getYAxisUpperBound(Long pollId) {
+        Long yAxisUpperBound = 0L;
+        Collection<Long> pollOptionsVotes = this.pollService.getPollVotesThatMeetThresholdPercentage(pollId).getOptionsVotes().values();
+        Long undecidedOptionVotes = this.pollService.getPollVotes(pollId).getUndecidedVotes();
+        // undecided votes are handled separately and are not pushed to the collection because if they are, they will also be added to the original LinkedHashMap
+
+        for(Long votesCount : pollOptionsVotes) {
+            if (votesCount > yAxisUpperBound) {
+                yAxisUpperBound = votesCount;
+            }
+        }
+
+        if(undecidedOptionVotes > yAxisUpperBound) {
+            yAxisUpperBound = undecidedOptionVotes;
+        }
+
+        return yAxisUpperBound + Globals.CHART_Y_UPPER_BOUND_ADDITION; // the idea is to have a bigger y axis upper bound so that the label of the tallest bar is always shown
+    }
+
+    private BarChart<String, Long> createBarChart(Long pollId) {
         CategoryAxis xAxis = new CategoryAxis();
         // since no extra labels can be added to the chart, we can put the watermark as a label of the x-axis
         xAxis.setLabel(this.getChartWatermarkText());
@@ -145,6 +165,9 @@ public class PollResultsChartGenerationService {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setTickLabelsVisible(false);
         yAxis.setOpacity(0);
+        yAxis.setAutoRanging(false); // otherwise manually setting the upper and lower bound won't work
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(this.getYAxisUpperBound(pollId));
 
         return new BarChart(xAxis, yAxis);
     }
