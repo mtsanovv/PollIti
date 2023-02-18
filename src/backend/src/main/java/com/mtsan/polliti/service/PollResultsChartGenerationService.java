@@ -43,8 +43,8 @@ public class PollResultsChartGenerationService {
     }
 
     public byte[] getPollResultsChartImage(Long pollId) throws ExecutionException, InterruptedException {
-        BarChart<String, Long> chart = this.createBarChart(pollId);
-        BarChart.Series<String, Long> series = this.createChartMainSeries(pollId, this.getTotalPollVotes(pollId));
+        BarChart<String, Double> chart = this.createBarChart(pollId);
+        BarChart.Series<String, Double> series = this.createChartMainSeries(pollId, this.getTotalPollVotes(pollId));
 
         chart.getData().add(series);
 
@@ -57,13 +57,13 @@ public class PollResultsChartGenerationService {
         return this.getImageByteArrayFromChart(chart);
     }
 
-    private byte[] getImageByteArrayFromChart(BarChart<String, Long> chart) throws ExecutionException, InterruptedException {
+    private byte[] getImageByteArrayFromChart(BarChart<String, Double> chart) throws ExecutionException, InterruptedException {
         FutureTask<byte[]> drawingBarChartTask = this.generateBarChartTask(chart);
         Platform.runLater(drawingBarChartTask); // run it on the JFX thread
         return drawingBarChartTask.get();
     }
 
-    private FutureTask<byte[]> generateBarChartTask(BarChart<String, Long> chart) {
+    private FutureTask<byte[]> generateBarChartTask(BarChart<String, Double> chart) {
         return new FutureTask<>(() -> {
             WritableImage chartImage = this.getChartAsImage(chart);
             return this.getImageByteArray(chartImage);
@@ -76,13 +76,13 @@ public class PollResultsChartGenerationService {
         return byteArrayOutputStream.toByteArray();
     }
 
-    private Scene getSceneFromChart(BarChart<String, Long> chart) throws IOException {
+    private Scene getSceneFromChart(BarChart<String, Double> chart) throws IOException {
         Scene scene = new Scene(chart, Globals.CHART_IMAGE_WIDTH, Globals.CHART_IMAGE_HEIGHT);
         scene.getStylesheets().add(this.resourceLoader.getResource(Globals.CHART_CSS_RESOURCE).getURL().toExternalForm());
         return scene;
     }
 
-    private WritableImage getChartAsImage(BarChart<String, Long> chart) throws IOException {
+    private WritableImage getChartAsImage(BarChart<String, Double> chart) throws IOException {
         Scene scene = this.getSceneFromChart(chart);
         WritableImage image = new WritableImage(Globals.CHART_IMAGE_WIDTH, Globals.CHART_IMAGE_HEIGHT);
         scene.snapshot(image);
@@ -100,16 +100,18 @@ public class PollResultsChartGenerationService {
         return totalVotesForAllOptions;
     }
 
-    private BarChart.Series<String, Long> createChartMainSeries(Long pollId, Long totalVotes) {
+    private BarChart.Series<String, Double> createChartMainSeries(Long pollId, Long totalVotes) {
+        Long totalPollVotes = this.getTotalPollVotes(pollId);
         PollVotesDto pollVotesDto = this.pollService.getPollVotesThatMeetThresholdPercentage(pollId);
 
-        BarChart.Series<String, Long> series = new BarChart.Series<>();
+        BarChart.Series<String, Double> series = new BarChart.Series<>();
 
         pollVotesDto.getOptionsVotes().forEach((key, value) -> {
-            BarChart.Data<String, Long> data = new BarChart.Data<>(key, value);
+            Double optionSharePercentage = this.pollService.getOptionSharePercentage(value, totalPollVotes);
+            BarChart.Data<String, Double> data = new BarChart.Data<>(key, optionSharePercentage);
             data.nodeProperty().addListener((ov, oldNode, node) -> {
                 if (node != null) {
-                    this.displayLabelOnTopOfBar(data, totalVotes);
+                    this.displayLabelOnTopOfBar(data);
                 }
             });
             series.getData().add(data);
@@ -117,19 +119,21 @@ public class PollResultsChartGenerationService {
 
         // sort bars by descending height
         series.getData().sort(
-            Comparator.comparingLong(
-                (BarChart.Data<String, Long> longValue) -> longValue.getYValue()
+            Comparator.comparingDouble(
+                (BarChart.Data<String, Double> doubleValue) -> doubleValue.getYValue()
             ).reversed()
         );
 
         // since the undecided votes are unaffected by poll thresholds, they need extra handling
         // they are also a separate poll property
-        BarChart.Data<String, Long> undecidedVotesData = new BarChart.Data<>(Globals.UNDECIDED_VOTES_OPTION_NAME, pollVotesDto.getUndecidedVotes());
+        Long undecidedVotes = pollVotesDto.getUndecidedVotes();
+        Double undecidedVotesSharePercentage = this.pollService.getOptionSharePercentage(undecidedVotes, totalPollVotes);
+        BarChart.Data<String, Double> undecidedVotesData = new BarChart.Data<>(Globals.UNDECIDED_VOTES_OPTION_NAME, undecidedVotesSharePercentage);
         undecidedVotesData.nodeProperty().addListener((ov, oldNode, node) -> {
             if (node != null) {
                 // as a custom bar, undecided votes get custom css treatment
                 undecidedVotesData.getNode().setId(Globals.CHART_CSS_UNDECIDED_VOTES_BAR_ID);
-                this.displayLabelOnTopOfBar(undecidedVotesData, totalVotes);
+                this.displayLabelOnTopOfBar(undecidedVotesData);
             }
         });
         series.getData().add(undecidedVotesData);
@@ -137,27 +141,28 @@ public class PollResultsChartGenerationService {
         return series;
     }
 
-    private Long getYAxisUpperBound(Long pollId) {
-        Long yAxisUpperBound = 0L;
+    private double getYAxisUpperBound(Long pollId) {
+        Long mostVotes = 0L;
+        Long totalVotes = this.getTotalPollVotes(pollId);
         Collection<Long> pollOptionsVotes = this.pollService.getPollVotesThatMeetThresholdPercentage(pollId).getOptionsVotes().values();
         Long undecidedOptionVotes = this.pollService.getPollVotes(pollId).getUndecidedVotes();
         // undecided votes are handled separately and are not pushed to the collection because if they are, they will also be added to the original LinkedHashMap
 
         for(Long votesCount : pollOptionsVotes) {
-            if (votesCount > yAxisUpperBound) {
-                yAxisUpperBound = votesCount;
+            if (votesCount > mostVotes) {
+                mostVotes = votesCount;
             }
         }
 
-        if(undecidedOptionVotes > yAxisUpperBound) {
-            yAxisUpperBound = undecidedOptionVotes;
+        if(undecidedOptionVotes > mostVotes) {
+            mostVotes = undecidedOptionVotes;
         }
 
         // the idea is to have a bigger y axis upper bound so that the label of the tallest bar is always shown
-        return yAxisUpperBound + Globals.CHART_Y_AXIS_UPPER_BOUND_INCREASE;
+        return this.pollService.getOptionSharePercentage(mostVotes, totalVotes) + Globals.CHART_Y_AXIS_UPPER_BOUND_INCREASE;
     }
 
-    private BarChart<String, Long> createBarChart(Long pollId) {
+    private BarChart<String, Double> createBarChart(Long pollId) {
         CategoryAxis xAxis = new CategoryAxis();
         // since no extra labels can be added to the chart, we can put the watermark as a label of the x-axis
         xAxis.setLabel(this.getChartWatermarkText());
@@ -177,9 +182,9 @@ public class PollResultsChartGenerationService {
         return String.format(Globals.SOCIAL_MEDIA_POST_CHART_WATERMARK_FORMAT, this.agencyName, LocalDate.now(ZoneOffset.UTC).getYear());
     }
 
-    private void displayLabelOnTopOfBar(BarChart.Data<String, Long> data, Long sumOfAllValues) {
+    private void displayLabelOnTopOfBar(BarChart.Data<String, Double> data) {
         // in order to make the chart more informative, it is better to display percentages instead of the concrete values
-        String percentageForBarLabel = this.pollService.getOptionSharePercentage(data.getYValue(), sumOfAllValues);
+        String percentageForBarLabel = data.getYValue() + "%";
         Text labelText = new Text(percentageForBarLabel);
         labelText.setId(Globals.CHART_CSS_BAR_LABEL_ID);
 

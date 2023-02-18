@@ -127,14 +127,17 @@ public class PollService {
         return totalPollVotes;
     }
 
-    public String getOptionSharePercentage(Long votesForOption, Long sumOfAllVotes) {
+    public double getOptionSharePercentage(Long votesForOption, Long sumOfAllVotes) {
         if(sumOfAllVotes == 0) {
             sumOfAllVotes = 1L;
         }
         double ratio = (double) votesForOption / sumOfAllVotes;
         double percentage = ratio * 100;
-        double roundedPercentage = Math.round(percentage * 10.0) / 10.0;
-        return roundedPercentage + "%";
+        return Math.round(percentage * 10.0) / 10.0;
+    }
+
+    public String getOptionSharePercentageWithSign(Long votesForOption, Long sumOfAllVotes) {
+        return this.getOptionSharePercentage(votesForOption, sumOfAllVotes) + "%";
     }
 
     private void savePollOptions(Poll poll, List<String> options) {

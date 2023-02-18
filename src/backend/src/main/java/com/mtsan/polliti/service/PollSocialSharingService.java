@@ -101,6 +101,6 @@ public class PollSocialSharingService {
         Long totalVotes = this.pollService.sumPollVotes(pollOptionsVotes.values(), allPollVotes.getUndecidedVotes());
         String optionWithMostVotes = Collections.max(pollOptionsVotes.entrySet(), Map.Entry.comparingByValue()).getKey();
         Long votesForTheMostPopularOption = pollOptionsVotes.get(optionWithMostVotes);
-        return new AbstractMap.SimpleEntry<>(optionWithMostVotes, this.pollService.getOptionSharePercentage(votesForTheMostPopularOption, totalVotes));
+        return new AbstractMap.SimpleEntry<>(optionWithMostVotes, this.pollService.getOptionSharePercentageWithSign(votesForTheMostPopularOption, totalVotes));
     }
 }
