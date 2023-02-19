@@ -10,7 +10,7 @@ POLLITI_MYSQL_VOLUME_PATH="${HOME}/polliti_podman_volumes/polliti_mysql"
 POLLITI_BACKEND_VOLUME_PATH="${HOME}/polliti_podman_volumes/polliti_backend_application.properties"
 POLLITI_FRONTEND_VOLUME_PATH="${HOME}/polliti_podman_volumes/polliti_frontend_config.js"
 
-POLLITI_CONTAINERIZATION_CONFIG_PARSER="${PWD}/container/containerization_config_parser.sh"
+POLLITI_CONTAINERIZATION_CONFIG_PARSER="${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/containerization_config_parser.sh"
 
 if [ ! -f "${POLLITI_CONTAINERIZATION_CONFIG_PARSER}" ]; then
     echo "FATAL: Auxiliary file ${POLLITI_CONTAINERIZATION_CONFIG_PARSER} not found, has it been deleted?"
@@ -47,7 +47,7 @@ function create_mysql_volume_source {
         return 1
     fi
 
-    echo "Skipping '${POLLITI_MYSQL_CONTAINER_NAME}' container volume source creation because the directory already exists: ${POLLITI_MYSQL_VOLUME_PATH}"
+    echo -e "Skipping '${POLLITI_MYSQL_CONTAINER_NAME}' container volume source creation because the directory already exists: ${POLLITI_MYSQL_VOLUME_PATH}\n"
     return 1
 }
 
@@ -55,10 +55,8 @@ function create_file_volume_source {
     local container_name="$1"
     local source="$2"
     local dest="$3"
-    local should_print_newline="$4"
 
     if [ ! -f "${dest}" ]; then
-        parse_containerization_yaml_config
         check_containerization_specific_config_parameters "${container_name}"
 
         echo "Creating '${container_name}' container volume source..."
@@ -70,14 +68,11 @@ function create_file_volume_source {
 
         echo -e "...DONE.\n"
 
-        # the last function call, perhaps the replace one should get passed should_print_newline
+        configure_volume_source_file "${container_name}" "${dest}"
         return 1
     fi
 
-    echo "Skipping '${container_name}' container volume source creation because the file already exists: ${dest}"
-    if [ "${should_print_newline}" == "1" ]; then
-        echo
-    fi
+    echo -e "Skipping '${container_name}' container volume source creation because the file already exists: ${dest}\n"
     return 1
 }
 
@@ -87,7 +82,39 @@ function create_volumes_sources {
 
     create_mysql_volume_source
     create_file_volume_source "${POLLITI_BACKEND_CONTAINER_NAME}" "${backend_volume_source_dist}" "${POLLITI_BACKEND_VOLUME_PATH}"
-    create_file_volume_source "${POLLITI_FRONTEND_CONTAINER_NAME}" "${frontend_volume_source_dist}" "${POLLITI_FRONTEND_VOLUME_PATH}" 1
+    create_file_volume_source "${POLLITI_FRONTEND_CONTAINER_NAME}" "${frontend_volume_source_dist}" "${POLLITI_FRONTEND_VOLUME_PATH}"
 
+    return 1
+}
+
+function build_image {
+    local containerfile_path="$1"
+    local container_name="$2"
+    local image_name="${container_name}_image"
+    local log_path="${POLLITI_CONTAINERIZATION_SCRIPT_LOGS_DIR}/podman_build_$(date +'%Y_%m_%d_%H_%M_%S').log"
+
+    echo "Building podman image ${image_name}..."
+
+    touch "${log_path}"
+    if [ "$?" != "0" ]; then
+        echo "...FATAL: Could not create log file: ${log_path}"
+        exit $?
+    fi
+
+    podman build -f "${containerfile_path}" -t "${image_name}" "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}" &> "${log_path}"
+
+    if [ "$?" != "0" ]; then
+        echo "...FATAL: podman image ${image_name} build failed, podman build log: ${log_path}"
+        exit $?
+    fi
+
+    echo -e "...DONE, podman build log: ${log_path}\n"
+    return 1
+}
+
+function build_images {
+    build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/mysql/Containerfile" "${POLLITI_MYSQL_CONTAINER_NAME}"
+    build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/backend/Containerfile" "${POLLITI_BACKEND_CONTAINER_NAME}"
+    build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/frontend/Containerfile" "${POLLITI_FRONTEND_CONTAINER_NAME}"
     return 1
 }

@@ -12,7 +12,7 @@ spring.mail.host=<SMTP_HOST>
 spring.mail.username=<SMTP_USERNAME>
 spring.mail.password=<SMTP_PASSWORD>
 spring.mail.port=<SMTP_PORT>
-spring.mail.properties.mail.smtp.starttls.enable=<ENABLE_STARTTLS>
+spring.mail.properties.mail.smtp.starttls.enable=<SMTP_ENABLE_STARTTLS>
 
 spring.datasource.password=<DB_USER_PASSWORD>
 
