@@ -28,8 +28,8 @@ if [ ! -f "${POLLITI_CONTAINERIZATION_CONFIG}" ]; then
     exit 1
 fi
 
+check_required_binaries
 create_logs_dir
-check_podman
 create_volumes_sources
 build_images
 create_pod

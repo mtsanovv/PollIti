@@ -25,18 +25,28 @@ function print_header {
     echo -e "----- Containerization -----\n\n"
 }
 
-function check_podman {
+function check_binary {
+    local binary="$1"
     local exit_code=0
 
-    echo "Checking if you have podman installed..."
-    podman -v
+    echo "Checking if you have ${binary} available..."
+    "${binary}" --version &> /dev/null
     exit_code=$?
 
     if [ "${exit_code}" != "0" ]; then
-        echo "...FATAL: podman is not installed!"
+        echo "...FATAL: ${binary} is not available!"
         exit "${exit_code}"
     fi
     echo -e "...DONE.\n"
+    return 1
+}
+
+function check_required_binaries {
+    local binaries=("podman" "sed" "awk" "grep")
+    for binary in "${binaries[@]}"
+    do
+        check_binary "${binary}"
+    done
     return 1
 }
 
@@ -326,7 +336,7 @@ function init_mysql_container {
         exit "${exit_code}"
     fi
 
-    echo "Creating polliti MySQL database and PollIti master admin user ${POLLITI_APP_ADMIN_USER}..."
+    echo "Creating polliti MySQL database and PollIti master admin user ${POLLITI_APP_ADMIN_USER} (if they are not available)..."
 
     podman exec -i "${POLLITI_MYSQL_CONTAINER_NAME}" mysql -u polliti -p"${db_user_password}" < "${db_sql_template_to_import}" &> /dev/null
 
