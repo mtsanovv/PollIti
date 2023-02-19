@@ -5,6 +5,10 @@
 POLLITI_CONTAINERIZATION_CONFIG="${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/containerization_config.yml"
 POLLITI_CONTAINERIZATION_CONFIG_PARSED=0
 POLLITI_CONTAINERIZATION_CONFIG_PREFIX="POLLITI_CONTAINERIZATION_"
+MYSQL_CONTAINERIZATION_CONFIG_PARAMETERS=(
+    "DB_USER_PASSWORD"
+    "${POLLITI_APP_ADMIN_USER_PASSWORD_CONFIG_PROPERRTY}"
+)
 BACKEND_CONTAINERIZATION_CONFIG_PARAMETERS=(
     "AGENCY_NAME"
     "POLLITI_PUBLIC_ORIGIN"
@@ -61,7 +65,7 @@ function check_containerization_parameters {
 
     for config_variable in "${specific_containerization_config_parameters[@]}"
     do
-        local config_variable_value=$(eval "echo \${${POLLITI_CONTAINERIZATION_CONFIG_PREFIX}${config_variable}}") ## a little bit of reflection
+        local config_variable_value=$(eval "echo \${${POLLITI_CONTAINERIZATION_CONFIG_PREFIX}${config_variable}}") # a little bit of reflection
 
         if [ -z "${config_variable_value}" ]; then
             echo "${config_variable} is not defined"
@@ -86,16 +90,15 @@ function check_containerization_specific_config_parameters {
     parse_containerization_yaml_config
 
     echo "Checking if all required containerization configuration properties for container ${container_name} are set in ${POLLITI_CONTAINERIZATION_CONFIG}..."
-    # as much as I would like to make this a generic function to return the array based on the container name, bash cannot return arrays in sane ways
-    # of course, there's the namerefs in bash 4.3, but this has to be compatible with all bash versions...
-    # FYI: another method that has the same switch case: configure_volume_source_file
-
     case "${container_name}" in
         "${POLLITI_BACKEND_CONTAINER_NAME}")
             check_containerization_parameters "${BACKEND_CONTAINERIZATION_CONFIG_PARAMETERS[@]}"
             ;;
         "${POLLITI_FRONTEND_CONTAINER_NAME}")
             check_containerization_parameters "${FRONTEND_CONTAINERIZATION_CONFIG_PARAMETERS[@]}"
+            ;;
+        "${POLLITI_MYSQL_CONTAINER_NAME}")
+            check_containerization_parameters "${MYSQL_CONTAINERIZATION_CONFIG_PARAMETERS[@]}"
             ;;
         *)
             echo "...FATAL: Unknown container name encountered when checking contaainer-specific configuration properties: ${container_name}"
@@ -129,10 +132,6 @@ function configure_volume_source_file {
     local file_path="$2"
 
     echo "Configuring volume source file ${file_path} for container ${container_name}..."
-    # as much as I would like to make this a generic function to return the array based on the container name, bash cannot return arrays in sane ways
-    # of course, there's the namerefs in bash 4.3, but this has to be compatible with all bash versions...
-    # FYI: another method that has the same switch case: check_containerization_specific_config_parameters
-
     case "${container_name}" in
         "${POLLITI_BACKEND_CONTAINER_NAME}")
             configure_file "${file_path}" "${BACKEND_CONTAINERIZATION_CONFIG_PARAMETERS[@]}"
