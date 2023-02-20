@@ -41,5 +41,5 @@ create_containers
 start_pod
 
 echo -e "PollIti is now accessible at http://localhost:${POLLITI_APP_EXPOSED_PORT}/panel/#/login"
-echo -e "\tMaster admin username: ${POLLITI_APP_ADMIN_USER}\n\tMaster admin assword: The value of ${POLLITI_APP_ADMIN_USER_PASSWORD_CONFIG_PROPERRTY} from ${POLLITI_CONTAINERIZATION_CONFIG}\n\n"
+echo -e "\tMaster admin username: ${POLLITI_APP_ADMIN_USER}\n\tMaster admin password: The value of ${POLLITI_APP_ADMIN_USER_PASSWORD_CONFIG_PROPERRTY} from ${POLLITI_CONTAINERIZATION_CONFIG}\n\n"
 exit 0
