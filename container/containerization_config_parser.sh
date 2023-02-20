@@ -47,7 +47,7 @@ function parse_yaml {
 
 function parse_containerization_yaml_config {
     if [ "${POLLITI_CONTAINERIZATION_CONFIG_PARSED}" == "1" ]; then
-        return 1
+        return "${EXIT_CODE_SUCCESS}"
     fi
 
     echo "Parsing containerization configuration file ${POLLITI_CONTAINERIZATION_CONFIG}..."
@@ -56,7 +56,7 @@ function parse_containerization_yaml_config {
 
     POLLITI_CONTAINERIZATION_CONFIG_PARSED=1
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function check_containerization_parameters {
@@ -77,11 +77,11 @@ function check_containerization_parameters {
 
     if [ "${parse_checks_successful}" == "0" ]; then
         echo "...FATAL: One or more required properties are not defined in the containerization configuration file ${POLLITI_CONTAINERIZATION_CONFIG}"
-        exit 1
+        exit "${EXIT_CODE_FAILURE}"
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function check_containerization_specific_config_parameters {
@@ -102,10 +102,10 @@ function check_containerization_specific_config_parameters {
             ;;
         *)
             echo "...FATAL: Unknown container name encountered when checking contaainer-specific configuration properties: ${container_name}"
-            exit 1
+            exit "${EXIT_CODE_FAILURE}"
             ;;
     esac
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function configure_file {
@@ -124,7 +124,7 @@ function configure_file {
     sed -i 's/\r//g' "${file_path}" # remove annoying Windows carriage returns
 
     echo -e "...DONE.\n"
-    return 1;
+    return "${EXIT_CODE_SUCCESS}";
 }
 
 function configure_volume_source_file {
@@ -141,8 +141,8 @@ function configure_volume_source_file {
             ;;
         *)
             echo "...FATAL: Unknown container name encountered when configuring volume source file ${file_path} for container: ${container_name}"
-            exit 1
+            exit "${EXIT_CODE_FAILURE}"
             ;;
     esac
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }

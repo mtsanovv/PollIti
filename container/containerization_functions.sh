@@ -15,7 +15,7 @@ POLLITI_CONTAINERIZATION_CONFIG_PARSER="${POLLITI_CONTAINERIZATION_SCRIPT_WORK_D
 
 if [ ! -f "${POLLITI_CONTAINERIZATION_CONFIG_PARSER}" ]; then
     echo "FATAL: Auxiliary file ${POLLITI_CONTAINERIZATION_CONFIG_PARSER} not found, has it been deleted?"
-    exit 1
+    exit "${EXIT_CODE_FAILURE}"
 fi
 
 source "${POLLITI_CONTAINERIZATION_CONFIG_PARSER}"
@@ -30,7 +30,7 @@ function check_binary {
     local exit_code=0
 
     echo "Checking if you have ${binary} available..."
-    "${binary}" --version &> /dev/null
+    type "${binary}" &> /dev/null
     exit_code=$?
 
     if [ "${exit_code}" != "0" ]; then
@@ -38,7 +38,7 @@ function check_binary {
         exit "${exit_code}"
     fi
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function check_required_binaries {
@@ -47,7 +47,7 @@ function check_required_binaries {
     do
         check_binary "${binary}"
     done
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_logs_dir {
@@ -60,7 +60,7 @@ function create_logs_dir {
         echo "FATAL: Failed to create containerization logs directory: ${POLLITI_CONTAINERIZATION_SCRIPT_LOGS_DIR}"
         exit "${exit_code}"
     fi
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_mysql_volume_source {
@@ -80,11 +80,11 @@ function create_mysql_volume_source {
         fi
 
         echo -e "...DONE.\n"
-        return 1
+        return "${EXIT_CODE_SUCCESS}"
     fi
 
     echo -e "Skipping '${POLLITI_MYSQL_CONTAINER_NAME}' container volume source creation because the directory already exists: ${POLLITI_MYSQL_VOLUME_PATH}\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_file_volume_source {
@@ -108,11 +108,11 @@ function create_file_volume_source {
         echo -e "...DONE.\n"
 
         configure_volume_source_file "${container_name}" "${dest}"
-        return 1
+        return "${EXIT_CODE_SUCCESS}"
     fi
 
     echo -e "Skipping '${container_name}' container volume source creation because the file already exists: ${dest}\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_volumes_sources {
@@ -123,7 +123,7 @@ function create_volumes_sources {
     create_file_volume_source "${POLLITI_BACKEND_CONTAINER_NAME}" "${backend_volume_source_dist}" "${POLLITI_BACKEND_VOLUME_PATH}"
     create_file_volume_source "${POLLITI_FRONTEND_CONTAINER_NAME}" "${frontend_volume_source_dist}" "${POLLITI_FRONTEND_VOLUME_PATH}"
 
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function build_image {
@@ -152,14 +152,14 @@ function build_image {
     fi
 
     echo -e "...DONE, podman build log: ${log_path}\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function build_images {
     build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/mysql/Containerfile" "${POLLITI_MYSQL_CONTAINER_NAME}"
     build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/backend/Containerfile" "${POLLITI_BACKEND_CONTAINER_NAME}"
     build_image "${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/container/frontend/Containerfile" "${POLLITI_FRONTEND_CONTAINER_NAME}"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function delete_pod {
@@ -168,7 +168,7 @@ function delete_pod {
 
     echo -e "Deleting pod (if it exists) ${POLLITI_POD_NAME}...\n"
     podman pod rm "${POLLITI_POD_NAME}" &> /dev/null
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_pod {
@@ -186,7 +186,7 @@ function create_pod {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function delete_container {
@@ -197,7 +197,7 @@ function delete_container {
 
     echo -e "Deleting container (if it exists) ${container_name}...\n"
     podman rm "${container_name}" &> /dev/null
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_mysql_container {
@@ -237,7 +237,7 @@ function create_mysql_container {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_backend_container {
@@ -260,7 +260,7 @@ function create_backend_container {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function create_frontend_container {
@@ -284,7 +284,7 @@ function create_frontend_container {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 
@@ -292,7 +292,7 @@ function create_containers {
     create_mysql_container
     create_backend_container
     create_frontend_container
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function start_mysql_container {
@@ -309,7 +309,7 @@ function start_mysql_container {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function init_mysql_container {
@@ -347,7 +347,7 @@ function init_mysql_container {
     # basically what the insane mysql command does is hash in bcrypt the app master admin password INSIDE the container and create the app master admin user
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
 
 function start_pod {
@@ -384,5 +384,5 @@ function start_pod {
     fi
 
     echo -e "...DONE.\n"
-    return 1
+    return "${EXIT_CODE_SUCCESS}"
 }
