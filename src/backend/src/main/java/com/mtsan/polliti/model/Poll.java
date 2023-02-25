@@ -3,6 +3,7 @@ package com.mtsan.polliti.model;
 import com.mtsan.polliti.global.Globals;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,9 @@ public class Poll {
 
     @Column(name = "undecided_votes")
     private Long undecidedVotes;
+
+    @Column(name = "creation_date")
+    private Date creationDate;
 
     @OneToMany(mappedBy = "poll")
     private List<PollOption> pollOptions;
@@ -61,6 +65,14 @@ public class Poll {
 
     public void setUndecidedVotes(Long undecidedVotes) {
         this.undecidedVotes = undecidedVotes;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public List<PollOption> getPollOptions() {

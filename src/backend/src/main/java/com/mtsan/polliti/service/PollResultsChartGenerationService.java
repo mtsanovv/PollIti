@@ -44,7 +44,7 @@ public class PollResultsChartGenerationService {
 
     public byte[] getPollResultsChartImage(Long pollId) throws ExecutionException, InterruptedException {
         BarChart<String, Double> chart = this.createBarChart(pollId);
-        BarChart.Series<String, Double> series = this.createChartMainSeries(pollId, this.getTotalPollVotes(pollId));
+        BarChart.Series<String, Double> series = this.createChartMainSeries(pollId);
 
         chart.getData().add(series);
 
@@ -100,7 +100,7 @@ public class PollResultsChartGenerationService {
         return totalVotesForAllOptions;
     }
 
-    private BarChart.Series<String, Double> createChartMainSeries(Long pollId, Long totalVotes) {
+    private BarChart.Series<String, Double> createChartMainSeries(Long pollId) {
         Long totalPollVotes = this.getTotalPollVotes(pollId);
         PollVotesDto pollVotesDto = this.pollService.getPollVotesThatMeetThresholdPercentage(pollId);
 
@@ -179,7 +179,7 @@ public class PollResultsChartGenerationService {
     }
 
     private String getChartWatermarkText() {
-        return String.format(Globals.SOCIAL_MEDIA_POST_CHART_WATERMARK_FORMAT, this.agencyName, LocalDate.now(ZoneOffset.UTC).getYear());
+        return String.format(Globals.SOCIAL_MEDIA_POST_CHART_WATERMARK_FORMAT, this.agencyName, LocalDate.now(ZoneOffset.UTC));
     }
 
     private void displayLabelOnTopOfBar(BarChart.Data<String, Double> data) {

@@ -79,7 +79,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
         let iPollsShown = 0;
         for(const oRow of aTableRows) {
             const aCells = oRow.getCells();
-            const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText()];
+            const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText(),  aCells[2].getText()];
             let bShowRow = false;
             for(const s of aStringsToLookForMatches) {
                 if(s.match(new RegExp(sQuery, 'i'))) {
@@ -103,10 +103,15 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
         oIdColumn.setWidth('10%')
                  .setHeader(new sap.m.Text({ text: Globals.POLL_ID_TITLE }));
         const oPollTitleColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
-        oPollTitleColumn.setWidth('90%')
+        oPollTitleColumn.setWidth('80%')
                         .setHeader(new sap.m.Text({ text: Globals.POLL_TITLE_TITLE }));
 
+        const oPollDateCreationDateColumn = new sap.m.Column({ vAlign: sap.ui.core.VerticalAlign.Middle });
+        oPollDateCreationDateColumn.setWidth('10%')
+                                   .setHeader(new sap.m.Text({ text: Globals.POLL_CREATION_DATE_TITLE }));
+
         oTable.addColumn(oIdColumn);
+        oTable.addColumn(oPollDateCreationDateColumn);
         oTable.addColumn(oPollTitleColumn);
     },
 
@@ -165,6 +170,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
                     oController.navigateToPollDetails(oPoll.id);
                 })
                 .addCell(new sap.m.Text({ text: oPoll.id }))
+                .addCell(new sap.m.Text({ text: oPoll.creationDate }))
                 .addCell(new sap.m.Text({ text: oPoll.title }));
             oTable.addItem(oRow);
         }

@@ -1,5 +1,6 @@
 package com.mtsan.polliti.dto.poll;
 
+import java.sql.Date;
 import java.util.List;
 
 public class PollDto {
@@ -10,6 +11,8 @@ public class PollDto {
     private Byte threshold;
 
     private List<String> options;
+
+    private Date creationDate;
 
     public PollDto() {
     }
@@ -44,5 +47,13 @@ public class PollDto {
 
     public void setOptions(List<String> options) {
         this.options = options;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

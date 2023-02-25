@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -43,6 +46,7 @@ public class PollService {
     public IdDto createPoll(NewPollDto newPollDto) {
         Poll poll = this.modelMapper.map(newPollDto, Poll.class);
         poll.setUndecidedVotes(0L);
+        poll.setCreationDate(Date.valueOf(LocalDate.now(ZoneOffset.UTC)));
         Poll savedPollWithId = this.pollDao.save(poll);
         this.savePollOptions(poll, newPollDto.getOptions());
         return this.modelMapper.map(savedPollWithId, IdDto.class);
