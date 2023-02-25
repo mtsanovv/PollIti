@@ -12,6 +12,7 @@ class Globals {
     static NAV_POLLS = 'polls';
     static NAV_POLL = 'poll';
     static NAV_POLLS_LISTING = 'pollsListing';
+    static NAV_POLL_LOGS = 'pollLogs';
     static NAV_CREATE_POLL = 'createPoll';
     static NAV_POLL_VOTING = 'pollVoting';
     static NAV_USERS = 'users';
@@ -39,6 +40,9 @@ class Globals {
                 },
                 [this.NAV_POLLS_LISTING]: {
                     pattern: this.NAV_POLLS
+                },
+                [this.NAV_POLL_LOGS]: {
+                    pattern: [this.NAV_POLLS, 'logs'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_CREATE_POLL]: {
                     pattern: [this.NAV_POLLS, 'create'].join(this.URI_DELIMITER)
@@ -72,6 +76,7 @@ class Globals {
     static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = 'Edit Agent ';
     static POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX = 'Poll #';
     static POLLITI_PAGE_POLL_DETAILS_NESTED_PAGE_TITLE = 'Poll';
+    static POLLITI_PAGE_POLL_LOGS_TITLE = 'Poll Logs'
 
     static NAV_CONTENT = [
         {
@@ -91,6 +96,13 @@ class Globals {
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLLS_LISTING].pattern,
             icon: 'sap-icon://form',
             text: this.POLLITI_PAGE_POLLS_LISTING_TITLE,
+        },
+        {
+            id: this.NAV_POLL_LOGS,
+            route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLL_LOGS].pattern,
+            icon: 'sap-icon://past',
+            text: this.POLLITI_PAGE_POLL_LOGS_TITLE,
+            requiredRoles: [this.ROLES.Administrator],
         },
         {
             id: this.NAV_CREATE_USER,
@@ -140,6 +152,7 @@ class Globals {
     static POLLS_TOKENS_ENDPOINT_SUFFIX = 'tokens';
     static POLLS_UNDECIDED_ENDPOINT_SUFFIX = 'undecided';
     static POLLS_OPTION_ENDPOINT_SUFFIX = 'option';
+    static POLLS_LOGS_ENDPOINT_SUFFIX = 'logs';
 
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
@@ -179,6 +192,8 @@ class Globals {
     static POLL_TITLE_TITLE = 'Title';
     static POLL_CREATION_DATE_TITLE = 'Creation Date'
     static ENABLED_TITLE = 'Agent account enabled';
+    static TIMESTAMP_TITLE = 'Timestamp (UTC)';
+    static MESSAGE_TITLE = 'Message';
 
     static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Agents (';
     static USERS_LISTING_USER_DELETION_DIALOG_TITLE_PREFIX = "Deleting agent '";
@@ -188,6 +203,7 @@ class Globals {
     static ADD_BUTTON_TEXT = 'Add';
 
     static POLLS_LISTING_TABLE_HEADER_POLLS_COUNT_PREFIX = 'Polls (';
+    static POLL_LOGS_TABLE_HEADER_LOGS_COUNT_PREFIX = 'Logs (';
 
     static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
     static POLL_CREATION_FORM_TITLE = 'Poll Details';
@@ -217,6 +233,8 @@ class Globals {
     static SHARE_TO_FACEBOOK_BUTTON_TEXT = 'Share poll results to Facebook only';
     static SHARE_TO_FACEBOOK_AND_INSTAGRAM_BUTTON_TEXT = 'Share poll results to Facebook and Instagram';
     static SHARE_VIA_EMAIL_BUTTON_TEXT = 'Send poll invitation';
+
+    static SEARCH_REGEX_PLACEHOLDER = 'Regex Search'
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');

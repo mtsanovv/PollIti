@@ -74,6 +74,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
 
     onSearchPollsListing: function(oEvent) {
         const sQuery = Globals.escapeRegex(oEvent.getSource().getValue());
+        const oRegExp = new RegExp(sQuery, 'i');
         const oTable = sap.ui.getCore().byId(UIComponents.POLLS_LISTING_TABLE);
         const aTableRows = oTable.getItems();
         let iPollsShown = 0;
@@ -82,7 +83,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLLS_LISTING, {
             const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText(),  aCells[2].getText()];
             let bShowRow = false;
             for(const s of aStringsToLookForMatches) {
-                if(s.match(new RegExp(sQuery, 'i'))) {
+                if(s.match(oRegExp)) {
                     bShowRow = true;
                     iPollsShown++;
                     break;

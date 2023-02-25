@@ -102,6 +102,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
 
     onSearchUsersListing: function(oEvent) {
         const sQuery = Globals.escapeRegex(oEvent.getSource().getValue());
+        const oRegExp = new RegExp(sQuery, 'i');
         const oTable = sap.ui.getCore().byId(UIComponents.USERS_LISTING_TABLE);
         const aTableRows = oTable.getItems();
         let iUsersShown = 0;
@@ -110,7 +111,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_USERS_LISTING, {
             const aStringsToLookForMatches = [aCells[0].getText(), aCells[1].getText()];
             let bShowRow = false;
             for(const s of aStringsToLookForMatches) {
-                if(s.match(new RegExp(sQuery, 'i'))) {
+                if(s.match(oRegExp)) {
                     bShowRow = true;
                     iUsersShown++;
                     break;
