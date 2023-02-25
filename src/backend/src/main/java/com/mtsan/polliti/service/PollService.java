@@ -1,13 +1,17 @@
 package com.mtsan.polliti.service;
 
-import com.mtsan.polliti.util.ModelMapperWrapper;
 import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollOptionDao;
 import com.mtsan.polliti.dto.IdDto;
-import com.mtsan.polliti.dto.poll.*;
+import com.mtsan.polliti.dto.poll.NewPollDto;
+import com.mtsan.polliti.dto.poll.PollDto;
+import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
+import com.mtsan.polliti.dto.poll.PollVotesDto;
+import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
 import com.mtsan.polliti.model.PollOption;
+import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,12 +30,14 @@ public class PollService {
     private final PollDao pollDao;
     private final PollOptionDao pollOptionDao;
     private final ModelMapperWrapper modelMapper;
+    private final PollLogService pollLogService;
 
     @Autowired
-    public PollService(PollDao pollDao, PollOptionDao pollOptionDao, ModelMapperWrapper modelMapper) {
+    public PollService(PollDao pollDao, PollOptionDao pollOptionDao, ModelMapperWrapper modelMapper, PollLogService pollLogService) {
         this.pollDao = pollDao;
         this.pollOptionDao = pollOptionDao;
         this.modelMapper = modelMapper;
+        this.pollLogService = pollLogService;
     }
 
     public List<PollDto> getAllPolls() {
@@ -49,12 +55,17 @@ public class PollService {
         poll.setCreationDate(Date.valueOf(LocalDate.now(ZoneOffset.UTC)));
         Poll savedPollWithId = this.pollDao.save(poll);
         this.savePollOptions(poll, newPollDto.getOptions());
+
+        this.pollLogService.logPollCreated(savedPollWithId.getId(), savedPollWithId.getTitle());
+
         return this.modelMapper.map(savedPollWithId, IdDto.class);
     }
 
     public void deletePoll(Long pollId) {
         this.verifyThatPollIdExists(pollId);
+        String pollTitle = this.pollDao.findById(pollId).get().getTitle();
         this.pollDao.deleteById(pollId);
+        this.pollLogService.logPollDeleted(pollId, pollTitle);
     }
 
     public PollVotesDto getPollVotes(Long pollId) {
@@ -81,14 +92,22 @@ public class PollService {
         return pollVotesDto;
     }
 
-    public void incrementUndecidedVotes(Long pollId) {
+    public void incrementUndecidedVotes(Long pollId, boolean isViaToken) {
         this.verifyThatPollIdExists(pollId);
         Poll poll = this.pollDao.findById(pollId).get();
         poll.setUndecidedVotes(poll.getUndecidedVotes() + 1);
         this.pollDao.save(poll);
+
+        if(!isViaToken) {
+            this.pollLogService.logPollOptionVotesIncrementedManually(Globals.UNDECIDED_VOTES_OPTION_NAME, pollId, poll.getTitle());
+        }
     }
 
-    public void incrementVotesForOption(Long pollId, PollVoteForOptionDto pollVoteForOptionDto) {
+    public void incrementUndecidedVotes(Long pollId) {
+        this.incrementUndecidedVotes(pollId, false);
+    }
+
+    public void incrementVotesForOption(Long pollId, PollVoteForOptionDto pollVoteForOptionDto, boolean isViaToken) {
         this.verifyThatPollIdExists(pollId);
 
         String optionTitle = pollVoteForOptionDto.getTitle();
@@ -102,6 +121,14 @@ public class PollService {
         PollOption optionWhoseVotesToIncrement = optionsWithGivenTitleAndPollId.get(0);
         optionWhoseVotesToIncrement.setVotes(optionWhoseVotesToIncrement.getVotes() + 1);
         this.pollOptionDao.save(optionWhoseVotesToIncrement);
+
+        if(!isViaToken) {
+            this.pollLogService.logPollOptionVotesIncrementedManually(optionWhoseVotesToIncrement.getTitle(), pollId, poll.getTitle());
+        }
+    }
+
+    public void incrementVotesForOption(Long pollId, PollVoteForOptionDto pollVoteForOptionDto) {
+        this.incrementVotesForOption(pollId, pollVoteForOptionDto, false);
     }
 
     public void verifyThatPollIdExists(Long pollId) {

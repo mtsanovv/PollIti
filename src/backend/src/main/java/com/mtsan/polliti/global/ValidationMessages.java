@@ -93,6 +93,7 @@ public class ValidationMessages {
     public static final String USERNAME_ALREADY_IN_USE = THE_PREFIX + "username '%s' is already in use";
     public static final String ENABLED_FIELD_REQUIRED = THE_PREFIX + "enabled property is required to be set to true or false";
     public static final String NO_POLLS_FOUND = "There are no polls available";
+    public static final String NO_POLLS_LOGS_FOUND = "There are no poll logs available";
 
     private static final String CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX = "Cannot post to social media: ";
     public static final String NOT_ENOUGH_OPTIONS_TO_POST_TO_SOCIAL_MEDIA = CANNOT_POST_TO_SOCIAL_MEDIA_PREFIX +

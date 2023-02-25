@@ -31,6 +31,7 @@ public class PollTokenService {
     private final PollDao pollDao;
     private final PollService pollService;
     private final MailService mailService;
+    private final PollLogService pollLogService;
     private final ModelMapperWrapper modelMapper;
     @Value("${agency.polliti-origin}")
     private String pollItiOrigin;
@@ -38,11 +39,13 @@ public class PollTokenService {
     private String agencyName;
 
     @Autowired
-    public PollTokenService(PollTokenDao pollTokenDao, PollDao pollDao, PollService pollService, MailService mailService, ModelMapperWrapper modelMapper) {
+    public PollTokenService(PollTokenDao pollTokenDao, PollDao pollDao, PollService pollService, MailService mailService, PollLogService pollLogService,
+                            ModelMapperWrapper modelMapper) {
         this.pollTokenDao = pollTokenDao;
         this.pollDao = pollDao;
         this.pollService = pollService;
         this.mailService = mailService;
+        this.pollLogService = pollLogService;
         this.modelMapper = modelMapper;
     }
 
@@ -59,13 +62,15 @@ public class PollTokenService {
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
         String email = emailDto.getEmail();
         Poll poll = this.pollDao.findById(pollId).get();
+        String pollTitle = poll.getTitle();
 
         if(this.pollTokenDao.getTokenCountByEmailAndPollId(email, poll) >= 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ValidationMessages.POLL_TOKEN_ALREADY_SENT, email));
         }
 
         PollToken pollToken = this.createPollToken(email, poll);
-        this.sendTokenToEmail(pollToken, poll.getTitle(), email);
+        this.sendTokenToEmail(pollToken, pollTitle, email);
+        this.pollLogService.logPollInvitationSent(email, pollId, pollTitle);
     }
 
     public PollTitleWithOptionsDto getPollTitleWithOptionsByToken(UUID token) {
@@ -76,15 +81,25 @@ public class PollTokenService {
 
     public void incrementUndecidedVotes(UUID token) {
         this.verifyThatPollTokenExists(token);
-        Long pollId = this.pollTokenDao.findById(token).get().getPoll().getId();
-        this.pollService.incrementUndecidedVotes(pollId);
+        PollToken pollToken = this.pollTokenDao.findById(token).get();
+        Poll poll = pollToken.getPoll();
+        Long pollId = poll.getId();
+        this.pollService.incrementUndecidedVotes(pollId, true);
+
+        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollToken.getEmail(), Globals.UNDECIDED_VOTES_OPTION_NAME, pollId, poll.getTitle());
+
         this.pollTokenDao.deleteById(token);
     }
 
     public void incrementVotesForOption(UUID token, PollVoteForOptionDto pollVoteForOptionDto) {
         this.verifyThatPollTokenExists(token);
-        Long pollId = this.pollTokenDao.findById(token).get().getPoll().getId();
-        this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto);
+        PollToken pollToken = this.pollTokenDao.findById(token).get();
+        Poll poll = pollToken.getPoll();
+        Long pollId = poll.getId();
+        this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto, true);
+
+        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollToken.getEmail(), pollVoteForOptionDto.getTitle(), pollId, poll.getTitle());
+
         this.pollTokenDao.deleteById(token);
     }
 

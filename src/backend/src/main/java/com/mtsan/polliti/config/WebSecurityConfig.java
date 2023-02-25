@@ -50,6 +50,9 @@ public class WebSecurityConfig {
                     // permissions for /polls/tokens/*
                     .antMatchers(Routes.POLLS_TOKENS_ROUTE_SUBROUTES).anonymous()
 
+                    // permissions for /polls/logs/*
+                    .antMatchers(Routes.POLLS_LOGS_ROUTE).hasAuthority(Role.Administrator.toString())
+
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic()

@@ -177,7 +177,7 @@ class Globals {
     static ACTIONS_TITLE = 'Actions';
     static POLL_ID_TITLE = 'Poll ID';
     static POLL_TITLE_TITLE = 'Title';
-    static POLL_CREATION_DATE_TITLE = 'Creation date (UTC)'
+    static POLL_CREATION_DATE_TITLE = 'Creation Date'
     static ENABLED_TITLE = 'Agent account enabled';
 
     static USERS_LISTING_TABLE_HEADER_USERS_COUNT_PREFIX = 'PollIti Agents (';

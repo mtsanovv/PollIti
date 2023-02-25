@@ -4,6 +4,7 @@ import com.mtsan.polliti.dto.EmailDto;
 import com.mtsan.polliti.dto.IdDto;
 import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.Routes;
+import com.mtsan.polliti.service.PollLogService;
 import com.mtsan.polliti.service.PollService;
 import com.mtsan.polliti.service.PollSocialSharingService;
 import com.mtsan.polliti.service.PollTokenService;
@@ -25,12 +26,15 @@ public class PollsController {
     private final PollService pollService;
     private final PollSocialSharingService pollSocialSharingService;
     private final PollTokenService pollTokenService;
+    private final PollLogService pollLogService;
 
     @Autowired
-    public PollsController(PollService pollService, PollSocialSharingService pollSocialSharingService, PollTokenService pollTokenService) {
+    public PollsController(PollService pollService, PollSocialSharingService pollSocialSharingService,
+                           PollTokenService pollTokenService, PollLogService pollLogService) {
         this.pollService = pollService;
         this.pollSocialSharingService = pollSocialSharingService;
         this.pollTokenService = pollTokenService;
+        this.pollLogService = pollLogService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -58,6 +62,11 @@ public class PollsController {
     public ResponseEntity<Void> incrementVotesForOptionByToken(@PathVariable UUID token, @Valid @RequestBody PollVoteForOptionDto pollVoteForOptionDto) {
         this.pollTokenService.incrementVotesForOption(token, pollVoteForOptionDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
+    public ResponseEntity<List<PollLogDto>> getPollsLogs() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.pollLogService.getPollsLogs());
     }
 
     @RequestMapping(value = "/{pollId}", method = RequestMethod.GET)

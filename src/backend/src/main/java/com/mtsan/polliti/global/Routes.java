@@ -7,6 +7,7 @@ public class Routes {
     public static final String MAIN_POLLS_ROUTE = "/polls";
     public static final String MAIN_POLLS_TOKENS_ROUTE = String.format("%s/tokens", MAIN_POLLS_ROUTE);
     public static final String POLLS_TOKENS_ROUTE_SUBROUTES = String.format("%s/**", MAIN_POLLS_TOKENS_ROUTE);
+    public static final String POLLS_LOGS_ROUTE = String.format("%s/logs", MAIN_POLLS_ROUTE);
 
     public static final String ME_ROUTE = "/me";
 

@@ -32,6 +32,7 @@ public class Globals {
     public static final String USERS_TABLE_NAME = "users";
     public static final String POLLS_OPTIONS_TABLE_NAME = "polls_options";
     public static final String POLLS_TOKENS_TABLE_NAME = "polls_tokens";
+    public static final String POLLS_LOGS_TABLE_NAME = "polls_logs";
 
     public static final short POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES = 1;
     public static final String POLL_TOKEN_EMAIL_MESSAGE_SUBJECT = "Your opinion matters!";
@@ -54,4 +55,16 @@ public class Globals {
     public static final String POLLITI_RESPONSES_TYPE = "application/json";
 
     public static final String POLLITI_FRONTEND_POLLS_APP_TOKEN_URL_FORMAT = "%s/polls/index.html?token=%s";
+
+    public static final String POLLITI_POLL_ACTION_USER_LOG_MESSAGE_FORMAT = "%s '%s' %s";
+    public static final String POLLITI_POLL_ACTION_LOG_INVITATION_INCREMENTED_VOTES_MESSAGE_FORMAT = "Poll invitee '%s' %s";
+    public static final String POLLITI_POLL_ACTION_LOG_POLL_CREATED_PART_MESSAGE_FORMAT = "created poll '%s' (ID: %d)";
+    public static final String POLLITI_POLL_ACTION_LOG_POLL_DELETED_PART_MESSAGE_FORMAT = "deleted poll '%s' (ID: %d)";
+    public static final String POLLITI_POLL_ACTION_LOG_POLL_SHARED_TO_FB_PART_MESSAGE_FORMAT = "shared poll '%s' (ID: %d) to Facebook";
+    public static final String POLLITI_POLL_ACTION_LOG_POLL_SHARED_TO_FB_AND_INSTA_PART_MESSAGE_FORMAT = "shared poll '%s' (ID: %d) to Facebook and Instagram";
+    public static final String POLLITI_POLL_ACTION_LOG_SENT_POLL_INVITATION_PART_MESSAGE_FORMAT = "sent poll invitation to '%s' for '%s' (ID: %d)";
+    public static final String POLLITI_POLL_ACTION_LOG_INCREMENTED_VOTES_COUNT_PART_MESSAGE_FORMAT = "incremented votes count for option '%s' for poll '%s' (ID: %d)";
+    public static final String POLLITI_POLL_ACTION_LOG_MANUALLY_INCREMENTED_VOTES_PART_MESSAGE_FORMAT = "manually " +
+                                                                                                        POLLITI_POLL_ACTION_LOG_INCREMENTED_VOTES_COUNT_PART_MESSAGE_FORMAT;
+    public static final String POLLITI_POLL_ACTION_LOG_TIMESTAMP_FORMAT = "%1$TF %1$TT";
 }
