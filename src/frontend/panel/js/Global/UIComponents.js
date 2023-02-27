@@ -16,6 +16,7 @@ class UIComponents {
     static POLLITI_VIEW_POLL_DETAILS = 'PollIti.Views.PollDetails';
     static POLLITI_VIEW_POLL_VOTING = 'PollIti.Views.PollVoting';
     static POLLITI_VIEW_POLL_LOGS = 'PollIti.Views.PollLogs';
+    static POLLITI_VIEW_POLL_TRENDS = 'PollIti.Views.PollTrends';
 
     static POLLITI_CONTROLLER_BASE = 'PollIti.Controllers.Base';
     static POLLITI_CONTROLLER_MAIN = 'PollIti.Controllers.Main';
@@ -28,6 +29,7 @@ class UIComponents {
     static POLLITI_CONTROLLER_POLL_DETAILS = 'PollIti.Controllers.PollDetails';
     static POLLITI_CONTROLLER_POLL_VOTING = 'PollIti.Controllers.PollVoting';
     static POLLITI_CONTROLLER_POLL_LOGS = 'PollIti.Controllers.PollLogs';
+    static POLLITI_CONTROLLER_POLL_TRENDS = 'PollIti.Controllers.PollTrends';
 
     static POLLITI_PAGE_MAIN = 'PollIti.Pages.Main';
     static POLLITI_PAGE_LOGIN = 'PollIti.Pages.Login';
@@ -39,6 +41,7 @@ class UIComponents {
     static POLLITI_PAGE_POLL_DETAILS = 'PollIti.Pages.PollDetails';
     static POLLITI_PAGE_POLL_VOTING = 'PollIti.Pages.PollVoting';
     static POLLITI_PAGE_POLL_LOGS = 'PollIti.Pages.PollLogs';
+    static POLLITI_PAGE_POLL_TRENDS = 'PollIti.Pages.PollTrends';
 
     static SIDE_NAV = 'sideNav';
     static SIDE_NAV_TOGGLE_BUTTON = 'sideNavToggleButton';
@@ -139,4 +142,9 @@ class UIComponents {
     static POLL_VOTING_PAGE_LAYOUT = 'pollVotingPageLayout';
     static POLL_VOTING_RADIO_BUTTON_GROUP = 'pollVotingRadioButtonGroup';
     static POLL_VOTING_SUBMIT_BUTTON = 'pollVotingSubmitButton';
+
+    static POLL_TRENDS_ERROR_DIALOG = 'pollTrendsErrorDialog';
+    static POLL_TRENDS_ERROR_DIALOG_MESSAGE_STRIP = 'pollTrendsErrorDialogMessageStrip';
+    static POLL_TRENDS_BLOCK_LAYOUT = 'pollTrendsBlockLayout';
+    static POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX = 'pollTrendsPollInputsWrapperFlexBox';
 }

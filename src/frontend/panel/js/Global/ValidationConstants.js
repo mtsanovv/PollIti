@@ -24,4 +24,7 @@ class ValidationConstants {
 
     static EMAIL_INPUT_MAX_LENGTH = 320;
     static EMAIL_INPUT_REGEX = "^[^@]+[@][^@]+[\\.][^@]+$";
+
+    static POLL_TRENDS_MIN_POLL_INPUTS = 2;
+    static POLL_TRENDS_MAX_POLL_INPUTS = 10;
 }

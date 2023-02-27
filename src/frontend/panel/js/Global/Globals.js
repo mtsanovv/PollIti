@@ -12,6 +12,7 @@ class Globals {
     static NAV_POLLS = 'polls';
     static NAV_POLL = 'poll';
     static NAV_POLLS_LISTING = 'pollsListing';
+    static NAV_POLL_TRENDS = 'pollTrends';
     static NAV_POLL_LOGS = 'pollLogs';
     static NAV_CREATE_POLL = 'createPoll';
     static NAV_POLL_VOTING = 'pollVoting';
@@ -40,6 +41,9 @@ class Globals {
                 },
                 [this.NAV_POLLS_LISTING]: {
                     pattern: this.NAV_POLLS
+                },
+                [this.NAV_POLL_TRENDS]: {
+                    pattern: [this.NAV_POLLS, 'trends'].join(this.URI_DELIMITER)
                 },
                 [this.NAV_POLL_LOGS]: {
                     pattern: [this.NAV_POLLS, 'logs'].join(this.URI_DELIMITER)
@@ -76,7 +80,8 @@ class Globals {
     static POLLITI_PAGE_UPDATE_USER_TITLE_PREFIX = 'Edit Agent ';
     static POLLITI_PAGE_POLL_DETAILS_TITLE_PREFIX = 'Poll #';
     static POLLITI_PAGE_POLL_DETAILS_NESTED_PAGE_TITLE = 'Poll';
-    static POLLITI_PAGE_POLL_LOGS_TITLE = 'Poll Logs'
+    static POLLITI_PAGE_POLL_LOGS_TITLE = 'Poll Logs';
+    static POLLITI_PAGE_POLL_TRENDS_TITLE = 'Poll Trends';
 
     static NAV_CONTENT = [
         {
@@ -96,6 +101,12 @@ class Globals {
             route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLLS_LISTING].pattern,
             icon: 'sap-icon://form',
             text: this.POLLITI_PAGE_POLLS_LISTING_TITLE,
+        },
+        {
+            id: this.NAV_POLL_TRENDS,
+            route: this.POLLITI_COMPONENT_METADATA.routing.routes[this.NAV_POLL_TRENDS].pattern,
+            icon: 'sap-icon://area-chart',
+            text: this.POLLITI_PAGE_POLL_TRENDS_TITLE,
         },
         {
             id: this.NAV_POLL_LOGS,
@@ -207,6 +218,7 @@ class Globals {
 
     static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
     static POLL_CREATION_FORM_TITLE = 'Poll Details';
+    static POLL_TRENDS_LAYOUT_TITLE = 'Polls To Generate a Trend For'
 
     static COMPOSITE_ERROR_MESSAGE_DELIMITER = "\n• ";
 
@@ -234,7 +246,11 @@ class Globals {
     static SHARE_TO_FACEBOOK_AND_INSTAGRAM_BUTTON_TEXT = 'Share poll results to Facebook and Instagram';
     static SHARE_VIA_EMAIL_BUTTON_TEXT = 'Send poll invitation';
 
-    static SEARCH_REGEX_PLACEHOLDER = 'Regex Search'
+    static SEARCH_REGEX_PLACEHOLDER = 'Regex search';
+
+    static POLL_TRENDS_POLL_INPUT_PLACEHOLDER = 'Choose a poll';
+    static ADD_POLL_INPUT_TEXT = 'Add poll input';
+    static REMOVE_POLL_INPUT_TEXT = 'Remove poll input';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
