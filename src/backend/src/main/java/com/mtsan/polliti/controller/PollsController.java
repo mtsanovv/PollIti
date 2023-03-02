@@ -38,7 +38,7 @@ public class PollsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<PollDto>> getPolls() {
+    public ResponseEntity<List<BasicPollDto>> getPolls() {
         return ResponseEntity.status(HttpStatus.OK).body(this.pollService.getAllPolls());
     }
 

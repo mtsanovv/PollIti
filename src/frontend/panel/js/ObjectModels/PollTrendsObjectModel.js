@@ -3,6 +3,7 @@ class PollTrendsObjectModel extends ObjectModel {
         super(obj);
         this.aPolls = obj.polls;
         this.aPollsParticipatingInTrend = [];
+        this.iPollInputIndexThatTriggeredSelectionDialog = 0;
     }
 
     getPolls() {
@@ -16,5 +17,13 @@ class PollTrendsObjectModel extends ObjectModel {
     findCommonOptionsBetweenTwoPolls(aFirstPollOptions, aSecondPollOptions) {
         const oFirstPollOptionsSet = new Set(aFirstPollOptions);
         return aSecondPollOptions.filter(sValue => oFirstPollOptionsSet.has(sValue));
+    }
+
+    getPollInputIndexThatTriggeredSelectionDialog() {
+        return this.iPollInputIndexThatTriggeredSelectionDialog;
+    }
+
+    setPollInputIndexThatTriggeredSelectionDialog(iIndex) {
+        this.iPollInputIndexThatTriggeredSelectionDialog = iIndex;
     }
 }

@@ -9,6 +9,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
             oController.navToPrevious();
         });
 
+        this.createSelectDialog(oPage);
         this.createErrorDialog(oPage);
 
         return oPage;
@@ -36,6 +37,11 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         oPage.addContent(oErrorDialog);
     },
 
+    createSelectDialog: function(oPage) {
+        const oSelectDialog = new sap.m.SelectDialog(UIComponents.POLL_TRENDS_SELECT_DIALOG, { growing: false, title: Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER });
+        oPage.addContent(oSelectDialog);
+    },
+
     createPageLayout: function(oPage) {
         const oBlockLayout = new sap.ui.layout.BlockLayout(UIComponents.POLL_TRENDS_BLOCK_LAYOUT, { background: sap.ui.layout.BlockBackgroundType.Dashboard });
         const oBlockLayoutRow = new sap.ui.layout.BlockLayoutRow();
@@ -51,6 +57,14 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         oPage.addContent(oBlockLayout);
     },
 
+    selectionDialogTriggeredFromPollInput: function(iPollInputIndex) {
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+
+        oModel.setPollInputIndexThatTriggeredSelectionDialog(iPollInputIndex);
+        oSelectDialog.open();
+    },
+
     createPollSelectionInputs: function(oWrappingFlexBox) {
         const oFieldsWrappingFlexBox = new sap.m.FlexBox(UIComponents.POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX, {
             justifyContent: sap.m.FlexJustifyContent.Center,
@@ -58,7 +72,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         });
         oFieldsWrappingFlexBox.addStyleClass('sapUiMediumMarginTopBottom');
 
-        for(let i = 0; i < ValidationConstants.POLL_TRENDS_MIN_POLL_INPUTS; i++) {
+        for(let i = 0; i < ValidationConstants.POLL_TRENDS_MIN_POLLS; i++) {
             this.createPollSelectionInput(oFieldsWrappingFlexBox);
         }
 
@@ -66,12 +80,14 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     },
 
     createPollSelectionInput: function(oWrappingFlexBox) {
+        const thisView = this;
         const iIndex = oWrappingFlexBox.getItems().length;
         const oInput = new sap.m.Input({ showValueHelp: true, valueHelpOnly: true });
         oInput.addStyleClass('sapUiSmallMarginBottom')
               .addStyleClass('sapUiTinyMarginEnd')
               .setPlaceholder(Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER)
-              .setWidth(Globals.INPUT_WIDTH);
+              .setWidth(Globals.INPUT_WIDTH)
+              .attachValueHelpRequest(() => { thisView.selectionDialogTriggeredFromPollInput(iIndex); });
 
         oWrappingFlexBox.addItem(oInput);
     },
@@ -102,7 +118,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
                                oAddInputButton.setEnabled(false);
                            }
 
-                           if(oFlexBoxInputsWrapper.getItems().length > ValidationConstants.POLL_TRENDS_MIN_POLL_INPUTS) {
+                           if(oFlexBoxInputsWrapper.getItems().length > ValidationConstants.POLL_TRENDS_MIN_POLLS) {
                                oRemoveInputButton.setEnabled(true);
                            }
                        });
@@ -115,7 +131,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
                                   oAddInputButton.setEnabled(true);
                               }
 
-                              if(oFlexBoxInputsWrapper.getItems().length == ValidationConstants.POLL_TRENDS_MIN_POLL_INPUTS) {
+                              if(oFlexBoxInputsWrapper.getItems().length == ValidationConstants.POLL_TRENDS_MIN_POLLS) {
                                   oRemoveInputButton.setEnabled(false);
                               }
                           });
@@ -134,13 +150,15 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     resetPage: function() {
         const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_POLL_TRENDS);
         const oPageBlockLayout = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_BLOCK_LAYOUT);
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
 
         if(oPageBlockLayout) {
             oPage.removeContent(oPageBlockLayout);
             oPageBlockLayout.destroy();
         }
 
-        this.createPageLayout(oPage);
+        oSelectDialog.destroyItems();
+        oSelectDialog.removeAllItems();
     },
 
     applyModel: function() {
@@ -168,7 +186,26 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const aPolls = oModel.getPolls();
 
         if(aPolls) {
-            this.getController().setAppBusy(false); // this should be right after the select dialog is filled with the polls
+            this.loadPolls();
         }
-    }
+    },
+
+    loadPolls: function() {
+        const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_POLL_TRENDS);
+        this.fillPollsInSelectDialog();
+        this.createPageLayout(oPage);
+    },
+
+    fillPollsInSelectDialog: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const aPolls = oModel.getPolls();
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+
+        for(const oPoll of aPolls) {
+            const oStandardListItem = new sap.m.StandardListItem({ title: oPoll.id,  description: oPoll.title, info: oPoll.creationDate, wrapping: true });
+            oSelectDialog.addItem(oStandardListItem);
+        }
+
+        this.getController().setAppBusy(false);
+    },
 });

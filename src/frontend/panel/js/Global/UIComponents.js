@@ -147,4 +147,5 @@ class UIComponents {
     static POLL_TRENDS_ERROR_DIALOG_MESSAGE_STRIP = 'pollTrendsErrorDialogMessageStrip';
     static POLL_TRENDS_BLOCK_LAYOUT = 'pollTrendsBlockLayout';
     static POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX = 'pollTrendsPollInputsWrapperFlexBox';
+    static POLL_TRENDS_SELECT_DIALOG = 'pollTrendsSelectDialog';
 }

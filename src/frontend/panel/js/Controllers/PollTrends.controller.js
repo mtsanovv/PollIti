@@ -15,6 +15,10 @@ sap.ui.define([
                     withCredentials: true
                 },
                 success: function(aPolls) {
+                    if(aPolls.length < ValidationConstants.POLL_TRENDS_MIN_POLLS) {
+                        thisController.errorOccurred(ValidationMessages.NOT_ENOUGH_POLLS_FOR_TRENDS);
+                        return;
+                    }
                     thisController.passModel(new PollTrendsObjectModel({
                         polls: aPolls
                     }));

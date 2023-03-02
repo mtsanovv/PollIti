@@ -3,10 +3,7 @@ package com.mtsan.polliti.service;
 import com.mtsan.polliti.dao.PollDao;
 import com.mtsan.polliti.dao.PollOptionDao;
 import com.mtsan.polliti.dto.IdDto;
-import com.mtsan.polliti.dto.poll.NewPollDto;
-import com.mtsan.polliti.dto.poll.PollDto;
-import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
-import com.mtsan.polliti.dto.poll.PollVotesDto;
+import com.mtsan.polliti.dto.poll.*;
 import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
@@ -40,11 +37,11 @@ public class PollService {
         this.pollLogService = pollLogService;
     }
 
-    public List<PollDto> getAllPolls() {
+    public List<BasicPollDto> getAllPolls() {
         if(this.pollDao.count() == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ValidationMessages.NO_POLLS_FOUND);
         }
-        List<PollDto> pollDtoList = this.modelMapper.mapList(this.pollDao.findAll(), PollDto.class);
+        List<BasicPollDto> pollDtoList = this.modelMapper.mapList(this.pollDao.findAll(), BasicPollDto.class);
         Collections.reverse(pollDtoList);
         return pollDtoList;
     }
