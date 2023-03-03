@@ -5,7 +5,10 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
 
     createContent: function() {
         const oPage = new sap.m.Page(UIComponents.POLLITI_PAGE_LOGIN, { showHeader: false });
+
         this.createErrorDialog(oPage);
+        this.createForm(oPage);
+
         return oPage;
     },
 
@@ -132,20 +135,19 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_LOGIN, {
     },
 
     loadPage: function() {
-        // clearing the input values by setting empty values is clunky and does not show placeholders (perhaps an OpenUI5 bug?)
-        // thus, recreate the page layout in order to reset it
-        this.recreatePageLayout();
+        this.resetPage();
         this.getController().pageLoaded();
     },
 
-    recreatePageLayout: async function() {
-        const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_LOGIN);
-        const oPageBlockLayout = sap.ui.getCore().byId(UIComponents.LOGIN_BLOCK_LAYOUT);
-        if(oPageBlockLayout) {
-            oPage.removeContent(oPageBlockLayout);
-            oPageBlockLayout.destroy();
+    resetPage: function() {
+        const oSubmitButton = sap.ui.getCore().byId(UIComponents.LOGIN_BUTTON);
+        const aInputs = [sap.ui.getCore().byId(UIComponents.LOGIN_USERNAME_INPUT), sap.ui.getCore().byId(UIComponents.LOGIN_PASSWORD_INPUT)];
+
+        for(const oInput of aInputs) {
+            oInput.resetProperty(Globals.INPUT_VALUE_PROPERTY);
         }
-        this.createForm(oPage);
+
+        oSubmitButton.setBusy(false);
     },
 
     setObjectModel: function(oObjectModel) {
