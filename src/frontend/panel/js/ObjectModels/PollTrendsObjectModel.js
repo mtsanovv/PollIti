@@ -10,13 +10,29 @@ class PollTrendsObjectModel extends ObjectModel {
         return this.aPolls;
     }
 
-    removeParticipatingPollInTrendAt(iIndex) {
-        this.aPollsParticipatingInTrend.splice(iIndex, 1);
+    getPollsParticipatingInTrend() {
+        return this.aPollsParticipatingInTrend;
     }
 
-    findCommonOptionsBetweenTwoPolls(aFirstPollOptions, aSecondPollOptions) {
-        const oFirstPollOptionsSet = new Set(aFirstPollOptions);
-        return aSecondPollOptions.filter(sValue => oFirstPollOptionsSet.has(sValue));
+    addPollToPollsParticipatingInTrend(iPollId, iSelectDialogItemIndex = null) {
+        if(iSelectDialogItemIndex == null) {
+            // this method was called as a result of poll input field addition
+            this.aPollsParticipatingInTrend.push(null);
+            return;
+        }
+
+        this.aPollsParticipatingInTrend[this.iPollInputIndexThatTriggeredSelectionDialog] = {
+            pollId: iPollId,
+            selectDialogItemIndex: iSelectDialogItemIndex
+        };
+    }
+
+    nullPollThatIsParticipatingInTrend(iPollInputIndex) {
+        this.aPollsParticipatingInTrend[iPollInputIndex] = null;
+    }
+
+    removeLastPollFromPollsParticipatingInTrend() {
+        this.aPollsParticipatingInTrend.pop();
     }
 
     getPollInputIndexThatTriggeredSelectionDialog() {
@@ -25,5 +41,10 @@ class PollTrendsObjectModel extends ObjectModel {
 
     setPollInputIndexThatTriggeredSelectionDialog(iIndex) {
         this.iPollInputIndexThatTriggeredSelectionDialog = iIndex;
+    }
+
+    findCommonOptionsBetweenTwoPolls(aFirstPollOptions, aSecondPollOptions) {
+        const oFirstPollOptionsSet = new Set(aFirstPollOptions);
+        return aSecondPollOptions.filter(sValue => oFirstPollOptionsSet.has(sValue));
     }
 }

@@ -252,6 +252,8 @@ class Globals {
     static ADD_POLL_INPUT_TEXT = 'Add poll input';
     static REMOVE_POLL_INPUT_TEXT = 'Remove poll input';
 
+    static INPUT_VALUE_PROPERTY = 'value';
+
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     }

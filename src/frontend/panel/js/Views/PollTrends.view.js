@@ -38,8 +38,65 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     },
 
     createSelectDialog: function(oPage) {
-        const oSelectDialog = new sap.m.SelectDialog(UIComponents.POLL_TRENDS_SELECT_DIALOG, { growing: false, title: Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER });
+        const oSelectDialog = new sap.m.SelectDialog(UIComponents.POLL_TRENDS_SELECT_DIALOG, {
+            growing: false,
+            title: Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER,
+            showClearButton: true
+        });
+        oSelectDialog.attachConfirm(this.onPollSelected)
+                     .attachCancel(this.updatePollInputOnSelectDialogClose);
+
+        const oSelectDialogClearButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG_CLEAR_BUTTON);
+        oSelectDialogClearButton.attachPress(this.onSelectDialogClearButtonPressed);
+        // this DOES NOT override the default SelectDialog clear button press event handler, it is rather an extra handler
+
+        const oSelectDialogSearchField = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG_SEARCH_FIELD);
+        oSelectDialogSearchField.setShowSearchButton(false); // because there's no SelectDialog property to hide it (and all other search fields in the app react to liveChange)
+
         oPage.addContent(oSelectDialog);
+    },
+
+    onPollSelected: function(oEvent) {
+        // this here does not reference the view, so we need to manually get it
+        const oView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_POLL_TRENDS);
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+        const oModel = oView.getModel().getProperty(Globals.MODEL_PATH);
+        const oSelectedItem = oEvent.getParameters().selectedItem;
+        const iPollId = parseInt(oSelectedItem.getTitle(), 10);
+        const iSelectedItemIndexInSelectDialog = oSelectDialog.getItems().findIndex((oItem) => oItem == oSelectedItem);
+
+        oModel.addPollToPollsParticipatingInTrend(iPollId, iSelectedItemIndexInSelectDialog);
+        oView.updatePollInputOnSelectDialogClose();
+    },
+
+    updatePollInputOnSelectDialogClose: function() {
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const iPollInputIndexThatTriggeredSelectionDialog = oModel.getPollInputIndexThatTriggeredSelectionDialog();
+        const aPollsParticipatingInTrend = oModel.getPollsParticipatingInTrend();
+        const oPollParticipatingInTrendFromInputIndex = aPollsParticipatingInTrend[iPollInputIndexThatTriggeredSelectionDialog];
+
+        const oPollInputsWrappingFlexBox = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX);
+        const aPollInputs = oPollInputsWrappingFlexBox.getItems();
+        const oPollInputParticipatingInTrendFromInputIndex = aPollInputs[iPollInputIndexThatTriggeredSelectionDialog];
+
+        if(oPollParticipatingInTrendFromInputIndex != null) {
+            oPollInputParticipatingInTrendFromInputIndex.setValue(oPollParticipatingInTrendFromInputIndex.pollId);
+            return;
+        }
+
+        oPollInputParticipatingInTrendFromInputIndex.resetProperty(Globals.INPUT_VALUE_PROPERTY);
+    },
+
+    onSelectDialogClearButtonPressed: function() {
+        // this here does not reference the view, so we need to manually get it
+        const oView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_POLL_TRENDS);
+        const oModel = oView.getModel().getProperty(Globals.MODEL_PATH);
+        const iPollInputIndexThatTriggeredSelectionDialog = oModel.getPollInputIndexThatTriggeredSelectionDialog();
+        const oSelectDialogCancelButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG_CANCEL_BUTTON);
+
+        // no need to mark the list item in the dialog as visible because it was already visible (if there was one selected)
+        oModel.nullPollThatIsParticipatingInTrend(iPollInputIndexThatTriggeredSelectionDialog);
+        oSelectDialogCancelButton.firePress(); // because SelectDialog does not have a close method
     },
 
     createPageLayout: function(oPage) {
@@ -62,7 +119,52 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
 
         oModel.setPollInputIndexThatTriggeredSelectionDialog(iPollInputIndex);
+        this.preOpenSelectDialog();
+
         oSelectDialog.open();
+        this.postOpenSelectDialog();
+    },
+
+    preOpenSelectDialog: function() {
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+        const aSelectDialogItems = oSelectDialog.getItems();
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const iPollInputIndexThatTriggeredSelectionDialog = oModel.getPollInputIndexThatTriggeredSelectionDialog();
+        const aPollsParticipatingInTrend = oModel.getPollsParticipatingInTrend();
+        const oPollParticipatingInTrendFromInputIndex = aPollsParticipatingInTrend[iPollInputIndexThatTriggeredSelectionDialog];
+
+        // set selected item
+        if(oPollParticipatingInTrendFromInputIndex != null) {
+            const oSelectDialogItem = aSelectDialogItems[oPollParticipatingInTrendFromInputIndex.selectDialogItemIndex];
+            oSelectDialogItem.setSelected(true);
+            oSelectDialogItem.setVisible(true);
+        }
+
+        // hide selected items from other poll inputs
+        for(let i = 0; i < aPollsParticipatingInTrend.length; i++) {
+            if(i == iPollInputIndexThatTriggeredSelectionDialog) {
+                continue;
+            }
+
+            const oPollParticipatingInTrend = aPollsParticipatingInTrend[i];
+
+            if(oPollParticipatingInTrend == null) {
+                continue;
+            }
+
+            aSelectDialogItems[oPollParticipatingInTrend.selectDialogItemIndex].setVisible(false);
+        }
+    },
+
+    postOpenSelectDialog: function() {
+        const oSelectDialogClearButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG_CLEAR_BUTTON);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const iPollInputIndexThatTriggeredSelectionDialog = oModel.getPollInputIndexThatTriggeredSelectionDialog();
+        const oPollParticipatingInTrend = oModel.getPollsParticipatingInTrend()[iPollInputIndexThatTriggeredSelectionDialog];
+        const bShouldSelectDialogClearButtonBeEnabled = oPollParticipatingInTrend != null;
+
+        // the only way to make the clear button clickable is to enable it after the selectdialog is open
+        oSelectDialogClearButton.setEnabled(bShouldSelectDialogClearButtonBeEnabled);
     },
 
     createPollSelectionInputs: function(oWrappingFlexBox) {
@@ -81,7 +183,9 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
 
     createPollSelectionInput: function(oWrappingFlexBox) {
         const thisView = this;
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
         const iIndex = oWrappingFlexBox.getItems().length;
+
         const oInput = new sap.m.Input({ showValueHelp: true, valueHelpOnly: true });
         oInput.addStyleClass('sapUiSmallMarginBottom')
               .addStyleClass('sapUiTinyMarginEnd')
@@ -90,6 +194,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
               .attachValueHelpRequest(() => { thisView.selectionDialogTriggeredFromPollInput(iIndex); });
 
         oWrappingFlexBox.addItem(oInput);
+        oModel.addPollToPollsParticipatingInTrend();
     },
 
     removeLastPollSelectionInput: function(oWrappingFlexBox) {
@@ -99,7 +204,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oLastInput = aPollInputs[iLastInputConsecutiveNumber];
 
         oWrappingFlexBox.removeItem(oLastInput);
-        oModel.removeParticipatingPollInTrendAt(iLastInputConsecutiveNumber);
+        oModel.removeLastPollFromPollsParticipatingInTrend();
         oLastInput.destroy();
     },
 
