@@ -38,13 +38,18 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     },
 
     createSelectDialog: function(oPage) {
+        const thisView = this;
         const oSelectDialog = new sap.m.SelectDialog(UIComponents.POLL_TRENDS_SELECT_DIALOG, {
             growing: false,
             title: Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER,
             showClearButton: true
         });
         oSelectDialog.attachConfirm(this.onPollSelected)
-                     .attachCancel(this.updatePollInputOnSelectDialogClose);
+                     .attachCancel(() => {
+                        // to ensure that the context in updatePollInputOnSelectDialogClose is always the view
+                        thisView.updatePollInputOnSelectDialogClose();
+                     })
+                     .attachLiveChange(this.filterSelectDialogItems);
 
         const oSelectDialogClearButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG_CLEAR_BUTTON);
         oSelectDialogClearButton.attachPress(this.onSelectDialogClearButtonPressed);
@@ -79,12 +84,55 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const aPollInputs = oPollInputsWrappingFlexBox.getItems();
         const oPollInputParticipatingInTrendFromInputIndex = aPollInputs[iPollInputIndexThatTriggeredSelectionDialog];
 
+        // whenever the dialog is closed the amount of polls chosen needs to be evaluated in order to toggle the chart generation button
+        this.toggleChartGenerationButton();
+
         if(oPollParticipatingInTrendFromInputIndex != null) {
             oPollInputParticipatingInTrendFromInputIndex.setValue(oPollParticipatingInTrendFromInputIndex.pollId);
             return;
         }
 
         oPollInputParticipatingInTrendFromInputIndex.resetProperty(Globals.INPUT_VALUE_PROPERTY);
+    },
+
+    toggleChartGenerationButton: function() {
+        const oChartGenerationButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_CHART_GENERATION_BUTTON);
+        const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
+        const iPollsParticipatingInTrendThatAreNotNull = oModel.getPollsParticipatingInTrend().filter((oElement) => oElement != null).length;
+        if(iPollsParticipatingInTrendThatAreNotNull < ValidationConstants.POLL_TRENDS_MIN_POLLS) {
+            oChartGenerationButton.setEnabled(false);
+            return;
+        }
+
+        oChartGenerationButton.setEnabled(true);
+    },
+
+    filterSelectDialogItems: function(oEvent) {
+        // this here does not reference the view, so we need to manually get it
+        const oView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_POLL_TRENDS);
+        const oModel = oView.getModel().getProperty(Globals.MODEL_PATH);
+        const aHiddenPollsSelectDialogItemsIndices = oModel.getHiddenPollsSelectDialogItemsIndices();
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+        const aSelectDialogItems = oSelectDialog.getItems(); 
+        const sQuery = Globals.escapeRegex(oEvent.getParameters().value);
+        const oRegExp = new RegExp(sQuery, 'i');
+
+        for(let i = 0; i < aSelectDialogItems.length; i++) {
+            if(aHiddenPollsSelectDialogItemsIndices.indexOf(i) > -1) {
+                // do not do anything to the polls that are hidden from the preopen phase of the dialog
+                continue;
+            }
+            const oItem = aSelectDialogItems[i];
+            const aStringsToLookForMatches = [oItem.getTitle(), oItem.getInfo(), oItem.getDescription()];
+            let bShowItem = false;
+            for(const s of aStringsToLookForMatches) {
+                if(s.match(oRegExp)) {
+                    bShowItem = true;
+                    break;
+                }
+            }
+            oItem.setVisible(bShowItem);
+        }
     },
 
     onSelectDialogClearButtonPressed: function() {
@@ -107,6 +155,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
 
         this.createPollSelectionInputs(oWrappingFlexBox);
         this.createPollInputsAdjustmentButtons(oWrappingFlexBox);
+        this.createChartGenerationButton(oWrappingFlexBox);
 
         oBlockLayoutCell.addContent(oWrappingFlexBox);
         oBlockLayoutRow.addContent(oBlockLayoutCell);
@@ -114,13 +163,23 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         oPage.addContent(oBlockLayout);
     },
 
+    createChartGenerationButton: function(oWrappingFlexBox) {
+        const oChartGenerationButton = new sap.m.Button(UIComponents.POLL_TRENDS_CHART_GENERATION_BUTTON, {
+            type: sap.m.ButtonType.Emphasized,
+            text: Globals.POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT,
+            enabled: false
+        });
+        oChartGenerationButton.setBusyIndicatorDelay(0);
+        oWrappingFlexBox.addItem(oChartGenerationButton);
+    },
+
     selectionDialogTriggeredFromPollInput: function(iPollInputIndex) {
         const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
 
         oModel.setPollInputIndexThatTriggeredSelectionDialog(iPollInputIndex);
-        this.preOpenSelectDialog();
 
+        this.preOpenSelectDialog();
         oSelectDialog.open();
         this.postOpenSelectDialog();
     },
@@ -140,6 +199,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
             oSelectDialogItem.setVisible(true);
         }
 
+        const aHiddenPollsSelectDialogItemsIndices = [];
         // hide selected items from other poll inputs
         for(let i = 0; i < aPollsParticipatingInTrend.length; i++) {
             if(i == iPollInputIndexThatTriggeredSelectionDialog) {
@@ -152,8 +212,11 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
                 continue;
             }
 
+            aHiddenPollsSelectDialogItemsIndices.push(oPollParticipatingInTrend.selectDialogItemIndex);
             aSelectDialogItems[oPollParticipatingInTrend.selectDialogItemIndex].setVisible(false);
         }
+
+        oModel.setHiddenPollsSelectDialogItemsIndices(aHiddenPollsSelectDialogItemsIndices);
     },
 
     postOpenSelectDialog: function() {
@@ -172,7 +235,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
             justifyContent: sap.m.FlexJustifyContent.Center,
             wrap: sap.m.FlexWrap.Wrap
         });
-        oFieldsWrappingFlexBox.addStyleClass('sapUiMediumMarginTopBottom');
+        oFieldsWrappingFlexBox.addStyleClass('sapUiMediumMarginTop')
+                              .addStyleClass('sapUiSmallMarginBottom');
 
         for(let i = 0; i < ValidationConstants.POLL_TRENDS_MIN_POLLS; i++) {
             this.createPollSelectionInput(oFieldsWrappingFlexBox);
@@ -190,7 +254,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         oInput.addStyleClass('sapUiSmallMarginBottom')
               .addStyleClass('sapUiTinyMarginEnd')
               .setPlaceholder(Globals.POLL_TRENDS_POLL_INPUT_PLACEHOLDER)
-              .setWidth(Globals.INPUT_WIDTH)
+              .setWidth(Globals.POLL_SELECT_INPUT_WIDTH)
               .attachValueHelpRequest(() => { thisView.selectionDialogTriggeredFromPollInput(iIndex); });
 
         oWrappingFlexBox.addItem(oInput);
@@ -213,7 +277,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oFlexBoxInputsWrapper = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX);
 
         const oFlexBoxAdjustmentButtonsWrapper = new sap.m.FlexBox({ alignItems: sap.m.FlexAlignItems.Center, direction: sap.m.FlexDirection.Row});
-        oFlexBoxAdjustmentButtonsWrapper.addStyleClass('sapUiSmallMarginBottom');
+        oFlexBoxAdjustmentButtonsWrapper.addStyleClass('sapUiMediumMarginBottom');
 
         const oAddInputButton = new sap.m.Button({ icon: 'sap-icon://add', text: Globals.ADD_POLL_INPUT_TEXT });
         oAddInputButton.addStyleClass('sapUiTinyMarginEnd')

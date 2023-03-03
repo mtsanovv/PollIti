@@ -168,6 +168,7 @@ class Globals {
     static LOGOUT_BUTTON_TOOLTIP = 'Logout';
 
     static INPUT_WIDTH = '295px';
+    static POLL_SELECT_INPUT_WIDTH = '200px';
     static USERNAME_INPUT_PLACEHOLDER = 'Username';
     static DISPLAY_NAME_INPUT_PLACEHOLDER = 'Display name';
     static PASSWORD_INPUT_PLACEHOLDER = 'Password';
@@ -249,6 +250,7 @@ class Globals {
     static SEARCH_REGEX_PLACEHOLDER = 'Regex search';
 
     static POLL_TRENDS_POLL_INPUT_PLACEHOLDER = 'Choose a poll';
+    static POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT = 'Generate Trend Chart'
     static ADD_POLL_INPUT_TEXT = 'Add poll input';
     static REMOVE_POLL_INPUT_TEXT = 'Remove poll input';
 
