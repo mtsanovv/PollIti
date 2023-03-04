@@ -126,9 +126,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
         oObjectHeader.setVisible(false);
         oIconTabBar.setVisible(false);
 
-        const oCanvasDomElement = $('#' + UIComponents.POLL_DETAILS_CHART_CANVAS);
-        oCanvasDomElement.remove(); // otherwise the bar chart cannot be re-recreated
-
         for(const sFilterId of aFilterIds) {
             const oFilter = sap.ui.getCore().byId(sFilterId);
             const aFilterContent = oFilter.getContent();
@@ -172,11 +169,8 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_DETAILS, {
     createBarChart: function(oContainer) {
         const thisView = this;
         const oCanvasHtml = new sap.ui.core.HTML({ content: UIComponents.POLL_DETAILS_CHART_CANVAS_HTML });
-        oCanvasHtml.attachAfterRendering(() => {
-            if(!thisView.getModel().getProperty(Globals.MODEL_PATH).isBaseObjectModel()) {
-                // sometimes this gets rerendered when the base object model is passed
-                thisView.fillBarChartCanvas();
-            }
+        oCanvasHtml.attachEventOnce(Globals.EVENT_AFTER_RENDERING, null, () => {
+            thisView.fillBarChartCanvas();
         });
         oContainer.addContent(oCanvasHtml);
     },

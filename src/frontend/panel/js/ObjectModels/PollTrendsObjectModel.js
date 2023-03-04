@@ -86,7 +86,7 @@ class PollTrendsObjectModel extends ObjectModel {
 
         // add chart labels
         for(const oPollModel of aSortedByIdAscendingPollModels) {
-            const aDatasetLabel = [Globals.ID_SIGN + oPollModel.getId(), oPollModel.getCreationDate()];
+            const aDatasetLabel = [Globals.POLL_ID_TITLE + ' ' + oPollModel.getId(), oPollModel.getCreationDate()];
             this.aChartLabels.push(aDatasetLabel);
 
             // we can make use of the already required iteration of all poll models and push the percentages for the undecided option to the respective dataset

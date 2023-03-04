@@ -219,7 +219,6 @@ class Globals {
 
     static USER_EDITOR_FORM_TITLE = 'Agent Account Details';
     static POLL_CREATION_FORM_TITLE = 'Poll Details';
-    static POLL_TRENDS_LAYOUT_TITLE = 'Polls To Generate a Trend For'
 
     static COMPOSITE_ERROR_MESSAGE_DELIMITER = "\n• ";
 
@@ -249,14 +248,17 @@ class Globals {
 
     static SEARCH_REGEX_PLACEHOLDER = 'Regex search';
 
+    static POLL_TRENDS_LAYOUT_TITLE = 'Polls for Trend Analysis';
+    static POLL_TRENDS_LAYOUT_CHART_ROW_TITLE = 'Trends Chart';
     static POLL_TRENDS_POLL_INPUT_PLACEHOLDER = 'Choose a poll';
-    static POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT = 'Generate Trend Chart'
+    static POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT = 'Generate Trends Chart';
+    static POLL_TRENDS_CHART_DATASET_BACKGROUND_COLOR_OPACITY = 50;
     static ADD_POLL_INPUT_TEXT = 'Add poll input';
     static REMOVE_POLL_INPUT_TEXT = 'Remove poll input';
 
     static INPUT_VALUE_PROPERTY = 'value';
 
-    static ID_SIGN = '#';
+    static EVENT_AFTER_RENDERING = 'afterRendering';
 
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -351,6 +353,89 @@ class Globals {
                             const sPercentage = this.getOptionPercentage(iValue, iSum) + '%';
                             return sPercentage;
                         },
+                    }
+                }
+            }
+        };
+    }
+
+    static getPollTrendsChartDefinition(aLabels, aDatasets) {
+        const aDatasetsWithRenderingInformation = [...aDatasets];
+
+        for(let i = 0; i < aDatasetsWithRenderingInformation.length; i++) {
+            const oDataset = aDatasetsWithRenderingInformation[i];
+            if(i == aDatasetsWithRenderingInformation.length - 1) {
+                // undecided votes dataset
+                oDataset.borderColor = UIComponents.POLL_TRENDS_CHART_UNDECIDED_LINE_COLOR;
+            } else {
+                oDataset.borderColor = UIComponents.POLL_TRENDS_CHART_LINE_COLORS[i];
+            }
+
+            oDataset.backgroundColor = oDataset.borderColor + this.POLL_TRENDS_CHART_DATASET_BACKGROUND_COLOR_OPACITY;
+            oDataset.tension = 0.1;
+        }
+
+        return {
+            type: 'line',
+            data: {
+              labels: aLabels,
+              datasets: aDatasetsWithRenderingInformation
+            },
+            options: {
+                aspectRatio: 0.6,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white',
+                            callback: function (sValue) {
+                                return sValue + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(oTooltipItems) {
+                                const sLabel = oTooltipItems[0].label || '';
+                                return sLabel.split(',').join(', ');
+                            },
+                            labelColor: function(oTooltipContext) {
+                                let sHexColorWithOpacity = oTooltipContext.dataset.backgroundColor || '';
+                                const sHexColorWithoutOpacity = sHexColorWithOpacity.substring(0, sHexColorWithOpacity.length - 2);
+                                return {
+                                    backgroundColor: sHexColorWithoutOpacity
+                                }
+                            },
+                            label: function(oTooltipContext) {
+                                let sLabel = oTooltipContext.dataset.label || '';
+        
+                                if (sLabel) {
+                                    sLabel += ': ';
+                                }
+                                if (oTooltipContext.parsed.y !== null) {
+                                    sLabel += oTooltipContext.parsed.y + '%';
+                                }
+                                return sLabel;
+                            }
+                        }
                     }
                 }
             }

@@ -43,9 +43,9 @@
 .data3.chart-bar { -fx-bar-fill: #d45087; }
 .data4.chart-bar { -fx-bar-fill: #a05195; }
 .data5.chart-bar { -fx-bar-fill: #665191; }
-.data6.chart-bar { -fx-bar-fill: #2f4b7c; }
+.data6.chart-bar { -fx-bar-fill: #3f487a; }
 .data7.chart-bar { -fx-bar-fill: #003f5c; }
-.data8.chart-bar { -fx-bar-fill: #022638; }
+.data8.chart-bar { -fx-bar-fill: #01334a; }
 /* in ValidationConstants, max custom options are 9 and undecided votes are always gray */
 
 /* from Globals.java */

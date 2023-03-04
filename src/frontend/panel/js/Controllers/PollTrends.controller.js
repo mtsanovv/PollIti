@@ -62,6 +62,8 @@ sap.ui.define([
             }
 
             oModel.createChartDatasetsAndLabels(aPolls);
+
+            this.passModel(oModel);
         },
 
         requestPollData: async function(sEndpoint) {

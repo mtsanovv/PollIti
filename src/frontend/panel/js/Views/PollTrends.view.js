@@ -83,16 +83,22 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oPollInputsWrappingFlexBox = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_POLL_INPUTS_WRAPPER_FLEXBOX);
         const aPollInputs = oPollInputsWrappingFlexBox.getItems();
         const oPollInputParticipatingInTrendFromInputIndex = aPollInputs[iPollInputIndexThatTriggeredSelectionDialog];
+        const oPollInputParticipatingInTrendFromInputIndexOldValue = oPollInputParticipatingInTrendFromInputIndex.getValue();
 
         // whenever the dialog is closed the amount of polls chosen needs to be evaluated in order to toggle the chart generation button
         this.toggleChartGenerationButton();
 
         if(oPollParticipatingInTrendFromInputIndex != null) {
-            oPollInputParticipatingInTrendFromInputIndex.setValue(Globals.ID_SIGN + oPollParticipatingInTrendFromInputIndex.pollId);
-            return;
+            oPollInputParticipatingInTrendFromInputIndex.setValue(oPollParticipatingInTrendFromInputIndex.pollId);
+        } else {
+            oPollInputParticipatingInTrendFromInputIndex.resetProperty(Globals.INPUT_VALUE_PROPERTY);
         }
 
-        oPollInputParticipatingInTrendFromInputIndex.resetProperty(Globals.INPUT_VALUE_PROPERTY);
+        // remove the chart row on input change
+        const oPollInputParticipatingInTrendFromInputIndexNewValue = oPollInputParticipatingInTrendFromInputIndex.getValue();
+        if(oPollInputParticipatingInTrendFromInputIndexOldValue != oPollInputParticipatingInTrendFromInputIndexNewValue) {
+            this.removeTrendChartRow();
+        }
     },
 
     toggleChartGenerationButton: function() {
@@ -105,6 +111,15 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         }
 
         oChartGenerationButton.setEnabled(true);
+    },
+
+    removeTrendChartRow: function() {
+        const oBlockLayout = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_BLOCK_LAYOUT);
+        const oBlockLayoutChartRow = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_BLOCK_LAYOUT_CHART_ROW);
+        if(oBlockLayoutChartRow) {
+            oBlockLayout.removeContent(oBlockLayoutChartRow);
+            oBlockLayoutChartRow.destroy();
+        }
     },
 
     filterSelectDialogItems: function(oEvent) {
@@ -360,6 +375,12 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     applyViewSpecificObjectModel: function() {
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
         const aPolls = oModel.getPolls();
+        const aChartDatasets = oModel.getChartDatasets();
+
+        if(aChartDatasets) {
+            this.generateTrendsChart();
+            return;
+        }
 
         if(aPolls) {
             this.loadPolls();
@@ -384,4 +405,33 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
 
         this.getController().setAppBusy(false);
     },
+
+    generateTrendsChart: function() {
+        const oBlockLayout = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_BLOCK_LAYOUT);
+        const oBlockLayoutRow = new sap.ui.layout.BlockLayoutRow(UIComponents.POLL_TRENDS_BLOCK_LAYOUT_CHART_ROW);
+        const oBlockLayoutCell = new sap.ui.layout.BlockLayoutCell({ title: Globals.POLL_TRENDS_LAYOUT_CHART_ROW_TITLE, titleAlignment: sap.ui.core.HorizontalAlign.Center });
+        const oChartGenerationButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_CHART_GENERATION_BUTTON);
+
+        const oCanvasHtml = new sap.ui.core.HTML({ content: UIComponents.POLL_TRENDS_CHART_CANVAS_HTML });
+        oCanvasHtml.attachEventOnce(Globals.EVENT_AFTER_RENDERING, null, this.fillTrendsChartCanvas);
+        oBlockLayoutCell.addContent(oCanvasHtml);
+        oBlockLayoutRow.addContent(oBlockLayoutCell);
+        oBlockLayout.addContent(oBlockLayoutRow);
+
+        oChartGenerationButton.setBusy(false);
+        oChartGenerationButton.setEnabled(false);
+    },
+
+    fillTrendsChartCanvas: function() {
+        // this here does not reference the view, so we need to manually get it
+        const oView = sap.ui.getCore().byId(UIComponents.POLLITI_VIEW_POLL_TRENDS);
+        const oModel = oView.getModel().getProperty(Globals.MODEL_PATH);
+        const oCanvasDomElement = $('#' + UIComponents.POLL_TRENDS_CHART_CANVAS);
+
+        try {
+            new Chart(oCanvasDomElement, Globals.getPollTrendsChartDefinition(oModel.getChartLabels(), oModel.getChartDatasets()));
+        } catch(e) {
+            console.warn(e.message);
+        }
+    }
 });
