@@ -30,7 +30,7 @@ class ValidationMessages {
     static MANUAL_VOTING_VOTE_CAST_FAIL = 'Your vote could not be cast. Bring this to the attention of the person in charge.';
     static MANUAL_VOTING_VOTE_CAST_SUCCESS = 'Your vote was cast successfully. Thank you!';
 
-    static NOT_ENOUGH_POLLS_FOR_TRENDS = 'Trends cannot be visualized because there are less than 2 polls available';
+    static NOT_ENOUGH_POLLS_FOR_TRENDS = 'Trends cannot be visualized because there are less than ' + ValidationConstants.POLL_TRENDS_MIN_POLLS + ' polls available';
 
     static getMinimumLengthMessage(iMinLength) {
         return 'At least ' + iMinLength + ' characters are required';
