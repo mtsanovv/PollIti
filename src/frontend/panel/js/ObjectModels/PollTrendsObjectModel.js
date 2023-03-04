@@ -111,15 +111,17 @@ class PollTrendsObjectModel extends ObjectModel {
     }
 
     findCommonCustomOptionsBetweenPolls(aPollModels) {
+        let bInitialPollOptionsInserted = false;
         let aCommonOptions = [];
 
         for(const oPollModel of aPollModels) {
             const aPollOptions = oPollModel.getOriginalSortedOptionsList();
-            if(!aCommonOptions.length) {
+            if(!bInitialPollOptionsInserted) {
                 aCommonOptions.push(...aPollOptions);
+                bInitialPollOptionsInserted = true;
                 continue;
             }
-            aCommonOptions = this.findCommonOptions(aCommonOptions, aPollOptions)
+            aCommonOptions = this.findCommonOptions(aCommonOptions, aPollOptions);
         }
 
         return aCommonOptions;
