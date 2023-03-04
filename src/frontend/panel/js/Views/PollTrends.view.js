@@ -88,7 +88,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         this.toggleChartGenerationButton();
 
         if(oPollParticipatingInTrendFromInputIndex != null) {
-            oPollInputParticipatingInTrendFromInputIndex.setValue(oPollParticipatingInTrendFromInputIndex.pollId);
+            oPollInputParticipatingInTrendFromInputIndex.setValue(Globals.ID_SIGN + oPollParticipatingInTrendFromInputIndex.pollId);
             return;
         }
 
@@ -164,12 +164,17 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     },
 
     createChartGenerationButton: function(oWrappingFlexBox) {
+        const oController = this.getController();
         const oChartGenerationButton = new sap.m.Button(UIComponents.POLL_TRENDS_CHART_GENERATION_BUTTON, {
             type: sap.m.ButtonType.Emphasized,
             text: Globals.POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT,
             enabled: false
         });
-        oChartGenerationButton.setBusyIndicatorDelay(0);
+        oChartGenerationButton.attachPress((oEvent) => {
+                                  oEvent.getSource().setBusy(true);
+                                  oController.fetchSelectedPollsDetails();
+                              })
+                              .setBusyIndicatorDelay(0);
         oWrappingFlexBox.addItem(oChartGenerationButton);
     },
 
@@ -320,10 +325,12 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oPage = sap.ui.getCore().byId(UIComponents.POLLITI_PAGE_POLL_TRENDS);
         const oPageBlockLayout = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_BLOCK_LAYOUT);
         const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
+        const oChartGenerationButton = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_CHART_GENERATION_BUTTON);
 
         if(oPageBlockLayout) {
             oPage.removeContent(oPageBlockLayout);
             oPageBlockLayout.destroy();
+            oChartGenerationButton.setBusy(false);
         }
 
         oSelectDialog.destroyItems();

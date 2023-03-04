@@ -7,7 +7,7 @@ sap.ui.define([
         submitPoll: function() {
             const thisController = this;
             const oModel = this.getView().getModel().getProperty(Globals.MODEL_PATH);
-            const sEndpoint = [Config.API_BASE_URL, Globals.POLLS_ENDPOINT].join(Globals.URI_DELIMITER);;
+            const sEndpoint = [Config.API_BASE_URL, Globals.POLLS_ENDPOINT].join(Globals.URI_DELIMITER);
             const oRequestBody = this.getSubmitRequestBody();
 
             $.ajax({

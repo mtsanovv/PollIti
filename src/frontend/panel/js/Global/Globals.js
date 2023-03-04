@@ -256,8 +256,18 @@ class Globals {
 
     static INPUT_VALUE_PROPERTY = 'value';
 
+    static ID_SIGN = '#';
+
     static escapeRegex(sRegex) {
         return sRegex.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    }
+
+    static getOptionPercentage(iOptionVotes, iPollTotalVotes) {
+        let fPercentage = (iOptionVotes * 100 / iPollTotalVotes).toFixed(1);
+        if(isNaN(fPercentage)) {
+            fPercentage = 0;
+        }
+        return fPercentage;
     }
 
     static getPollResultsChartDefinition(aLabels, aValues, aBarColors, iTotalVotes, iThreshold) {
@@ -338,11 +348,7 @@ class Globals {
                             let iSum = 0;
                             const aData = oCtx.chart.data.datasets[0].data;
                             aData.map(iData => iSum += iData);
-                            let iPercentage = (iValue * 100 / iSum).toFixed(1);
-                            if(isNaN(iPercentage)) {
-                                iPercentage = 0;
-                            }
-                            const sPercentage = iPercentage + '%';
+                            const sPercentage = this.getOptionPercentage(iValue, iSum) + '%';
                             return sPercentage;
                         },
                     }
