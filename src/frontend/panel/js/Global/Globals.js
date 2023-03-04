@@ -254,7 +254,7 @@ class Globals {
     static POLL_TRENDS_CHART_GENERATION_BUTTON_TEXT = 'Generate Trends Chart';
     static POLL_TRENDS_CHART_DATASET_BACKGROUND_COLOR_OPACITY = 50;
     static ADD_POLL_INPUT_TEXT = 'Add poll input';
-    static REMOVE_POLL_INPUT_TEXT = 'Remove poll input';
+    static REMOVE_POLL_INPUT_TEXT = 'Remove last poll input';
 
     static INPUT_VALUE_PROPERTY = 'value';
 

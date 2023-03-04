@@ -85,9 +85,6 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oPollInputParticipatingInTrendFromInputIndex = aPollInputs[iPollInputIndexThatTriggeredSelectionDialog];
         const oPollInputParticipatingInTrendFromInputIndexOldValue = oPollInputParticipatingInTrendFromInputIndex.getValue();
 
-        // whenever the dialog is closed the amount of polls chosen needs to be evaluated in order to toggle the chart generation button
-        this.toggleChartGenerationButton();
-
         if(oPollParticipatingInTrendFromInputIndex != null) {
             oPollInputParticipatingInTrendFromInputIndex.setValue(oPollParticipatingInTrendFromInputIndex.pollId);
         } else {
@@ -120,6 +117,9 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
             oBlockLayout.removeContent(oBlockLayoutChartRow);
             oBlockLayoutChartRow.destroy();
         }
+
+        // whenever the row is removed, this means that an input has changed and the amount of polls chosen needs to be evaluated in order to toggle the chart generation button
+        this.toggleChartGenerationButton();
     },
 
     filterSelectDialogItems: function(oEvent) {
@@ -282,13 +282,20 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
     },
 
     removeLastPollSelectionInput: function(oWrappingFlexBox) {
+        const oSelectDialog = sap.ui.getCore().byId(UIComponents.POLL_TRENDS_SELECT_DIALOG);
         const oModel = this.getModel().getProperty(Globals.MODEL_PATH);
         const aPollInputs = oWrappingFlexBox.getItems();
         const iLastInputConsecutiveNumber = aPollInputs.length - 1;
         const oLastInput = aPollInputs[iLastInputConsecutiveNumber];
 
         oWrappingFlexBox.removeItem(oLastInput);
-        oModel.removeLastPollFromPollsParticipatingInTrend();
+
+        const oPoll = oModel.removeLastPollFromPollsParticipatingInTrend();
+        if(oPoll != null) {
+            // since the input does not really get updated, this method manually has to set the visibility to true of the selectdialog item that was chosen
+            oSelectDialog.getItems()[oPoll.selectDialogItemIndex].setVisible(true);
+        }
+
         oLastInput.destroy();
     },
 
@@ -302,6 +309,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oAddInputButton = new sap.m.Button({ icon: 'sap-icon://add', text: Globals.ADD_POLL_INPUT_TEXT });
         oAddInputButton.addStyleClass('sapUiTinyMarginEnd')
                        .attachPress(() => {
+                           thisView.removeTrendChartRow();
                            thisView.createPollSelectionInput(oFlexBoxInputsWrapper);
                            if(oFlexBoxInputsWrapper.getItems().length == ValidationConstants.POLL_TRENDS_MAX_POLL_INPUTS) {
                                oAddInputButton.setEnabled(false);
@@ -315,6 +323,7 @@ sap.ui.jsview(UIComponents.POLLITI_VIEW_POLL_TRENDS, {
         const oRemoveInputButton = new sap.m.Button({ icon: 'sap-icon://less', text: Globals.REMOVE_POLL_INPUT_TEXT });
         oRemoveInputButton.setEnabled(false)
                           .attachPress(() => {
+                              thisView.removeTrendChartRow();
                               thisView.removeLastPollSelectionInput(oFlexBoxInputsWrapper);
                               if(oFlexBoxInputsWrapper.getItems().length < ValidationConstants.POLL_TRENDS_MAX_POLL_INPUTS) {
                                   oAddInputButton.setEnabled(true);

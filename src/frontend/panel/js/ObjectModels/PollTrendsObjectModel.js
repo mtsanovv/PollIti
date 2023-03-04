@@ -35,7 +35,7 @@ class PollTrendsObjectModel extends ObjectModel {
     }
 
     removeLastPollFromPollsParticipatingInTrend() {
-        this.aPollsParticipatingInTrend.pop();
+        return this.aPollsParticipatingInTrend.pop();
     }
 
     getPollInputIndexThatTriggeredSelectionDialog() {
