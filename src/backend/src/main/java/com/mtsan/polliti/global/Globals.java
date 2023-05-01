@@ -33,6 +33,7 @@ public class Globals {
     public static final String POLLS_OPTIONS_TABLE_NAME = "polls_options";
     public static final String POLLS_TOKENS_TABLE_NAME = "polls_tokens";
     public static final String POLLS_LOGS_TABLE_NAME = "polls_logs";
+    public static final String POLLS_INVITEES_TABLE_NAME = "polls_invitees";
 
     public static final short POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES = 1;
     public static final String POLL_TOKEN_EMAIL_MESSAGE_SUBJECT = "Your opinion matters!";

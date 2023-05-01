@@ -25,7 +25,7 @@ class ValidationMessages {
     static REQUIRED_INPUT_EMPTY = 'Required';
     static INPUT_INVALID = 'Invalid';
 
-    static INVITATION_SENT_SUCCESSFULLY = 'Invitation sent successfully';
+    static INVITATION_SENT_SUCCESSFULLY = 'Invitation sent';
 
     static MANUAL_VOTING_VOTE_CAST_FAIL = 'Your vote could not be cast. Bring this to the attention of the person in charge.';
     static MANUAL_VOTING_VOTE_CAST_SUCCESS = 'Your vote was cast successfully. Thank you!';

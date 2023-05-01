@@ -1,6 +1,7 @@
 package com.mtsan.polliti.service;
 
 import com.mtsan.polliti.dao.PollDao;
+import com.mtsan.polliti.dao.PollInviteeDao;
 import com.mtsan.polliti.dao.PollTokenDao;
 import com.mtsan.polliti.dto.EmailDto;
 import com.mtsan.polliti.dto.poll.PollTitleWithOptionsDto;
@@ -8,6 +9,7 @@ import com.mtsan.polliti.dto.poll.PollVoteForOptionDto;
 import com.mtsan.polliti.global.Globals;
 import com.mtsan.polliti.global.ValidationMessages;
 import com.mtsan.polliti.model.Poll;
+import com.mtsan.polliti.model.PollInvitee;
 import com.mtsan.polliti.model.PollToken;
 import com.mtsan.polliti.util.ModelMapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
-import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class PollTokenService {
     private final PollTokenDao pollTokenDao;
+    private final PollInviteeDao pollInviteeDao;
     private final PollDao pollDao;
     private final PollService pollService;
     private final MailService mailService;
@@ -39,9 +42,10 @@ public class PollTokenService {
     private String agencyName;
 
     @Autowired
-    public PollTokenService(PollTokenDao pollTokenDao, PollDao pollDao, PollService pollService, MailService mailService, PollLogService pollLogService,
-                            ModelMapperWrapper modelMapper) {
+    public PollTokenService(PollTokenDao pollTokenDao, PollInviteeDao pollInviteeDao, PollDao pollDao, PollService pollService, MailService mailService,
+                            PollLogService pollLogService, ModelMapperWrapper modelMapper) {
         this.pollTokenDao = pollTokenDao;
+        this.pollInviteeDao = pollInviteeDao;
         this.pollDao = pollDao;
         this.pollService = pollService;
         this.mailService = mailService;
@@ -54,9 +58,12 @@ public class PollTokenService {
     }
 
     @Scheduled(cron = Globals.POLL_TOKEN_PURGE_CRON_EXPRESSION, zone = Globals.POLL_TOKEN_PURGE_CRON_TIMEZONE)
-    @Transactional
     public void purgeExpiredTokens() {
-        this.pollTokenDao.deleteAllExpiredBy(this.getCurrentDate());
+        List<PollToken> expiredTokens = this.pollTokenDao.findAllExpiredBy(this.getCurrentDate());
+        for(PollToken pollToken : expiredTokens) {
+            this.pollInviteeDao.deleteById(pollToken.getInvitee().getId());
+            // this should automatically delete the token as well due to the on delete cascade constraint in the DB
+        }
     }
 
     public void createTokenAndSendItViaEmail(Long pollId, EmailDto emailDto) throws MessagingException {
@@ -64,7 +71,7 @@ public class PollTokenService {
         Poll poll = this.pollDao.findById(pollId).get();
         String pollTitle = poll.getTitle();
 
-        if(this.pollTokenDao.getTokenCountByEmailAndPollId(email, poll) >= 1) {
+        if(this.pollInviteeDao.getInviteesCountByEmailAndPollId(email, poll) >= 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ValidationMessages.POLL_TOKEN_ALREADY_SENT, email));
         }
 
@@ -75,18 +82,19 @@ public class PollTokenService {
 
     public PollTitleWithOptionsDto getPollTitleWithOptionsByToken(UUID token) {
         this.verifyThatPollTokenExists(token);
-        Poll poll = this.pollTokenDao.findById(token).get().getPoll();
+        Poll poll = this.pollTokenDao.findById(token).get().getInvitee().getPoll();
         return this.modelMapper.map(poll, PollTitleWithOptionsDto.class);
     }
 
     public void incrementUndecidedVotes(UUID token) {
         this.verifyThatPollTokenExists(token);
         PollToken pollToken = this.pollTokenDao.findById(token).get();
-        Poll poll = pollToken.getPoll();
+        PollInvitee pollInvitee = pollToken.getInvitee();
+        Poll poll = pollInvitee.getPoll();
         Long pollId = poll.getId();
         this.pollService.incrementUndecidedVotes(pollId, true);
 
-        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollToken.getEmail(), Globals.UNDECIDED_VOTES_OPTION_NAME, pollId, poll.getTitle());
+        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollInvitee.getEmail(), Globals.UNDECIDED_VOTES_OPTION_NAME, pollId, poll.getTitle());
 
         this.pollTokenDao.deleteById(token);
     }
@@ -94,11 +102,12 @@ public class PollTokenService {
     public void incrementVotesForOption(UUID token, PollVoteForOptionDto pollVoteForOptionDto) {
         this.verifyThatPollTokenExists(token);
         PollToken pollToken = this.pollTokenDao.findById(token).get();
-        Poll poll = pollToken.getPoll();
+        PollInvitee pollInvitee = pollToken.getInvitee();
+        Poll poll = pollInvitee.getPoll();
         Long pollId = poll.getId();
         this.pollService.incrementVotesForOption(pollId, pollVoteForOptionDto, true);
 
-        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollToken.getEmail(), pollVoteForOptionDto.getTitle(), pollId, poll.getTitle());
+        this.pollLogService.logPollOptionVotesIncrementedByInvitation(pollInvitee.getEmail(), pollVoteForOptionDto.getTitle(), pollId, poll.getTitle());
 
         this.pollTokenDao.deleteById(token);
     }
@@ -111,7 +120,11 @@ public class PollTokenService {
 
     private PollToken createPollToken(String email, Poll poll) {
         Date nextWeek = Date.valueOf(LocalDate.now(ZoneOffset.UTC).plus(Globals.POLL_TOKEN_WEEKS_BEFORE_IT_EXPIRES, ChronoUnit.WEEKS));
-        PollToken newPollToken = new PollToken(nextWeek, email, poll);
+
+        PollInvitee newPollInvitee = new PollInvitee(email, poll);
+        this.pollInviteeDao.save(newPollInvitee);
+
+        PollToken newPollToken = new PollToken(nextWeek, newPollInvitee);
         return this.pollTokenDao.save(newPollToken);
     }
 

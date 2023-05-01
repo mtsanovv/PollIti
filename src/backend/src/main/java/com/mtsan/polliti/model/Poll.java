@@ -30,7 +30,7 @@ public class Poll {
     private List<PollOption> pollOptions;
 
     @OneToMany(mappedBy = "poll")
-    private List<PollToken> pollTokens;
+    private List<PollInvitee> pollInvitees;
 
     public Poll() {
     }
@@ -83,11 +83,11 @@ public class Poll {
         this.pollOptions = pollOptions;
     }
 
-    public List<PollToken> getPollTokens() {
-        return pollTokens;
+    public List<PollInvitee> getPollInvitees() {
+        return pollInvitees;
     }
 
-    public void setPollTokens(List<PollToken> pollTokens) {
-        this.pollTokens = pollTokens;
+    public void setPollInvitees(List<PollInvitee> pollInvitees) {
+        this.pollInvitees = pollInvitees;
     }
 }

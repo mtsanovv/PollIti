@@ -19,20 +19,16 @@ public class PollToken {
     @Column(name = "expires_on")
     private Date expiresOn;
 
-    @Column(name = "email")
-    private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "poll")
-    private Poll poll;
+    @OneToOne
+    @JoinColumn(name = "invitee")
+    private PollInvitee invitee;
 
     public PollToken() {
     }
 
-    public PollToken(Date expiresOn, String email, Poll poll) {
+    public PollToken(Date expiresOn, PollInvitee invitee) {
         this.expiresOn = expiresOn;
-        this.email = email;
-        this.poll = poll;
+        this.invitee = invitee;
     }
 
     public UUID getUuid() {
@@ -51,19 +47,11 @@ public class PollToken {
         this.expiresOn = expiresOn;
     }
 
-    public String getEmail() {
-        return email;
+    public PollInvitee getInvitee() {
+        return invitee;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Poll getPoll() {
-        return poll;
-    }
-
-    public void setPoll(Poll poll) {
-        this.poll = poll;
+    public void setInvitee(PollInvitee invitee) {
+        this.invitee = invitee;
     }
 }

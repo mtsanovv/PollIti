@@ -18,6 +18,12 @@ CREATE TABLE `polls` (
   `undecided_votes` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `polls_invitees` (
+  `id` bigint(20) NOT NULL,
+  `email` varchar(320) NOT NULL,
+  `poll` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `polls_logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `message` text NOT NULL,
@@ -34,8 +40,7 @@ CREATE TABLE `polls_options` (
 CREATE TABLE `polls_tokens` (
   `uuid` varchar(36) NOT NULL,
   `expires_on` date NOT NULL,
-  `email` varchar(320) NOT NULL,
-  `poll` bigint(20) NOT NULL
+  `invitee` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `users` (
@@ -51,6 +56,11 @@ CREATE TABLE `users` (
 ALTER TABLE `polls`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `polls_invitees`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`,`poll`),
+  ADD KEY `poll` (`poll`);
+
 ALTER TABLE `polls_logs`
   ADD PRIMARY KEY (`id`);
 
@@ -61,8 +71,7 @@ ALTER TABLE `polls_options`
 
 ALTER TABLE `polls_tokens`
   ADD PRIMARY KEY (`uuid`),
-  ADD UNIQUE KEY `email` (`email`,`poll`),
-  ADD KEY `poll` (`poll`);
+  ADD UNIQUE KEY `invitee` (`invitee`);
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -70,6 +79,9 @@ ALTER TABLE `users`
 
 
 ALTER TABLE `polls`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `polls_invitees`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `polls_logs`
@@ -82,11 +94,14 @@ ALTER TABLE `users`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 
+ALTER TABLE `polls_invitees`
+  ADD CONSTRAINT `polls_invitees_ibfk_1` FOREIGN KEY (`poll`) REFERENCES `polls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `polls_options`
   ADD CONSTRAINT `polls_options_ibfk_1` FOREIGN KEY (`poll`) REFERENCES `polls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `polls_tokens`
-  ADD CONSTRAINT `polls_tokens_ibfk_1` FOREIGN KEY (`poll`) REFERENCES `polls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `polls_tokens_ibfk_1` FOREIGN KEY (`invitee`) REFERENCES `polls_invitees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
