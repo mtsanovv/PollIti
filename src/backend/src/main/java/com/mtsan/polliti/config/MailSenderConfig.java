@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class JavaMailSenderConfig {
+public class MailSenderConfig {
     public JavaMailSender createJavaMailSender(@Value("${spring.mail.host}") String mailHost, @Value("${spring.mail.username}") String mailUsername,
                                                @Value("${spring.mail.password}") String mailPassword, @Value("${spring.mail.port}") int mailPort,
                                                @Value("${spring.mail.properties.mail.smtp.starttls.enable}") boolean mailStartTlsEnable) {
