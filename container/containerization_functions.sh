@@ -317,7 +317,7 @@ function init_mysql_container {
     local healthcheck_retries_before_failure=60 # one minute worth of retries
     local db_sql_template_to_import="${POLLITI_CONTAINERIZATION_SCRIPT_WORK_DIR}/sql/polliti.sql"
     local db_user_password=$(eval "echo \${${POLLITI_CONTAINERIZATION_CONFIG_PREFIX}DB_USER_PASSWORD}")
-    local pollitiadmin_user_password=$(eval "echo \${${POLLITI_CONTAINERIZATION_CONFIG_PREFIX}${POLLITI_APP_ADMIN_USER_PASSWORD_CONFIG_PROPERRTY}}")
+    local pollitiadmin_user_password=$(eval "echo \${${POLLITI_CONTAINERIZATION_CONFIG_PREFIX}${POLLITI_APP_ADMIN_USER_PASSWORD_CONFIG_PROPERTY}}")
 
     echo "Initializing container ${POLLITI_MYSQL_CONTAINER_NAME}..."
     echo "Waiting for MySQL server inside container ${POLLITI_MYSQL_CONTAINER_NAME} to come online..."
