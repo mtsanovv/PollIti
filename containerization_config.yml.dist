@@ -1,13 +1,13 @@
-AGENCY_NAME:
-POLLITI_PUBLIC_ORIGIN:
-MAX_LOGIN_ATTEMPTS_PER_IP:
-LOGIN_ATTEMPTS_HOURS_BEFORE_RESET:
-PAGE_TOKEN:
-PAGE_ID:
-SMTP_HOST:
-SMTP_USERNAME:
-SMTP_PASSWORD:
-SMTP_PORT:
-SMTP_ENABLE_STARTTLS:
-DB_USER_PASSWORD:
-POLLITIADMIN_USER_PASSWORD:
+AGENCY_NAME: "<double quoted string>"
+POLLITI_PUBLIC_ORIGIN: "<double quoted string>"
+MAX_LOGIN_ATTEMPTS_PER_IP: <unquoted integer>
+LOGIN_ATTEMPTS_HOURS_BEFORE_RESET: <unquoted integer>
+PAGE_TOKEN: "<double quoted string>"
+PAGE_ID: "<double quoted string>"
+SMTP_HOST: "<double quoted string>"
+SMTP_USERNAME: "<double quoted string>"
+SMTP_PASSWORD: "<double quoted string>"
+SMTP_PORT: <unquoted integer>
+SMTP_ENABLE_STARTTLS: <unquoted true or false>
+DB_USER_PASSWORD: "<double quoted string>"
+POLLITIADMIN_USER_PASSWORD: "<double quoted string>"

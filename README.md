@@ -6,7 +6,7 @@ An open source political polling agency software.
 - `awk`, `sed`, `grep` but if you have `podman` & `bash`, you *most likely* have those too
 
 ## Initial setup
-You need to use the template `containerization_config.yml.dist`.
+You need to use the template `containerization_config.yml.dist`. **Strings should be double quoted, whereas integers and booleans shall remain unquoted.**
 
 Configure the parameters as follows:
 - `AGENCY_NAME` - your agency's name
